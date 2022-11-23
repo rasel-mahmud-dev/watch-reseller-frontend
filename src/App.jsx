@@ -1,17 +1,15 @@
 import {useState} from 'react'
 import './App.css'
+import Navigation from "./components/Navigation/Navigation";
+import {Outlet} from "react-router-dom";
 
 function App() {
     const [count, setCount] = useState(0)
 
     return (
         <div className="App">
-            <h1 className="text-3xl font-bold underline text-primary">
-                Hello world!
-            </h1>
-
-            <button className="btn btn-primary">Button</button>
-
+            <Navigation/>
+            <Outlet/>
         </div>
     )
 }

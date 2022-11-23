@@ -8,3 +8,10 @@
 .read-the-docs {
   color: #888;
 }
+
+.container{
+    max-width: 1360px;
+    margin: auto;
+    padding-left: 15px;
+    padding-right:  15px
+}
