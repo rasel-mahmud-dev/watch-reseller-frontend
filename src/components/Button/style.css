@@ -1,0 +1,16 @@
+.my-btn{
+    transform: scale(1);
+    transition: transform .3s linear;
+}
+.my-btn:active {
+    transform: scale(1.1);
+}
+
+.my-btn-primary{
+    @apply bg-primary-500 py-2 text-white
+}
+.my-btn-primary-outline{
+    @apply bg-transparent border border-primary-500 hover:bg-primary-500 hover:text-white border-solid text-primary-500 py-2;
+    transition: background-color .2s ease, color .2s ease;
+    /*border: 1px solid red;*/
+}

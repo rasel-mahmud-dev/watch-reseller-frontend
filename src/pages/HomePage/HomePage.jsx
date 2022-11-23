@@ -1,9 +1,11 @@
 import React from 'react';
+import "./homePage.css"
+import SliderSection from "./SliderSection";
 
 const HomePage = () => {
     return (
         <div>
-            <h1>Home page</h1>
+            <SliderSection />
         </div>
     );
 };

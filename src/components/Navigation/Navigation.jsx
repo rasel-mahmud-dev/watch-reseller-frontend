@@ -5,6 +5,7 @@ import { FaMoon, FaSignInAlt } from "react-icons/fa";
 import { BsSunFill } from "react-icons/bs";
 import { HiBars4 } from "react-icons/hi2";
 import usePageScroll from "../../hooks/usePageScroll";
+import Button from "../Button/Button";
 
 
 
@@ -82,10 +83,12 @@ const Navigation = () => {
                     </div>
 
 
-                    <NavLink to="/login" className="flex items-center">
-                        <FaSignInAlt />
-                        <span className="ml-1">Login</span>
-                    </NavLink>
+                   <Button theme="primary" className="">
+                       <NavLink to="/login" className="flex items-center">
+                           <FaSignInAlt />
+                           <span className="ml-1">Login</span>
+                       </NavLink>
+                   </Button>
 
                 </div>
             </div>

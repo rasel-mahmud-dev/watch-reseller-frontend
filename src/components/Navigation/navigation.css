@@ -6,6 +6,9 @@
     transition: all .3s ease;
     transform-origin: top;
 }
+.main-nav a{
+    color: white;
+}
 
 .navbar-transparent{
     background: transparent;
