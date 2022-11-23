@@ -1,7 +1,7 @@
 import {useState} from "react";
 import "./login.css";
 import validator from "../../utils/validator";
-import {FiLock, FiMail} from "react-icons/all";
+import {BsGoogle, FiLock, FiMail} from "react-icons/all";
 import {Link} from "react-router-dom";
 
 import HttpResponse from "../../components/HttpResponse/HttpResponse";
@@ -9,6 +9,7 @@ import InputGroup from "../../components/InputGroup/InputGroup";
 import Button from "../../components/Button/Button";
 import useStore from "../../hooks/useStore";
 import Checkbox from "../../components/CheckboxGroup/CheckboxGroup";
+import Modal from "../../components/Modal/Modal";
 
 
 const Login = () => {
@@ -81,10 +82,37 @@ const Login = () => {
 
     }
 
+    function handlePasswordReset(e) {
+        e.preventDefault();
+    }
+
+    // password reset mail send form
+    function renderPasswordResetModal() {
+        return (
+            <Modal title="Reset Password" className="max-w-sm" id="password-reset-modal">
+                <form onSubmit={handlePasswordReset} className="mt-4 text-dark-300">
+
+                    <HttpResponse state={httpResponse}/>
+
+                    <InputGroup
+                        type="text"
+                        name="email"
+                        placeholder="Your Email"
+                        defaultValue={userInput.email}
+                        className="w-full"
+                    />
+                    <Button className="mt-4">Reset Request</Button>
+                </form>
+            </Modal>
+        );
+    }
+
+
     return (
         <div className="container">
+            {renderPasswordResetModal()}
             <div>
-                <div className="max-w-lg mx-auto shadow-xxs rounded p-4 bg-white m-3 mt-4 rounded-xl">
+                <div className="max-w-md mx-auto shadow-xxs rounded p-4 bg-white m-3 mt-4 rounded-xl">
                     <form onSubmit={handleLogin}>
                         <h1 className="text-center text-3xl text-dark-900 font-semibold">
                             Login
@@ -95,23 +123,36 @@ const Login = () => {
                             <InputGroup error={errors[key]} {...data[key]} className="mt-4"/>
                         ))}
 
-
-                            <Checkbox name="na" label="Remember this account"  className="mt-5"/>
-
+                        <Checkbox theme="custom" name="na" label="Remember this account" className="mt-5"/>
 
 
-
-
-                        <Button className="btn-primary mt-4 w-full">Login</Button>
-
-                        <div className="flex justify-between mt-5 text-dark-100 text-sm font-normal">
-                            <Link to="/forgot-password">
-                                <h6>Forgot Password</h6>
-                            </Link>
-                            <Link to="/registration">
-                                <h6>Create Account</h6>
-                            </Link>
+                        <div className="text-dark-100 text-sm font-normal mt-5">
+                            <h6>
+                                Forgot Password ?
+                                <label htmlFor="password-reset-modal" className="link ml-2 text-blue-500 ">
+                                    Click to reset
+                                </label>
+                            </h6>
                         </div>
+
+
+                        <Button className="mt-4 w-full">Login</Button>
+
+
+                        <div className="divider text-dark-100 text-sm py-5">OR</div>
+
+                        <Button className="!bg-red-500 flex gap-x-1 items-center w-full justify-center">
+                            <BsGoogle className="text-sm"/>
+                            <span>Login With Google</span>
+                        </Button>
+
+                        <p className="text-center  mb-4 mt-6 text-dark-300">
+                            Not a member
+                            <Link to="/registration" className="font-medium !text-primary-500 text-link ml-2 ">
+                                Sign up now
+                            </Link>
+                        </p>
+
                     </form>
                 </div>
             </div>

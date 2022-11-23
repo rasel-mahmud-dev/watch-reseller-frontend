@@ -1,22 +1,23 @@
-.checkbox-primary:checked{
-
-}
 
 .checkbox{
     height: 1.3rem;
     width: 1.3rem;
 }
-.checkbox-primary{
+.checkbox-custom{
+    background-color: transparent !important;
+    background-image: none !important;
     border-radius: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
     box-sizing: border-box;
+    border-color: #bbbbbb !important
 }
-.checkbox-primary:checked::before{
+.checkbox-custom:checked::before{
     height: 0.9rem;
     width: 0.9rem;
     content: "";
+    border-color: #bbbbbb !important;
     background-color: var(--primary-500);
     display: block;
     position: relative;

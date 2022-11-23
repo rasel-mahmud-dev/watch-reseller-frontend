@@ -10,6 +10,7 @@ const Checkbox = (props) => {
         className,
         name,
         error,
+        theme="custom",
         defaultValue,
     } = props;
 
@@ -24,10 +25,10 @@ const Checkbox = (props) => {
         return (
             <>
                 <div className={`${className}`}>
-                    <label className="text-dark-100 text-sm font-normal flex items-center gap-x-2 cursor-pointer select-none">
+                    <label className="text-dark-100 text-md font-normal flex items-center gap-x-2 cursor-pointer select-none">
                         <input defaultValue={defaultValue} name={name} type="checkbox" checked={defaultValue}
                                onChange={handleChange}
-                               className={`checkbox checkbox-primary`}/>
+                               className={`checkbox checkbox-${theme}`}/>
                         <span>{label}</span>
                     </label>
                 </div>

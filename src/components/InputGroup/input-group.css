@@ -5,6 +5,7 @@
 .input-group label{ color: #2f2f2f; font-weight: 500}
 
 .input-group .input{
+    height: auto;
     flex: 1;
     width: 100% !important;
     background: transparent;
