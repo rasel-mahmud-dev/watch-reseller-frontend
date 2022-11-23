@@ -25,8 +25,12 @@ const Navigation = () => {
     }
 
     function handleResize() {
-        let h = header.current?.offsetHeight || 0;
-        document.documentElement.style.setProperty("--header-height", h + "px");
+        if(window.location.pathname === "/"){
+            document.documentElement.style.setProperty("--header-height", 0 + "px");
+        } else {
+            let h = header.current?.offsetHeight || 0;
+            document.documentElement.style.setProperty("--header-height", h + "px");
+        }
     }
 
     // window resize event for set header height
@@ -52,8 +56,8 @@ const Navigation = () => {
 
     return (
         <div>
-            <div className={`navbar top-0 left-0 fixed shadow-md 
-                ${windowScroll < 100 && isHomePage ? "shadow-none navbar-transparent" : "bg-white"}`}>
+            <div  ref={header} className={`navbar top-0 left-0 fixed shadow-md 
+                ${windowScroll < 500 && isHomePage ? "shadow-none navbar-transparent" : "bg-white"}`}>
                 <div className="container">
                     <div className="flex-1">
                         <Link to="/" className="">

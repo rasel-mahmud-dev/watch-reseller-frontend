@@ -1,0 +1,25 @@
+.checkbox-primary:checked{
+
+}
+
+.checkbox{
+    height: 1.3rem;
+    width: 1.3rem;
+}
+.checkbox-primary{
+    border-radius: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+}
+.checkbox-primary:checked::before{
+    height: 0.9rem;
+    width: 0.9rem;
+    content: "";
+    background-color: var(--primary-500);
+    display: block;
+    position: relative;
+    border-radius: 7px;
+
+}

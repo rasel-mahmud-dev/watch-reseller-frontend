@@ -2,9 +2,10 @@ import {useState} from 'react'
 import './App.css'
 import Navigation from "./components/Navigation/Navigation";
 import {Outlet} from "react-router-dom";
+import useStore from "./hooks/useStore";
 
 function App() {
-    const [count, setCount] = useState(0)
+    const [state]  = useStore();
 
     return (
         <div className="App">

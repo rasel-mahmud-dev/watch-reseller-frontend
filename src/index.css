@@ -2,6 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
+
+@layer{
+    :root{
+        --primary-100: #69c9f8;
+        --primary-200: #57bef1;
+        --primary-300: #43b7f1;
+        --primary-400: #38b1ed;
+        --primary-500: #38b1ed;
+        --primary-600: #31a9e5;
+        --primary-700: #28a0dc;
+        --primary-800: #219ad7;
+        --primary-900: #1893d0;
+    }
+}
+
+
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;
@@ -12,7 +28,8 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
-    --header-height: 64px
+    --header-height: 64px;
+    background-color: #f5fbff;
 }
 
 body {
