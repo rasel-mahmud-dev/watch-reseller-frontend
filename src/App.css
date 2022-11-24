@@ -21,7 +21,7 @@
     @apply text-3xl font-bold text-dark-700 text-center;
 }
 .section_sub-title{
-    @apply text-sm font-medium text-primary-500 text-center mb-2;
+    @apply text-sm font-semibold text-primary-500 text-center mb-2;
 }
 .card{
     @apply bg-white shadow-xxxs p-4

@@ -60,8 +60,9 @@ const Navigation = () => {
                 <div className="container">
                     <div className="flex-1">
                         <Link to="/" className="">
-                            <h1 className="text-primary-900 font-bold text-">Reseller-Watch</h1>
-
+                            {/*<h1 className="text-primary-900 font-bold text-">Reseller-Watch</h1>*/}
+                            <img src="/logo.png" className="logo" alt=""/>
+                            
                         </Link>
                     </div>
                     <div className={`flex gap-6 items-center main-nav ${expandNavigation ? "expand" : ""}`}>

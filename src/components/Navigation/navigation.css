@@ -17,6 +17,9 @@
 .navbar-transparent a{
     color: #eeeeee;
 }
+.logo{
+    width: 250px;
+}
 
 @media screen and (max-width: 640px){
     .main-nav{
