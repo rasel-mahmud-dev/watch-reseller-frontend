@@ -10,7 +10,7 @@
 }
 
 .swiper-button-prev, .swiper-button-next{
-    @apply bg-primary-900 rounded-xl;
+    @apply bg-primary-900/70 rounded-xl;
     height: 50px !important;
     padding: 20px;
     transform: translateY(-50%);
@@ -57,4 +57,35 @@
 .swiper-slide-active .banner-caption .slider-button {
     transform: none;
     opacity: 1;
+}
+
+@media screen and (max-width: 950px) {
+    .slider-image{
+        height: 450px;
+        object-fit: cover;
+    }
+    .banner-box{
+        top: 20%;
+        width: 100%;
+        text-align: center;
+    }
+    .slider-title{
+        font-size: 30px;
+        font-weight: 900;
+    }
+    .slider-para{
+        font-size: 14px;
+    }
+
+    .swiper-button-prev, .swiper-button-next{
+        @apply bg-primary-900/50 rounded-xl;
+        height: 5px !important;
+        padding: 15px;
+        /*opacity: 0.4 !important;*/
+        /*background-color: red;*/
+    }
+    .swiper-button-prev::after, .swiper-button-next::after{
+        font-size: 10px !important;
+    }
+
 }

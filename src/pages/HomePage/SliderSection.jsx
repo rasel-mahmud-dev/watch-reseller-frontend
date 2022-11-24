@@ -40,10 +40,10 @@ const SliderSection = () => {
                 <Swiper
                     slidesPerView={1}
                     centeredSlides={true}
-                    // autoplay={{
-                    //     delay: 2000,
-                    //     disableOnInteraction: false,
-                    // }}
+                    autoplay={{
+                        delay: 2000,
+                        disableOnInteraction: false,
+                    }}
                     pagination={{
                         clickable: true,
                     }}
@@ -53,7 +53,7 @@ const SliderSection = () => {
                     {data.map((item => (
                         <SwiperSlide>
                             <div className="banner-image">
-                                <img className="w-full" src={item.image} alt=""/>
+                                <img className="w-full slider-image" src={item.image} alt=""/>
                                 <div className="banner-caption ">
                                     <h1 className="slider-title leading-tight  max-w-xl font-medium text-5xl text-white">{item.title}</h1>
                                     <p className="slider-para max-w-md mt-5 text-light-200">{item.desc}</p>

@@ -43,6 +43,9 @@ module.exports = {
             },
             boxShadow: {
                 xxs: "0 2px 15px -4px #36363626"
+            },
+            zIndex: {
+                1000: "1000"
             }
         },
 

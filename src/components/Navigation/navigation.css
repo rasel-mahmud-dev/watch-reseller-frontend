@@ -1,5 +1,5 @@
 .navbar{
-    z-index: 1000;
+    @apply z-1000;
 }
 
 .main-nav{
@@ -10,28 +10,41 @@
     color: white;
 }
 
-.navbar-transparent{
-    background: transparent;
-}
-
-.main-nav.expand{
-    transform: scaleY(1);
-    opacity: 1;
-    z-index: 200!important;
-    background: white;
-}
 
 @media screen and (max-width: 640px){
     .main-nav{
-        top: 62px;
-        background: white;
+        top: 0;
+        padding: 30px 10px;
         opacity: 0;
         transform: scaleY(0);
         @apply flex-col fixed w-full left-0 shadow-xl;
     }
-    .dark .main-nav {
-        background: hsl(219 14% 22%);
+
+    .navbar-transparent{
+        background: transparent;
     }
+    .navbar-transparent .main-nav.expand{
+        background: rgba(54, 54, 54, 0.89);
+        backdrop-filter: blur(8px);
+    }
+    .navbar-transparent .main-nav.expand a{
+        color: #efefef;
+    }
+    .navbar-transparent .bar-icon{
+        color: #eeeeee !important;
+    }
+
+    .main-nav.expand{
+        transform: scaleY(1);
+        opacity: 1;
+        z-index: 200!important;
+        background: white;
+    }
+
+    .main-nav.expand a {
+        color: #414141;
+    }
+
 }
 
 .header-height{

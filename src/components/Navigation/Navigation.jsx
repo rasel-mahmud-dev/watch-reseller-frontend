@@ -1,12 +1,11 @@
 import React, {useEffect, useRef, useState} from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import {Link, NavLink, useNavigate} from "react-router-dom";
 import "./navigation.css";
-import { FaMoon, FaSignInAlt } from "react-icons/fa";
-import { BsSunFill } from "react-icons/bs";
-import { HiBars4 } from "react-icons/hi2";
+import {FaBars, FaMoon, FaSignInAlt} from "react-icons/fa";
+import {BsSunFill} from "react-icons/bs";
+import {HiBars4} from "react-icons/hi2";
 import usePageScroll from "../../hooks/usePageScroll";
 import Button from "../Button/Button";
-
 
 
 const Navigation = () => {
@@ -25,7 +24,7 @@ const Navigation = () => {
     }
 
     function handleResize() {
-        if(window.location.pathname === "/"){
+        if (window.location.pathname === "/") {
             document.documentElement.style.setProperty("--header-height", 0 + "px");
         } else {
             let h = header.current?.offsetHeight || 0;
@@ -47,16 +46,16 @@ const Navigation = () => {
 
 
     const items = [
-        { path: "/Home", label: "Home" },
-        { path: "/", label: "Courses" },
-        { path: "/", label: "Blogs" },
-        { path: "/", label: "FAQs" },
+        {path: "/", label: "Home"},
+        {path: "/", label: "Courses"},
+        {path: "/", label: "Blogs"},
+        {path: "/", label: "FAQs"},
     ]
 
 
     return (
         <div>
-            <div  ref={header} className={`navbar top-0 left-0 fixed shadow-md 
+            <div ref={header} className={`navbar top-0 left-0 fixed shadow-md 
                 ${windowScroll < 500 && isHomePage ? "shadow-none navbar-transparent" : "bg-white"}`}>
                 <div className="container">
                     <div className="flex-1">
@@ -66,7 +65,7 @@ const Navigation = () => {
                         </Link>
                     </div>
                     <div className={`flex gap-6 items-center main-nav ${expandNavigation ? "expand" : ""}`}>
-                        { items.map(item=>(
+                        {items.map(item => (
                             <NavLink end={true}
                                      onClick={() => setExpandNavigation(false)}
                                      to={item.path}
@@ -74,29 +73,34 @@ const Navigation = () => {
                             >
                                 {item.label}
                             </NavLink>
-                        )) }
+                        ))}
 
                     </div>
                     <div className="flex-none">
 
                     </div>
                     <div className="flex items-center">
-                        <div className="pl-4">
-                            <HiBars4 className="text-2xl block sm:hidden" onClick={toggleNavigation} />
+                        <Button theme="primary" className="ml-4">
+                            <NavLink to="/login" className="flex items-center">
+                                <FaSignInAlt/>
+                                <span className="ml-1">Login</span>
+                            </NavLink>
+                        </Button>
+                        <div className="pl-8">
+
+                            <div className="flex items-center block sm:hidden fixed top-5 right-4 z-1000">
+                                <div className="pl-3">
+                                    <HiBars4
+                                        className="bar-icon text-dark-700 text-2xl"
+                                        onClick={toggleNavigation}
+                                    />
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-
-                   <Button theme="primary" className="">
-                       <NavLink to="/login" className="flex items-center">
-                           <FaSignInAlt />
-                           <span className="ml-1">Login</span>
-                       </NavLink>
-                   </Button>
-
                 </div>
             </div>
-            <div className="header-height" />
+            <div className="header-height"/>
         </div>
     );
 };
