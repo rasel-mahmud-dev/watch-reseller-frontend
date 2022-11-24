@@ -1,9 +1,7 @@
 #root {
   margin: 0 auto;
 }
-.card {
-  padding: 2em;
-}
+
 
 .read-the-docs {
   color: #888;
@@ -14,4 +12,17 @@
     margin: auto;
     padding-left: 15px;
     padding-right:  15px
+}
+
+.section{
+    @apply py-20;
+}
+.section_title{
+    @apply text-3xl font-bold text-dark-700 text-center;
+}
+.section_sub-title{
+    @apply text-sm font-medium text-primary-500 text-center mb-2;
+}
+.card{
+    @apply bg-white shadow-xxs p-4
 }

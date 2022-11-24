@@ -34,7 +34,7 @@ const SliderSection = () => {
     ]
 
     return (
-        <div className="slider_root">
+        <section className="slider_root">
 
             <div>
                 <Swiper
@@ -71,7 +71,7 @@ const SliderSection = () => {
                 </Swiper>
             </div>
 
-        </div>
+        </section>
     );
 };
 

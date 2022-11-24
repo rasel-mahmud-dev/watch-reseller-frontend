@@ -7,9 +7,16 @@
     transform-origin: top;
 }
 .main-nav a{
-    color: white;
+    color: #3a3a3a;
 }
 
+.navbar-transparent{
+    background: transparent;
+}
+
+.navbar-transparent a{
+    color: #eeeeee;
+}
 
 @media screen and (max-width: 640px){
     .main-nav{
@@ -20,9 +27,7 @@
         @apply flex-col fixed w-full left-0 shadow-xl;
     }
 
-    .navbar-transparent{
-        background: transparent;
-    }
+
     .navbar-transparent .main-nav.expand{
         background: rgba(54, 54, 54, 0.89);
         backdrop-filter: blur(8px);
