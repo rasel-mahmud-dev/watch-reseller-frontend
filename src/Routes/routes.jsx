@@ -7,6 +7,7 @@ import Main from "../Layout/Main";
 import DashboardLayout from "../Layout/DashboardLayout";
 import DashboardHome from "../pages/Dashboard/DashboardHome";
 import ErrorPage from "../pages/Shared/ErrorPage";
+import CategoryWatch from "../pages/CategoryWatch/CategoryWatch";
 
 const router = createBrowserRouter([
     {
@@ -15,8 +16,12 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />,
         children: [
             { path: "", element: <HomePage /> },
-            { path: "/login", element: <LoginPage /> },
-            { path: "/registration", element: <Registration /> },
+            { path: "login", element: <LoginPage /> },
+            { path: "registration", element: <Registration /> },
+            {
+                path: "category/:id",
+                element: <CategoryWatch />
+            },
 
         ],
     },

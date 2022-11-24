@@ -48,7 +48,7 @@ const Navigation = () => {
     const items = [
         {path: "/", label: "Home"},
         {path: "/", label: "Courses"},
-        {path: "/", label: "Blogs"},
+        {path: "/blogs", label: "Blogs"},
         {path: "/", label: "FAQs"},
     ]
 
