@@ -24,5 +24,5 @@
     @apply text-sm font-medium text-primary-500 text-center mb-2;
 }
 .card{
-    @apply bg-white shadow-xxs p-4
+    @apply bg-white shadow-xxxs p-4
 }
