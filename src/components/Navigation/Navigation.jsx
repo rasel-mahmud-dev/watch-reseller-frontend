@@ -54,8 +54,7 @@ const Navigation = () => {
 
 
     const items = [{path: "/", label: "Home"}, {path: "/", label: "Courses"}, {
-        path: "/blogs",
-        label: "Blogs"
+        path: "/blogs", label: "Blogs"
     }, {path: "/", label: "FAQs"},]
 
 
@@ -72,9 +71,9 @@ const Navigation = () => {
                 </div>
                 <div className={`flex gap-6 items-center main-nav ${expandNavigation ? "expand" : ""}`}>
                     {items.map(item => (<NavLink end={true}
-                                                 onClick={() => setExpandNavigation(false)}
-                                                 to={item.path}
-                                                 className="font-medium text-base"
+                         onClick={() => setExpandNavigation(false)}
+                         to={item.path}
+                         className="font-medium text-base"
                     >
                         {item.label}
                     </NavLink>))}
@@ -86,7 +85,7 @@ const Navigation = () => {
                         onMouseOver={() => setOpenAuthMenu(true)}
                         onMouseLeave={() => setOpenAuthMenu(false)}
                     >
-                        <div className="w-14">
+                        <div className="w-14 h-10 flex justify-center items-center">
                             <Avatar
                                 src={auth.avatar}
                                 username={auth.username}

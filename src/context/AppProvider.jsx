@@ -7,7 +7,7 @@ import {
     googleSignInAction,
     signOutAction,
     validateToken,
-    loginAction
+    loginAction, registrationAction
 } from "./actions/authAction";
 
 
@@ -32,7 +32,8 @@ function AppProvider(props) {
     const actions = {
         googleSignInAction: ()=> googleSignInAction(auth),
         signOutAction: (dispatch)=> signOutAction(auth, dispatch),
-        loginAction: (userData)=>loginAction(auth, userData, dispatch)
+        loginAction: (userData)=>loginAction(auth, userData, dispatch),
+        registrationAction: (userData)=>registrationAction(auth, userData, dispatch)
     }
 
     useEffect(() => {
@@ -43,7 +44,7 @@ function AppProvider(props) {
                     username: user.displayName,
                     email: user.email,
                     googleId: user.uid,
-                    avatar: user.photoURL,
+                    avatar: user?.photoURL,
                 };
 
                 let currentUser = null

@@ -3,21 +3,91 @@ import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     GoogleAuthProvider,
+    updateProfile,
     signOut
 } from "firebase/auth";
+
+
 import axios from "../../axios";
 import firebaseErrorCatch from "../../utils/firebaseErrorCatch";
 
 
+// user login action
 export function loginAction(auth, userData, dispatch) {
     return new Promise(async (resolve, reject) => {
         try {
             let userCredential = await signInWithEmailAndPassword(auth, userData.email, userData.password)
-            if(userCredential.user) {
+            if (userCredential.user) {
                 resolve(true);
             } else {
                 reject("Please try again");
             }
+        } catch (ex) {
+            let s = firebaseErrorCatch(ex?.code)
+            if (s) {
+                reject(s);
+            } else {
+                reject(ex);
+            }
+        }
+    });
+}
+
+
+// user registration process
+export function registrationAction(auth, userData, dispatch) {
+    return new Promise(async (resolve, reject) => {
+        const {
+            firstName,
+            lastName,
+            avatarUrl,
+            role,
+            phone,
+            email,
+            password,
+            address,
+            location,
+        } = userData
+
+        try {
+
+            // first remove token from cookie
+            await removeTokenFromCookie()
+
+            let displayName = firstName + (lastName ? (" " + lastName ): "")
+            let currentUser = await generateAccessTokenAction({
+                firstName,
+                lastName,
+                username: displayName,
+                avatar: avatarUrl,
+                role,
+                phone,
+                email,
+                address,
+                location,
+                googleId: "",
+                isEntry: true, // for true it not generate token. just put user data in users collection
+            })
+
+            if(!currentUser) {
+                return reject("User registration fail, Please try again");
+            }
+
+            let userCredential = await createUserWithEmailAndPassword(auth, email, password)
+            if (!userCredential || !userCredential.user) {
+                return reject("User registration fail, Please try again");
+            }
+
+
+            // silence skip this
+            updateProfile(auth.currentUser, {
+                displayName: displayName,
+                photoURL: avatarUrl
+            }).then(()=>{}).catch(ex=>{})
+
+            resolve(currentUser)
+
+
         } catch (ex) {
             let s = firebaseErrorCatch(ex?.code)
             if (s) {

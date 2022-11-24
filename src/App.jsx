@@ -13,7 +13,7 @@ function App() {
 
     return (
         <div>
-            <Toaster position="top-right" toastOptions={{duration: 1800}}/>
+            <Toaster position="top-right" toastOptions={{duration: 1800}} containerClassName="mt-16"/>
             <Suspense fallback={<h1>Loading</h1>}>
                 <RouterProvider router={router}/>
             </Suspense>

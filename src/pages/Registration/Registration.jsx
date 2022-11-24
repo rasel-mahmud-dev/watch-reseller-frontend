@@ -2,19 +2,25 @@ import {useState} from "react";
 import validator from "../../utils/validator";
 import {BiGlobe, BiLocationPlus, BiPhone, BsGoogle, FcAddImage, FiLock, FiMail} from "react-icons/all";
 import {HiOutlineUser} from "react-icons/hi";
-import {Link} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 
 import HttpResponse from "../../components/HttpResponse/HttpResponse";
 import InputGroup from "../../components/InputGroup/InputGroup";
 import Button from "../../components/Button/Button";
 import useStore from "../../hooks/useStore";
-import Modal from "../../components/Modal/Modal";
 import SocialLogin from "../../components/SocialLogin/SocialLogin";
 import ImageChooser from "../../components/ImageChooser/ImageChooser";
+import toast from "react-hot-toast";
+import imageUpload from "../../utils/imageUpload";
+import catchErrorMessage from "../../utils/catchErrorMessage";
 
 
 const Registration = () => {
-    const [state, dispatch] = useStore();
+    const [{state, actions: {registrationAction}}, dispatch] = useStore();
+
+    const location = useLocation()
+
+    const navigate = useNavigate()
 
     const [httpResponse, setHttpResponse] = useState({
         isSuccess: false,
@@ -22,7 +28,6 @@ const Registration = () => {
         loading: false,
     });
 
-    const [role, setRole] = useState("BUYER")
 
     const sellerInfo = {
         phone: {
@@ -30,7 +35,7 @@ const Registration = () => {
             placeholder: "Your phone",
             onChange: handleChange,
             validate: {
-                required: "Email Required",
+                required: "phone Required",
             },
             labelIcon: <BiPhone className="text-dark-400 text-lg"/>,
         },
@@ -55,7 +60,6 @@ const Registration = () => {
             labelIcon: <BiLocationPlus className="text-dark-400 text-lg"/>,
         },
     }
-
     const basicInfo = {
         firstName: {
             name: "firstName",
@@ -78,7 +82,6 @@ const Registration = () => {
             name: "email",
             placeholder: "Enter email",
             type: "email",
-            imagePreviewClass: "w-32",
             onChange: handleChange,
             validate: {
                 required: "Email required",
@@ -89,6 +92,7 @@ const Registration = () => {
         avatar: {
             name: "avatar",
             placeholder: "Enter Avatar",
+            imagePreviewClass: "w-32",
             type: "avatar",
             onChange: handleChange,
             validate: {
@@ -105,7 +109,7 @@ const Registration = () => {
             onChange: handleChange,
             validate: {
                 required: "Password required",
-                minLength: {value: 5, message: "Password should be min 5 character"},
+                minLength: {value: 6, message: "Password should be min 6 character"},
             },
             labelIcon: <FiLock className="text-dark-400 text-lg"/>,
         },
@@ -116,44 +120,113 @@ const Registration = () => {
             onChange: handleChange,
             validate: {
                 required: "Confirm Password Password required",
-                minLength: {value: 5, message: "Confirm Password should be min 5 character"},
+                minLength: {value: 6, message: "Confirm Password should be min 6 character"},
             },
             labelIcon: <FiLock className="text-dark-400 text-lg"/>,
         },
     };
 
-    const [userInput, setUserInput] = useState({email: "", password: ""});
+
+    // user input state
+    const [userInput, setUserInput] = useState({
+        firstName: "",
+        lastName: "",
+        avatar: null,
+        role: "BUYER",
+        phone: "",
+        email: "",
+        address: "",
+        location: "",
+    });
     const [errors, setErrors] = useState({});
 
+
     function handleChange(e, error) {
-        const {name, value} = e.target;
+        const {name, value} = e.target
+        setUserInput((prevState) => ({
+            ...prevState,
+            [name]: value
+        }));
         setErrors((prev) => ({...prev, [name]: error}));
-        setUserInput((prev) => ({...prev, [name]: value}));
     }
 
-    function handleLogin(e) {
+    async function handleLogin(e) {
         e.preventDefault();
         setHttpResponse((p) => ({...p, loading: false, message: ""}));
 
         let isCompleted = true;
         // check validation before submit form
+        let errorMessage = ""
         let tempErrors = {...errors};
-        for (let key in data) {
-            if (data[key]?.validate) {
-                let validate = validator(data[key]?.validate, userInput[key]);
+
+        let dataInfo = basicInfo
+        if (userInput.role === "SELLER") {
+            dataInfo = {...dataInfo, ...sellerInfo}
+        }
+
+
+        // check form validation for field
+        for (let key in dataInfo) {
+            if (dataInfo[key]?.validate) {
+                let validate = validator(dataInfo[key]?.validate, userInput[key]);
                 if (validate) {
                     isCompleted = false;
+                    if (!errorMessage) {
+                        errorMessage = validate
+                    }
                 }
                 tempErrors[key] = validate;
             }
         }
+        if (userInput.password && userInput.confirmPassword && (userInput.password !== userInput.confirmPassword)) {
+            errorMessage = "Please Check password or confirm password"
+            tempErrors['confirmPassword'] = errorMessage
+            isCompleted = false
+        }
 
+        // if form input has any validation error
         if (!isCompleted) {
             setErrors(tempErrors);
-            setHttpResponse((p) => ({...p, loading: false, message: ""}));
+            toast.error(errorMessage)
             return;
         }
-        setHttpResponse((p) => ({...p, loading: true}));
+
+
+        try {
+
+            if (!userInput?.avatar || typeof userInput?.avatar !== "object") {
+                toast.error("Please select a valid photo file")
+            }
+
+            let uploadResult = await imageUpload(userInput.avatar)
+            if (!uploadResult || !uploadResult.data) {
+                toast.error("Avatar upload fail please try again")
+                return;
+            }
+
+            let result = await registrationAction({
+                firstName: userInput.firstName,
+                lastName: userInput.lastName,
+                username: userInput.username,
+                avatarUrl: uploadResult.data.url,
+                role: userInput.role,
+                phone: userInput.phone,
+                email: userInput.email,
+                address: userInput.address,
+                password: userInput.password,
+                location: userInput.location
+            })
+
+            let redirectPath = location.state?.from || "/"
+            navigate(redirectPath, {replace: true})
+            setHttpResponse({...httpResponse, loading: false})
+
+        } catch (ex) {
+            toast.error(catchErrorMessage(ex))
+
+        } finally {
+            setHttpResponse((p) => ({...p, loading: false}));
+        }
     }
 
 
@@ -179,7 +252,7 @@ const Registration = () => {
                             </div>
                         </div>
 
-                        {role === "SELLER" && (
+                        {userInput.role === "SELLER" && (
                             <div className="card !shadow-xxs mt-6">
                                 <h3 className="text-md font-semibold text-dark-400">Seller Info</h3>
 
@@ -194,16 +267,19 @@ const Registration = () => {
                         <div className="text-dark-100 text-sm font-normal mt-5">
                             <div className="form-control">
                                 <label className="flex gap-x-1 items-center cursor-pointer">
-                                    <input onChange={() => setRole("BUYER")} type="radio" name="role"
-                                           checked={role === "BUYER"}
+                                    <input onChange={() => setUserInput(p => ({...p, role: "BUYER"}))} type="radio"
+                                           name="role"
+                                           checked={userInput.role === "BUYER"}
                                            className="radio radio-primary radio-sm "/>
                                     <span className="label-text">Create account as customer</span>
                                 </label>
                             </div>
                             <div className="form-control mt-2">
                                 <label className="flex gap-x-1 items-center cursor-pointer">
-                                    <input onChange={() => setRole("SELLER")} type="radio" name="role"
-                                           checked={role === "SELLER"} className="radio radio-primary radio-sm "/>
+                                    <input onChange={() => setUserInput(p => ({...p, role: "SELLER"}))} type="radio"
+                                           name="role"
+                                           checked={userInput.role === "SELLER"}
+                                           className="radio radio-primary radio-sm "/>
                                     <span className="label-text">Create account as seller </span>
                                 </label>
                             </div>
