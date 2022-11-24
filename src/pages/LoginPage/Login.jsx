@@ -2,7 +2,7 @@ import {useState} from "react";
 import "./login.css";
 import validator from "../../utils/validator";
 import {BsGoogle, FiLock, FiMail} from "react-icons/all";
-import {Link} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
 
 import HttpResponse from "../../components/HttpResponse/HttpResponse";
 import InputGroup from "../../components/InputGroup/InputGroup";
@@ -10,10 +10,15 @@ import Button from "../../components/Button/Button";
 import useStore from "../../hooks/useStore";
 import Modal from "../../components/Modal/Modal";
 import SocialLogin from "../../components/SocialLogin/SocialLogin";
+import toast from "react-hot-toast";
+import catchErrorMessage from "../../utils/catchErrorMessage";
 
 
 const Login = () => {
-    const [state, dispatch] = useStore();
+    const [{state, actions: { loginAction }}, dispatch] = useStore();
+
+    const location = useLocation()
+    const navigate=  useNavigate()
 
     const [httpResponse, setHttpResponse] = useState({
         isSuccess: false,
@@ -55,7 +60,7 @@ const Login = () => {
         setUserInput((prev) => ({...prev, [name]: value}));
     }
 
-    function handleLogin(e) {
+    async function handleLogin(e) {
         e.preventDefault();
         setHttpResponse((p) => ({...p, loading: false, message: ""}));
 
@@ -77,8 +82,18 @@ const Login = () => {
             setHttpResponse((p) => ({...p, loading: false, message: ""}));
             return;
         }
-        setHttpResponse((p) => ({...p, loading: true}));
 
+        setHttpResponse((p) => ({...p, loading: true}));
+        try {
+            let result = await loginAction(userInput)
+            setHttpResponse((p) => ({...p, loading: false}));
+            let redirectPath =  location.state?.from || "/"
+            navigate(redirectPath, { replace: true })
+
+        } catch (ex){
+            toast.error(catchErrorMessage(ex))
+            setHttpResponse((p) => ({...p, loading: false}));
+        }
 
     }
 

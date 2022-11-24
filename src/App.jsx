@@ -13,13 +13,12 @@ function App() {
 
     return (
         <div>
-            <div><Toaster/></div>
+            <Toaster position="top-right" toastOptions={{duration: 1800}}/>
             <Suspense fallback={<h1>Loading</h1>}>
                 <RouterProvider router={router}/>
             </Suspense>
         </div>
     )
-
 }
 
 export default App

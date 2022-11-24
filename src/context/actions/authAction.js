@@ -1,7 +1,33 @@
-import {signInWithPopup, GoogleAuthProvider, signOut} from "firebase/auth";
+import {
+    signInWithPopup,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    GoogleAuthProvider,
+    signOut
+} from "firebase/auth";
 import axios from "../../axios";
+import firebaseErrorCatch from "../../utils/firebaseErrorCatch";
 
-import toast  from 'react-hot-toast'
+
+export function loginAction(auth, userData, dispatch) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let userCredential = await signInWithEmailAndPassword(auth, userData.email, userData.password)
+            if(userCredential.user) {
+                resolve(true);
+            } else {
+                reject("Please try again");
+            }
+        } catch (ex) {
+            let s = firebaseErrorCatch(ex?.code)
+            if (s) {
+                reject(s);
+            } else {
+                reject(ex);
+            }
+        }
+    });
+}
 
 export function googleSignInAction(auth) {
     const provider = new GoogleAuthProvider();
@@ -61,6 +87,7 @@ export function getCurrentUserData() {
         }
     });
 }
+
 export function removeTokenFromCookie() {
     return new Promise(async (resolve, reject) => {
         try {
@@ -78,11 +105,10 @@ export function removeTokenFromCookie() {
 
 
 export function signOutAction(auth, dispatch) {
-    toast.success("ASDSDASD")
     return new Promise(async (resolve, _) => {
         try {
             await removeTokenFromCookie()
-            await signOut(auth).then(()=>{
+            await signOut(auth).then(() => {
                 dispatch({type: "LOGOUT"})
             })
         } catch (ex) {

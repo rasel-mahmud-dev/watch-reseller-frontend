@@ -6,8 +6,11 @@ import {
     getCurrentUserData,
     googleSignInAction,
     signOutAction,
-    validateToken
+    validateToken,
+    loginAction
 } from "./actions/authAction";
+
+
 import {onAuthStateChanged} from "firebase/auth"
 import reducer from "./reducer";
 
@@ -28,7 +31,8 @@ function AppProvider(props) {
 
     const actions = {
         googleSignInAction: ()=> googleSignInAction(auth),
-        signOutAction: (dispatch)=> signOutAction(auth, dispatch)
+        signOutAction: (dispatch)=> signOutAction(auth, dispatch),
+        loginAction: (userData)=>loginAction(auth, userData, dispatch)
     }
 
     useEffect(() => {

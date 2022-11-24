@@ -1,8 +1,8 @@
 
 function firebaseErrorCatch(code){
-    let message = "Internal Error. Please try again"
+    let message = ""
     if(!code || typeof code !== "string"){
-        message = "Internal Error. Please try again"
+        message = ""
     }
     else  if(code.includes("network-request-failed")){
         message = "Please Check your internet connection"
