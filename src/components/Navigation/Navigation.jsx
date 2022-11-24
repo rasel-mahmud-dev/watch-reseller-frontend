@@ -6,11 +6,15 @@ import {BsSunFill} from "react-icons/bs";
 import {HiBars4} from "react-icons/hi2";
 import usePageScroll from "../../hooks/usePageScroll";
 import Button from "../Button/Button";
+import useStore from "../../hooks/useStore";
 
 
 const Navigation = () => {
 
     const navigate = useNavigate();
+    const [{ state:{auth}, actions: { signOutAction }}] = useStore()
+
+
 
     const [expandNavigation, setExpandNavigation] = useState(false);
     const windowScroll = usePageScroll();

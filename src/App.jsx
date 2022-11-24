@@ -4,6 +4,10 @@ import router from "./Routes/routes";
 import './App.css'
 
 
+// firebase app initialize
+import "./firebase"
+
+
 function App() {
     return (
         <Suspense fallback={<h1>Loading</h1>}>

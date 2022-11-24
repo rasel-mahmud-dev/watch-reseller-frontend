@@ -1,6 +1,7 @@
 import {useReducer} from "react";
 import AppContext from "./AppContext";
-
+import { getAuth} from "firebase/auth";
+import {googleSignInAction, signOutAction} from "./actions/authAction";
 export let dispatch
 
 const initialState = {
@@ -32,12 +33,23 @@ function reducer(state, action) {
 }
 
 
+
 function AppProvider(props) {
+
     const [state, dispatchState] = useReducer(reducer, initialState)
     dispatch = dispatchState
 
+    const auth = getAuth();
+
+    const actions = {
+        googleSignInAction: ()=> googleSignInAction(auth),
+        signOutAction: (dispatch)=> signOutAction(auth, dispatch)
+    }
+
+
+
     return (
-        <AppContext.Provider value={state}>{props.children}</AppContext.Provider>
+        <AppContext.Provider value={{state, actions}}>{props.children}</AppContext.Provider>
     )
 }
 
