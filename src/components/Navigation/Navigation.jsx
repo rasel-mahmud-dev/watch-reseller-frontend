@@ -7,6 +7,7 @@ import {HiBars4} from "react-icons/hi2";
 import usePageScroll from "../../hooks/usePageScroll";
 import Button from "../Button/Button";
 import useStore from "../../hooks/useStore";
+import Avatar from "../Avatar/Avatar";
 
 
 const Navigation = () => {
@@ -48,6 +49,10 @@ const Navigation = () => {
         handleResize();
     }, [location.pathname]);
 
+    function handleLogout(e){
+
+    }
+
 
     const items = [
         {path: "/", label: "Home"},
@@ -82,7 +87,35 @@ const Navigation = () => {
 
                     </div>
                     <div className="flex-none">
-
+                        {auth && (
+                            <div
+                                className="relative "
+                                onMouseOver={() => setOpenAuthMenu(true)}
+                                onMouseLeave={() => setOpenAuthMenu(false)}
+                            >
+                                <label tabIndex={0} className="btn btn-ghost btn-circle avatar">
+                                    <div className="avatar placeholder">
+                                        <div className="bg-neutral-focus text-neutral-content rounded-full w-9">
+                                            <Avatar src="" username={"RAsedsf MASD"} />
+                                        </div>
+                                    </div>
+                                </label>
+                                <ul
+                                    tabIndex={0}
+                                    className={`absolute opacity-0 z-50 invisible top-8 -right-3 mt-3 p-4 bg-base-100 dark:bg-dark-10 shadow-around  rounded-box w-52 ${
+                                        openAuthMenu ? "!opacity-100 !visible" : ""
+                                    }`}
+                                >
+                                    <li className="pt-1">{auth.displayName}</li>
+                                    <li className="pt-1">
+                                        <Link to={`/profile/${auth._id}`}>Profile</Link>
+                                    </li>
+                                    <li className="pt-1 link cursor-pointer" onClick={handleLogout}>
+                                        Logout
+                                    </li>
+                                </ul>
+                            </div>
+                        )}
                     </div>
                     <div className="flex items-center">
                         <Button theme="primary" className="ml-4">

@@ -1,7 +1,15 @@
-import {useReducer} from "react";
+import {useEffect, useReducer} from "react";
 import AppContext from "./AppContext";
 import { getAuth} from "firebase/auth";
-import {googleSignInAction, signOutAction} from "./actions/authAction";
+import {
+    generateAccessTokenAction,
+    getCurrentUserData,
+    googleSignInAction,
+    signOutAction,
+    validateToken
+} from "./actions/authAction";
+import {onAuthStateChanged} from "firebase/auth"
+
 export let dispatch
 
 const initialState = {
@@ -45,6 +53,36 @@ function AppProvider(props) {
         googleSignInAction: ()=> googleSignInAction(auth),
         signOutAction: (dispatch)=> signOutAction(auth, dispatch)
     }
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+
+            if (user) {
+                let userData = {
+                    username: user.displayName,
+                    email: user.email,
+                    googleId: user.uid,
+                    avatar: user.photoURL,
+                };
+
+                let currentUser = null
+                let validToken = await validateToken()
+                if(!validToken){
+                    currentUser = await generateAccessTokenAction(userData)
+                } else {
+                    currentUser = await getCurrentUserData()
+                }
+                if(currentUser){
+                    dispatch({type: "LOGIN", payload: currentUser });
+                }
+            } else {
+                // User is signed out
+                dispatch({type: "LOGOUT"});
+            }
+        });
+
+        return () => unsubscribe();
+    }, []);
 
 
 
