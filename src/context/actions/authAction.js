@@ -1,6 +1,7 @@
 import {signInWithPopup, GoogleAuthProvider, signOut} from "firebase/auth";
 import axios from "../../axios";
 
+import toast  from 'react-hot-toast'
 
 export function googleSignInAction(auth) {
     const provider = new GoogleAuthProvider();
@@ -60,17 +61,32 @@ export function getCurrentUserData() {
         }
     });
 }
+export function removeTokenFromCookie() {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let {status, data} = await axios.get("/api/v1/auth/logout");
+            if (status === 200) {
+                resolve()
+            } else {
+                reject("Logout fail");
+            }
+        } catch (ex) {
+            reject(ex);
+        }
+    });
+}
 
 
-export function signOutAction(auth) {
+export function signOutAction(auth, dispatch) {
+    toast.success("ASDSDASD")
     return new Promise(async (resolve, _) => {
         try {
-            console.log(auth)
-            // await signOut(auth);
-            // localStorage.removeItem("token")
-            resolve(true);
+            await removeTokenFromCookie()
+            await signOut(auth).then(()=>{
+                dispatch({type: "LOGOUT"})
+            })
         } catch (ex) {
-            resolve(false)
+
         }
     });
 

@@ -9,6 +9,7 @@ import {
     validateToken
 } from "./actions/authAction";
 import {onAuthStateChanged} from "firebase/auth"
+import reducer from "./reducer";
 
 export let dispatch
 
@@ -17,30 +18,6 @@ const initialState = {
     isAuthLoaded: false,
     name: "rase",
 }
-
-function reducer(state, action) {
-    switch (action.type) {
-
-        case "LOGIN":
-            return {
-                ...state,
-                isAuthLoaded: true,
-                auth: action.payload
-            }
-
-        case "LOGOUT":
-            return {
-                ...state,
-                isAuthLoaded: true,
-                auth: null
-            }
-
-        default:
-            return state
-    }
-}
-
-
 
 function AppProvider(props) {
 
