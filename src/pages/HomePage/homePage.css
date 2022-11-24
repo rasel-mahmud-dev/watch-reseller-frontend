@@ -89,3 +89,7 @@
     }
 
 }
+
+.swiper-pagination-bullet{
+    background: var(--primary-500) !important;
+}

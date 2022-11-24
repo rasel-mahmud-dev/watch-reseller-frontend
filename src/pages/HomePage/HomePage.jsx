@@ -3,6 +3,7 @@ import "./homePage.css"
 import SliderSection from "./SliderSection";
 import CategorySection from "./CategorySection";
 import WhyChooseUsSection from "./WhyChooseUsSection";
+import Testimonials from "./Testimonials";
 
 const HomePage = () => {
     return (
@@ -10,6 +11,7 @@ const HomePage = () => {
             <SliderSection />
             <CategorySection />
             <WhyChooseUsSection />
+            <Testimonials />
         </div>
     );
 };
