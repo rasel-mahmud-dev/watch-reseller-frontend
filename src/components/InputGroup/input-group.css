@@ -1,21 +1,27 @@
-.input-group{
-  border-bottom: 1.5px solid rgba(147, 147, 147, 0.2);
+.input-group {
+    border-bottom: 1.5px solid rgba(147, 147, 147, 0.2);
 }
 
-.input-group label{ color: #2f2f2f; font-weight: 500}
+.input-group label {
+    color: #2f2f2f;
+    font-weight: 500;
+    font-size: 16px;
+}
 
-.input-group .input{
+.input-group .input {
     height: auto;
     flex: 1;
     width: 100% !important;
     background: transparent;
     border: none;
-    color: #9f9f9f;
-    padding: 10px 0px;
+    color: #545454;
+    font-size: 16px;
+    padding: 0px 0px;
     border-radius: 8px;
     outline: none !important;
 }
-.input-group .input::placeholder{
-     color: currentColor;
+
+.input-group .input::placeholder {
+    color: currentColor;
 
 }

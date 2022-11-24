@@ -47,7 +47,7 @@ const InputGroup = (props) => {
                 <div className={`input-group ${className}`}>
                     {/*<label htmlFor={name}>{label}</label>*/}
 
-                    <div className="flex w-full items-center gap-x-2">
+                    <div className={`flex w-full ${ type === "textarea" ? "items-start" : "items-center"} gap-x-2 pb-2`}>
                         {labelIcon}
                         {options ? (
                             <select onChange={handleChange} name={name} id={name} className={`input ${inputClass} `} placeholder={placeholder}>

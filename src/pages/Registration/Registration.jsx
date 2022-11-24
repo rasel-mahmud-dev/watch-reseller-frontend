@@ -1,6 +1,6 @@
 import {useState} from "react";
 import validator from "../../utils/validator";
-import {BsGoogle, FiLock, FiMail} from "react-icons/all";
+import {BiGlobe, BiLocationPlus, BiPhone, BsGoogle, FcAddImage, FiLock, FiMail} from "react-icons/all";
 import {HiOutlineUser} from "react-icons/hi";
 import {Link} from "react-router-dom";
 
@@ -10,6 +10,7 @@ import Button from "../../components/Button/Button";
 import useStore from "../../hooks/useStore";
 import Modal from "../../components/Modal/Modal";
 import SocialLogin from "../../components/SocialLogin/SocialLogin";
+import ImageChooser from "../../components/ImageChooser/ImageChooser";
 
 
 const Registration = () => {
@@ -21,7 +22,41 @@ const Registration = () => {
         loading: false,
     });
 
-    const data = {
+    const [role, setRole] = useState("BUYER")
+
+    const sellerInfo = {
+        phone: {
+            name: "phone",
+            placeholder: "Your phone",
+            onChange: handleChange,
+            validate: {
+                required: "Email Required",
+            },
+            labelIcon: <BiPhone className="text-dark-400 text-lg"/>,
+        },
+        address: {
+            name: "address",
+            type: "textarea",
+            placeholder: "Your address",
+            onChange: handleChange,
+            validate: {
+                required: "Address Required",
+            },
+            labelIcon: <BiGlobe className="text-dark-400 text-lg mt-1"/>,
+        },
+        location: {
+            name: "location",
+            type: "textarea",
+            placeholder: "Your location",
+            onChange: handleChange,
+            validate: {
+                required: "location Required",
+            },
+            labelIcon: <BiLocationPlus className="text-dark-400 text-lg"/>,
+        },
+    }
+
+    const basicInfo = {
         firstName: {
             name: "firstName",
             placeholder: "First Name",
@@ -43,11 +78,24 @@ const Registration = () => {
             name: "email",
             placeholder: "Enter email",
             type: "email",
+            imagePreviewClass: "w-32",
             onChange: handleChange,
             validate: {
-                required: "Email Required",
+                required: "Email required",
+
             },
             labelIcon: <FiMail className="text-dark-400 text-lg"/>,
+        },
+        avatar: {
+            name: "avatar",
+            placeholder: "Enter Avatar",
+            type: "avatar",
+            onChange: handleChange,
+            validate: {
+                required: "Avatar Required",
+                maxFileSize: {value: 200, message: "Avatar image size should be max 200kb"},
+            },
+            labelIcon: <FcAddImage className="text-dark-400 text-lg"/>,
         },
 
         password: {
@@ -106,36 +154,56 @@ const Registration = () => {
             return;
         }
         setHttpResponse((p) => ({...p, loading: true}));
-
-
     }
 
 
     return (
         <div className="container">
-            <div className="mt-12">
-                <div className="max-w-md mx-auto shadow-xxs rounded p-4 bg-white m-3 mt-4 rounded-xl">
+            <div className="mt-4">
+                <div className="max-w-xl mx-auto  rounded p-4 m-3 mt-4 rounded-xl">
                     <form onSubmit={handleLogin}>
-                        <h1 className="text-center text-3xl text-dark-900 font-semibold">
-                            Login
-                        </h1>
+                        <h1 className="text-center text-3xl text-dark-900 font-semibold">Registration Form</h1>
 
                         <HttpResponse state={httpResponse}/>
-                        {Object.keys(data).map((key, i) => (
-                            <InputGroup error={errors[key]} {...data[key]} className="mt-3"/>
-                        ))}
 
+                        <div className="card !shadow-xxs mt-6">
+                            <h3 className="text-md font-semibold text-dark-400">Basic Info</h3>
+
+                            <div className="grid grid-cols-1 gap-4 mt-2">
+                                {Object.keys(basicInfo).map((key, i) => (
+                                    basicInfo[key].type === "avatar" ? (
+                                        <ImageChooser error={errors[key]} {...basicInfo[key]} />
+                                    ) : (
+                                        <InputGroup error={errors[key]} {...basicInfo[key]} className="mt-3"/>)
+                                ))}
+                            </div>
+                        </div>
+
+                        {role === "SELLER" && (
+                            <div className="card !shadow-xxs mt-6">
+                                <h3 className="text-md font-semibold text-dark-400">Seller Info</h3>
+
+                                <div className="grid grid-cols-1 gap-4 mt-2">
+                                    {Object.keys(sellerInfo).map((key, i) => (
+                                        <InputGroup error={errors[key]} {...sellerInfo[key]} className="mt-3"/>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
 
                         <div className="text-dark-100 text-sm font-normal mt-5">
                             <div className="form-control">
                                 <label className="flex gap-x-1 items-center cursor-pointer">
-                                    <input type="radio" name="role" checked={true} className="radio radio-primary radio-sm " />
+                                    <input onChange={() => setRole("BUYER")} type="radio" name="role"
+                                           checked={role === "BUYER"}
+                                           className="radio radio-primary radio-sm "/>
                                     <span className="label-text">Create account as customer</span>
                                 </label>
                             </div>
                             <div className="form-control mt-2">
                                 <label className="flex gap-x-1 items-center cursor-pointer">
-                                    <input type="radio" name="role" className="radio radio-primary radio-sm " />
+                                    <input onChange={() => setRole("SELLER")} type="radio" name="role"
+                                           checked={role === "SELLER"} className="radio radio-primary radio-sm "/>
                                     <span className="label-text">Create account as seller </span>
                                 </label>
                             </div>
