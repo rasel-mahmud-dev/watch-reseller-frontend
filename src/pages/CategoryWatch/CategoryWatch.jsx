@@ -4,7 +4,7 @@ import axios from "../../axios";
 import { useQuery } from "@tanstack/react-query";
 import Watch from "components/Watch/Watch";
 import Loader from "components/Loader/Loader";
-import { fetchWatchForCategory } from "context/actions/categoryAction";
+
 import Modal from "components/Modal/Modal";
 import Button from "components/Button/Button";
 import { FiLock, FiMail } from "react-icons/all";
@@ -15,6 +15,7 @@ import HttpResponse from "components/HttpResponse/HttpResponse";
 import InputGroup from "components/InputGroup/InputGroup";
 import SocialLogin from "components/SocialLogin/SocialLogin";
 import useStore from "hooks/useStore";
+import { fetchWatchForCategory, makeOrderAction } from "context/actions/productAction";
 
 const CategoryWatch = () => {
     const { id } = useParams();
@@ -60,7 +61,7 @@ const CategoryWatch = () => {
         }
     }, [auth, bookingData]);
 
-    function handleChange(e, error) {
+    function handleChange(e) {
         const { name, value } = e.target;
         setUserInput((prev) => ({ ...prev, [name]: value }));
     }
@@ -99,18 +100,17 @@ const CategoryWatch = () => {
             name: "meetingAddress",
             onChange: handleChange,
         },
-    }
+    };
 
     async function handleLogin(e) {
         e.preventDefault();
         setHttpResponse((p) => ({ ...p, loading: false }));
 
-
         // form validation
         for (let userInputKey in userInput) {
             if (!userInput[userInputKey]) {
-                setHttpResponse({loading: false, isSuccess: false, message: userInputKey + " is required" });
-                toast.error(userInputKey + " is required")
+                setHttpResponse({ loading: false, isSuccess: false, message: userInputKey + " is required" });
+                toast.error(userInputKey + " is required");
                 return;
             }
         }
@@ -118,22 +118,31 @@ const CategoryWatch = () => {
         setHttpResponse((p) => ({ ...p, loading: true }));
 
         try {
+            let result = await makeOrderAction({
+                ...userInput,
+                sellerId: bookingData.sellerId,
+                productId: bookingData._id,
+            });
 
-
+            if (result) {
+                toast.success("Your order has been place, Please Pay it.");
+                setBookingData(null)
+            } else {
+                toast.success("Your create fail.");
+            }
         } catch (ex) {
+            toast.error("Your order place fail");
             setHttpResponse((p) => ({ ...p, loading: false }));
         }
     }
 
     function bookingModal() {
-
-
         return (
             <Modal className="!max-w-md" isOpen={bookingData} onClose={() => setBookingData(null)}>
                 <form onSubmit={handleLogin}>
                     <h1 className=" text-center text-3xl text-dark-900 font-semibold pb-2">Order form</h1>
 
-                    <HttpResponse state={httpResponse}/>
+                    <HttpResponse state={httpResponse} />
 
                     {Object.keys(data).map((key, i) => (
                         <InputGroup {...data[key]} defaultValue={userInput[key]} className="mt-3" />

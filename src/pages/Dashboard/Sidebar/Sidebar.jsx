@@ -12,7 +12,7 @@ const Sidebar = (props) => {
         { label: "Add Product", roles: ["SELLER"], to: "/dashboard/add-product", icon: <FaProductHunt /> },
         { label: "My Products", roles: ["SELLER"], to: "/dashboard/my-products", icon: <FaProductHunt /> },
         { label: "My Buyers", roles: ["SELLER"], to: "/dashboard/my-buyers", icon: <CgUser /> },
-        { label: "My Orders", roles: ["BUYER"], to: "/dashboard/my-orders", icon: <CgUser /> },
+        { label: "My Orders", roles: ["BUYER", "SELLER"], to: "/dashboard/my-orders", icon: <CgUser /> },
     ]
 
     return (

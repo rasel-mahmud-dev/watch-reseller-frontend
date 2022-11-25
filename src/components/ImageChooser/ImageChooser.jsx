@@ -1,18 +1,19 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, { useEffect, useRef, useState } from "react";
 import validator from "../../utils/validator.js";
 
+import "./style.css";
 
 const ImageChoose = ({
-         name,
-         validate,
-         labelIcon,
-         defaultValue,
-         error,
-         label,
-         imagePreviewClass,
-         onChange,
-         placeholder
-     }) => {
+    name,
+    validate,
+    labelIcon,
+    defaultValue,
+    error,
+    label,
+    imagePreviewClass,
+    onChange,
+    placeholder,
+}) => {
     const [state, setState] = useState({
         value: "",
         base64: "",
@@ -47,7 +48,7 @@ const ImageChoose = ({
             ...p,
             value: file,
         }));
-        onChange({target: {name, value: file}}, error);
+        onChange({ target: { name, value: file } }, error);
     }
 
     function chooseImage() {
@@ -62,10 +63,9 @@ const ImageChoose = ({
                 </label>
             )}
 
-            <div onClick={chooseImage} className="input-group">
-                <div className="flex w-full items-center gap-x-2 mb-2">
+            <div onClick={chooseImage} className="image-chooser">
+                <div className="flex w-full items-center gap-x-2">
                     {labelIcon}
-
                     <span className="bg-transparent text-dark-200 px-0">{placeholder}</span>
                 </div>
 
@@ -86,9 +86,9 @@ const ImageChoose = ({
 
             <div className={imagePreviewClass}>
                 {state.base64 ? (
-                    <img src={state.base64} className="w-full mt-2" alt=""/>
+                    <img src={state.base64} className="w-full mt-2" alt="" />
                 ) : (
-                    defaultValue && <img src={defaultValue} className="w-full mt-2" alt=""/>
+                    defaultValue && <img src={defaultValue} className="w-full mt-2" alt="" />
                 )}
             </div>
         </div>

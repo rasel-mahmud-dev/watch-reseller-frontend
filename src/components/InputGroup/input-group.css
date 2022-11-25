@@ -8,6 +8,10 @@
     font-size: 16px;
 }
 
+
+
+.custom-input textarea,
+.custom-input select,
 .custom-input input{
     border: 1px solid;
     border-color: #56565629;
@@ -17,13 +21,18 @@
     border-radius: 7px;
     color: #6b6b6b !important;
     font-weight: 400;
-    outline: none;
+    outline: none !important;
 }
 
+
+.custom-input textarea:focus,
+.custom-input select:focus,
 .custom-input input:focus{
     border-color: var(--primary-500);
 }
 
+.custom-input.error textarea,
+.custom-input.error select,
 .custom-input.error input{
     border-color: #ff3a3a8a;
 }
@@ -41,14 +50,20 @@
     outline: none !important;
 }
 
+.custom-input textarea::placeholder,
+.custom-input select::placeholder,
 .custom-input input::placeholder {
     color: currentColor;
 }
 
+.custom-input textarea::-webkit-input-placeholder,
+.custom-input select::-webkit-input-placeholder,
 .custom-input input::-webkit-input-placeholder { /* Edge */
     color: currentColor;
 }
 
+.custom-input textarea::-ms-input-placeholder,
+.custom-input select::-ms-input-placeholder,
 .custom-input input::-ms-input-placeholder { /* Internet Explorer 10-11 */
     color: currentColor;
 }

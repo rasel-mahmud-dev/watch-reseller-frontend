@@ -48,6 +48,7 @@ const AddProduct = () => {
 
     const basicInfo = {
         title: {
+            label: "Title",
             name: "title",
             placeholder: "Product title",
             onChange: handleChange,
@@ -58,6 +59,7 @@ const AddProduct = () => {
         },
 
         categoryId: {
+            label: "Category",
             name: "categoryId",
             placeholder: "Choose Category",
             type: "select",
@@ -70,6 +72,7 @@ const AddProduct = () => {
         },
 
         purchaseDate: {
+            label: "Purchase Date",
             name: "purchaseDate",
             placeholder: "Original Buy Date",
             type: "date",
@@ -80,6 +83,7 @@ const AddProduct = () => {
             labelIcon: <BsCalendarDate className="text-dark-400 text-lg" />,
         },
         originalPrice: {
+            label: "Market Price",
             name: "originalPrice",
             placeholder: "Original Price",
             type: "number",
@@ -91,6 +95,7 @@ const AddProduct = () => {
         },
 
         resalePrice: {
+            label: "Resale Price",
             name: "resalePrice",
             placeholder: "Resale Price",
             type: "number",
@@ -102,6 +107,7 @@ const AddProduct = () => {
         },
 
         picture: {
+            label: "Product Picture",
             name: "picture",
             placeholder: "Choose Picture",
             imagePreviewClass: "w-40",
@@ -115,6 +121,7 @@ const AddProduct = () => {
         },
 
         conditionType: {
+            label: "Condition",
             name: "conditionType",
             placeholder: "Choose Condition",
             type: "select",
@@ -127,6 +134,7 @@ const AddProduct = () => {
         },
 
         phone: {
+            label: "Phone",
             name: "phone",
             placeholder: "Phone number",
             type: "number",
@@ -138,6 +146,7 @@ const AddProduct = () => {
         },
 
         location: {
+            label: "Location",
             name: "location",
             placeholder: "Location",
             onChange: handleChange,
@@ -148,6 +157,7 @@ const AddProduct = () => {
         },
 
         description: {
+            label: "Description",
             name: "description",
             placeholder: "Description",
             type: "textarea",
@@ -156,7 +166,7 @@ const AddProduct = () => {
                 required: "description required",
                 minLength: { value: 6, message: "Description should be min 6 character" },
             },
-            labelIcon: <TbFileDescription className="!text-dark-100 text-lg !mt-1" />,
+            labelIcon: <TbFileDescription className="!text-dark-100 text-lg " />,
             inputClass: "!h-20",
         },
     };

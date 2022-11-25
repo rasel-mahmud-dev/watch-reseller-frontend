@@ -1,13 +1,12 @@
-import axios, {backend} from "app/axios";
-import {useQuery} from "@tanstack/react-query";
-
+import axios, { backend } from "app/axios";
+import { useQuery } from "@tanstack/react-query";
 
 export function deleteWatchAction(_id) {
     return new Promise(async (resolve, _) => {
         try {
-            let {status, data} = await axios.delete("/api/v1/watch/"+_id);
+            let { status, data } = await axios.delete("/api/v1/product/" + _id);
             if (status === 201) {
-                resolve(true)
+                resolve(true);
             } else {
                 resolve(null);
             }
@@ -17,13 +16,27 @@ export function deleteWatchAction(_id) {
     });
 }
 
+export function fetchWatchForCategory(categoryId) {
+    return useQuery({
+        queryKey: ["watches", categoryId],
+        queryFn: () =>
+            axios
+                .get(`/api/v1/product?categoryId=${categoryId}`)
+                .then((res) => {
+                    return res.data;
+                })
+                .catch((ex) => {
+                    return null;
+                }),
+    });
+}
 
 export function fetchSellerProducts() {
     return useQuery({
         queryKey: ["sellerProducts"],
         queryFn: () => {
             return axios
-                .get("/api/v1/watch")
+                .get("/api/v1/product")
                 .then(({ data, status }) => {
                     if (status === 200) {
                         return data;
@@ -37,13 +50,12 @@ export function fetchSellerProducts() {
     });
 }
 
-
 export function addProductAction(productDate) {
     return new Promise(async (resolve, reject) => {
         try {
-            let {status, data} = await axios.post("/api/v1/watch", productDate);
+            let { status, data } = await axios.post("/api/v1/product", productDate);
             if (status === 201) {
-                resolve(data)
+                resolve(data);
             } else {
                 resolve(null);
             }
@@ -53,13 +65,20 @@ export function addProductAction(productDate) {
     });
 }
 
-
-export function makeOrderAction(productDate) {
+export function makeOrderAction(orderData) {
     return new Promise(async (resolve, reject) => {
-
+        try {
+            let { status, data } = await axios.post("/api/v1/order", orderData);
+            if (status === 201) {
+                resolve(data);
+            } else {
+                resolve(null);
+            }
+        } catch (ex) {
+            reject(ex);
+        }
     });
 }
-
 
 export function fetchAdvertiseProducts() {
     return useQuery({
@@ -80,18 +99,15 @@ export function fetchAdvertiseProducts() {
     });
 }
 
-
 export function addToAdvertiseProductAction(productId) {
     return new Promise(async (resolve, reject) => {
-
         try {
-            let {status, data} = await axios.post(`/api/v1/advertise`, {productId});
+            let { status, data } = await axios.post(`/api/v1/advertise`, { productId });
             if (status === 201) {
-                resolve(data)
+                resolve(data);
             } else {
                 resolve(null);
             }
-
         } catch (ex) {
             reject(ex);
         }

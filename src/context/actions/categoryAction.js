@@ -20,17 +20,3 @@ export function fetchCategories() {
     });
 }
 
-export function fetchWatchForCategory(categoryId) {
-    return useQuery({
-        queryKey: ["watches", categoryId],
-        queryFn: () =>
-            axios
-                .get(`/api/v1/watch?categoryId=${categoryId}`)
-                .then((res) => {
-                    return res.data;
-                })
-                .catch((ex) => {
-                    return null;
-                }),
-    });
-}

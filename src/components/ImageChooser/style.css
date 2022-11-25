@@ -1,0 +1,13 @@
+
+.image-chooser{
+    border: 1px solid;
+    border-color: #56565629;
+    transition: border .3s ease;
+    padding: 7px 10px;
+    width: 100%;
+    border-radius: 7px;
+    color: #6b6b6b !important;
+    font-weight: 400;
+    outline: none !important;
+
+}
