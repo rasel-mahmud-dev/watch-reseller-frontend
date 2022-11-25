@@ -53,13 +53,30 @@ export function addProductAction(productDate) {
 }
 
 
-
+export function fetchAdvertiseProducts() {
+    return useQuery({
+        queryKey: ["advertises"],
+        queryFn: () => {
+            return axios
+                .get("/api/v1/advertise")
+                .then(({ data, status }) => {
+                    if (status === 200) {
+                        return data;
+                    }
+                })
+                .catch((ex) => {
+                    throw ex;
+                });
+        },
+        retry: 2,
+    });
+}
 
 export function addToAdvertiseProductAction(productId) {
     return new Promise(async (resolve, reject) => {
 
         try {
-            let {status, data} = await axios.get(`/api/v1/watch/add-advertise?productId=${productId}`);
+            let {status, data} = await axios.post(`/api/v1/advertise`, {productId});
             if (status === 201) {
                 resolve(data)
             } else {
