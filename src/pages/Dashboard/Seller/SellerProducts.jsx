@@ -6,7 +6,7 @@ import Circle from "components/Circle/Circle";
 import ActionModal from "components/ActionModal/ActionModal";
 import {deleteWatchAction} from "context/actions/productAction";
 
-const MyProducts = () => {
+const SellerProducts = () => {
     const [products] = useState([
         {
             _id: "1",
@@ -121,4 +121,4 @@ const MyProducts = () => {
     );
 };
 
-export default MyProducts;
+export default SellerProducts;

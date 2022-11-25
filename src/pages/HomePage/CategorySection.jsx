@@ -1,23 +1,14 @@
 import React from 'react';
 import "./homePage.css"
 import {Link} from "react-router-dom";
-import {useQuery} from "@tanstack/react-query";
-import axios from "../../axios";
 import Loader from "../../components/Loader/Loader";
 import catchErrorMessage from "../../utils/catchErrorMessage";
+import {fetchCategories} from "context/actions/categoryAction";
 
 
 const CategorySection = () => {
 
-    let {data: categories, isLoading, isError, error, } =  useQuery({ queryKey: ["categories"], queryFn: ()=>  {
-           return  axios.get("/api/v1/category").then(({data, status})=>{
-                if(status === 200){
-                    return data
-                }
-            }).catch(ex=>{
-                throw ex
-           })
-        }, retry: 2})
+    let {data: categories, isLoading, isError, error, } = fetchCategories()
 
     return (
         <section className="section">
