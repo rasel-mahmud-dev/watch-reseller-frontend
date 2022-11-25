@@ -5,11 +5,13 @@ import CategorySection from "./CategorySection";
 import WhyChooseUsSection from "./WhyChooseUsSection";
 import Testimonials from "./Testimonials";
 
+
 const HomePage = () => {
     return (
         <div>
             <SliderSection />
             <CategorySection />
+
             <WhyChooseUsSection />
             <Testimonials />
         </div>

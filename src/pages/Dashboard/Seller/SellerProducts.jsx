@@ -4,7 +4,7 @@ import Button from "components/Button/Button";
 import { AiFillDelete, RiEditBoxLine } from "react-icons/all";
 import Circle from "components/Circle/Circle";
 import ActionModal from "components/ActionModal/ActionModal";
-import {deleteWatchAction, fetchSellerProducts} from "context/actions/productAction";
+import {addToAdvertiseProductAction, deleteWatchAction, fetchSellerProducts} from "context/actions/productAction";
 import {useLocation} from "react-router-dom";
 import toast from "react-hot-toast";
 
@@ -41,6 +41,15 @@ const SellerProducts = () => {
             }
         } else {
             deleteWatchId.current = null
+        }
+    }
+
+    async function addToAdvertiseHandler(productId){
+        try {
+            await addToAdvertiseProductAction(productId)
+            toast.success("Product successful save to for advertise.")
+        } catch(ex) {
+            toast.error("Product save in advertise fail.")
         }
     }
 
@@ -81,7 +90,7 @@ const SellerProducts = () => {
                                 <td>{product.resalePrice}.Tk</td>
                                 <td>{product.conditionType}</td>
                                 <td>
-                                    <Button disable={product.isSold}>Select for Advertise</Button>
+                                    <Button onClick={()=>addToAdvertiseHandler(product._id)} disable={product.isSold}>Select for Advertise</Button>
                                 </td>
                                 <td>
                                     <div className="flex items-center gap-x-2">

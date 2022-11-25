@@ -1,4 +1,4 @@
-import axios from "app/axios";
+import axios, {backend} from "app/axios";
 import {useQuery} from "@tanstack/react-query";
 
 export function deleteWatchAction(_id) {
@@ -52,15 +52,20 @@ export function addProductAction(productDate) {
     });
 }
 
+
+
+
 export function addToAdvertiseProductAction(productId) {
     return new Promise(async (resolve, reject) => {
+
         try {
-            let {status, data} = await axios.get("/api/v1/watch/add-advertise/"+productId);
+            let {status, data} = await axios.get(`/api/v1/watch/add-advertise?productId=${productId}`);
             if (status === 201) {
                 resolve(data)
             } else {
                 resolve(null);
             }
+
         } catch (ex) {
             reject(ex);
         }
