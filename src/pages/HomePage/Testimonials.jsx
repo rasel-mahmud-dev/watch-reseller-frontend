@@ -4,9 +4,9 @@ import {Autoplay, Pagination} from "swiper";
 import "swiper/css";
 import "swiper/css/pagination";
 import {Swiper, SwiperSlide} from "swiper/react";
-import Avatar from "../../components/Avatar/Avatar";
-import Rating from "../../components/Rating/Rating";
-import Loader from "../../components/Loader/Loader";
+import Avatar from "components/Avatar/Avatar";
+import Rating from "components/Rating/Rating";
+import Loader from "components/Loader/Loader";
 
 const Testimonials = () => {
 	const [testimonials, setTestimonials] = useState([
@@ -16,8 +16,8 @@ const Testimonials = () => {
 		{_id: 1, name: "Mr. Batman", image: "/male-avatar-icon-flat-style-male-user-icon-cartoon-man-avatar-hipster-vector-stock-91462914.webp", rate: "5", text: "werewrewr"},
 		{_id: 1, name: "Mr. Batman", image: "/male-avatar-icon-flat-style-male-user-icon-cartoon-man-avatar-hipster-vector-stock-91462914.webp", rate: "5", text: "werewrewr"},
 	]);
-	
-	
+
+
 	return (
 		<section className="section container">
 			<h1 className="section_sub-title">What Our Client Says</h1>
@@ -66,7 +66,7 @@ const Testimonials = () => {
 					</Swiper>
 				</div>
 			)}
-			
+
 			{!testimonials && (
 				<div>
 					<Loader title="Testimonials are fetching" className="flex justify-center my-10"/>

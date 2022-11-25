@@ -9,7 +9,7 @@ const Loader = ({className="", size, title="", loaderOptions={}}) => {
 		<div className={className}>
 			<div className="flex flex-col justify-center items-center">
 				<BeatLoader {...loaderOptions} size={size}  />
-				{title && <h2 className="mt-2 font-medium text-sm text-dark-400">{title}...</h2> }
+				{title && <h2 className="mt-2 text-center font-medium text-sm text-dark-400">{title}...</h2> }
 			</div>
   </div>
 	);

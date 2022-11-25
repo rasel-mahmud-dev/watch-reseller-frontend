@@ -135,10 +135,10 @@ export function generateAccessTokenAction(payload) {
             if (status === 201) {
                 resolve(data)
             } else {
-                reject("Token Generate error");
+                resolve(null);
             }
         } catch (ex) {
-            reject(ex);
+            resolve(null);
         }
     });
 }

@@ -8,6 +8,8 @@ import DashboardLayout from "../Layout/DashboardLayout";
 import DashboardHome from "../pages/Dashboard/DashboardHome";
 import ErrorPage from "../pages/Shared/ErrorPage";
 import CategoryWatch from "../pages/CategoryWatch/CategoryWatch";
+import ProtectedRoute from "app/Routes/ProtectedRoute";
+import AddProduct from "pages/Dashboard/Seller/AddProduct";
 
 const router = createBrowserRouter([
     {
@@ -27,10 +29,12 @@ const router = createBrowserRouter([
     },
     {
         path: "/dashboard",
-        element: <DashboardLayout/>,
+        element: <ProtectedRoute> <DashboardLayout/> </ProtectedRoute>,
         errorElement: <ErrorPage />,
         children: [
             { path: "", element: <DashboardHome /> },
+            { path: "add-product", element: <ProtectedRoute role="SELLER"> <AddProduct /> </ProtectedRoute> },
+            { path: "my-products", element: <ProtectedRoute role="SELLER"> <AddProduct /> </ProtectedRoute> },
         ],
     },
 ]);

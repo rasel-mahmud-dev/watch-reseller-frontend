@@ -1,18 +1,18 @@
 import {useState} from "react";
-import validator from "../../utils/validator";
+import validator from "utils/validator";
 import {BiGlobe, BiLocationPlus, BiPhone, BsGoogle, FcAddImage, FiLock, FiMail} from "react-icons/all";
 import {HiOutlineUser} from "react-icons/hi";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 
-import HttpResponse from "../../components/HttpResponse/HttpResponse";
-import InputGroup from "../../components/InputGroup/InputGroup";
-import Button from "../../components/Button/Button";
-import useStore from "../../hooks/useStore";
-import SocialLogin from "../../components/SocialLogin/SocialLogin";
-import ImageChooser from "../../components/ImageChooser/ImageChooser";
+import HttpResponse from "components/HttpResponse/HttpResponse";
+import InputGroup from "components/InputGroup/InputGroup";
+import Button from "components/Button/Button";
+import useStore from "hooks/useStore";
+import SocialLogin from "components/SocialLogin/SocialLogin";
+import ImageChooser from "components/ImageChooser/ImageChooser";
 import toast from "react-hot-toast";
-import imageUpload from "../../utils/imageUpload";
-import catchErrorMessage from "../../utils/catchErrorMessage";
+import imageUpload from "utils/imageUpload";
+import catchErrorMessage from "utils/catchErrorMessage";
 
 
 const Registration = () => {

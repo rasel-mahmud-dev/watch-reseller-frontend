@@ -1,17 +1,17 @@
 import {useState} from "react";
 import "./login.css";
-import validator from "../../utils/validator";
+import validator from "utils/validator";
 import {BsGoogle, FiLock, FiMail} from "react-icons/all";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 
-import HttpResponse from "../../components/HttpResponse/HttpResponse";
-import InputGroup from "../../components/InputGroup/InputGroup";
-import Button from "../../components/Button/Button";
-import useStore from "../../hooks/useStore";
-import Modal from "../../components/Modal/Modal";
-import SocialLogin from "../../components/SocialLogin/SocialLogin";
+import HttpResponse from "components/HttpResponse/HttpResponse";
+import InputGroup from "components/InputGroup/InputGroup";
+import Button from "components/Button/Button";
+import useStore from "hooks/useStore";
+import Modal from "components/Modal/Modal";
+import SocialLogin from "components/SocialLogin/SocialLogin";
 import toast from "react-hot-toast";
-import catchErrorMessage from "../../utils/catchErrorMessage";
+import catchErrorMessage from "utils/catchErrorMessage";
 
 
 const Login = () => {

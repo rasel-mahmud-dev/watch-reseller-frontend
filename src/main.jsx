@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
 import App from "./App"
-import AppProvider from "./context/AppProvider";
+import AppProvider from "context/AppProvider";
 
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query'
 
