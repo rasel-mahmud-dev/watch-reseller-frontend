@@ -24,7 +24,7 @@ const Watch = ({ watch, onClick }) => {
                 <Avatar src={picture} className="!w-24" alt={title} />
             </div>
             <h2 className="font-semibold text-sm text-dark-900  mt-4">
-                {title.length > 50 ? title.substring(0, 50) + "..." : title}
+                {title?.length > 50 ? title?.substring(0, 50) + "..." : title}
             </h2>
 
             <div className="text-dark-400 text-sm">

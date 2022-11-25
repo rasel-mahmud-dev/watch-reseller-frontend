@@ -15,9 +15,9 @@ import HttpResponse from "components/HttpResponse/HttpResponse";
 import InputGroup from "components/InputGroup/InputGroup";
 import SocialLogin from "components/SocialLogin/SocialLogin";
 import useStore from "hooks/useStore";
-import { fetchWatchForCategory, makeOrderAction } from "context/actions/productAction";
+import { fetchProductForCategory, makeOrderAction } from "context/actions/productAction";
 
-const CategoryWatch = () => {
+const CategoryProducts = () => {
     const { id } = useParams();
 
     const [
@@ -26,7 +26,7 @@ const CategoryWatch = () => {
         },
     ] = useStore();
 
-    const { isLoading, error, data: products } = fetchWatchForCategory(id);
+    const { isLoading, error, data: products } = fetchProductForCategory(id);
 
     const [bookingData, setBookingData] = useState(null);
 
@@ -132,6 +132,7 @@ const CategoryWatch = () => {
             }
         } catch (ex) {
             toast.error("Your order place fail");
+        } finally {
             setHttpResponse((p) => ({ ...p, loading: false }));
         }
     }
@@ -175,4 +176,4 @@ const CategoryWatch = () => {
     );
 };
 
-export default CategoryWatch;
+export default CategoryProducts;

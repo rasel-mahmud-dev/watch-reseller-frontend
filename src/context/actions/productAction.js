@@ -1,22 +1,8 @@
 import axios, { backend } from "app/axios";
 import { useQuery } from "@tanstack/react-query";
 
-export function deleteWatchAction(_id) {
-    return new Promise(async (resolve, _) => {
-        try {
-            let { status, data } = await axios.delete("/api/v1/product/" + _id);
-            if (status === 201) {
-                resolve(true);
-            } else {
-                resolve(null);
-            }
-        } catch (ex) {
-            resolve(null);
-        }
-    });
-}
 
-export function fetchWatchForCategory(categoryId) {
+export function fetchProductForCategory(categoryId) {
     return useQuery({
         queryKey: ["watches", categoryId],
         queryFn: () =>
@@ -80,6 +66,25 @@ export function makeOrderAction(orderData) {
     });
 }
 
+export function fetchOrdersAction() {
+    return useQuery({
+        queryKey: ["orders"],
+        queryFn: () => {
+            return axios
+                .get("/api/v1/order")
+                .then(({ data, status }) => {
+                    if (status === 200) {
+                        return data;
+                    }
+                })
+                .catch((ex) => {
+                    throw ex;
+                });
+        },
+        retry: 2,
+    });
+}
+
 export function fetchAdvertiseProducts() {
     return useQuery({
         queryKey: ["advertises"],
@@ -114,3 +119,33 @@ export function addToAdvertiseProductAction(productId) {
     });
 }
 
+
+
+export function deleteProductAction(_id) {
+    return new Promise(async (resolve, _) => {
+        try {
+            let { status, data } = await axios.delete("/api/v1/product/" + _id);
+            if (status === 201) {
+                resolve(true);
+            } else {
+                resolve(null);
+            }
+        } catch (ex) {
+            resolve(null);
+        }
+    });
+}
+export function deleteOrderAction(_id) {
+    return new Promise(async (resolve, _) => {
+        try {
+            let { status, data } = await axios.delete("/api/v1/order/" + _id);
+            if (status === 201) {
+                resolve(true);
+            } else {
+                resolve(null);
+            }
+        } catch (ex) {
+            resolve(null);
+        }
+    });
+}

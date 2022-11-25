@@ -7,7 +7,7 @@ import Main from "../Layout/Main";
 import DashboardLayout from "../Layout/DashboardLayout";
 import DashboardHome from "../pages/Dashboard/DashboardHome";
 import ErrorPage from "../pages/Shared/ErrorPage";
-import CategoryWatch from "../pages/CategoryWatch/CategoryWatch";
+import CategoryProducts from "pages/CategoryProducts/CategoryProducts";
 import ProtectedRoute from "app/Routes/ProtectedRoute";
 import AddProduct from "pages/Dashboard/Seller/AddProduct";
 import SellerProducts from "pages/Dashboard/Seller/SellerProducts";
@@ -25,7 +25,7 @@ const router = createBrowserRouter([
             { path: "registration", element: <Registration /> },
             {
                 path: "category/:id",
-                element: <CategoryWatch />
+                element: <CategoryProducts />
             },
 
         ],
