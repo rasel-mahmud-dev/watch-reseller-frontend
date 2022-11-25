@@ -1,17 +1,15 @@
 import React, {useEffect, useRef, useState} from "react";
 import Avatar from "components/Avatar/Avatar";
 import {fetchSellerBuyers} from "context/actions/buyerAction";
-
+import date from "utils/date";
 
 
 const SellerBuyers = () => {
 
     const {data: buyers} = fetchSellerBuyers();
 
-    const deleteWatchId = useRef()
 
-    const columns = ["SL","image", "name"];
-
+    const columns = ["SL","image", "name", "email", "join on", "status"];
 
     return (
         <div>
@@ -34,6 +32,9 @@ const SellerBuyers = () => {
                                 <Avatar imgClass="!rounded-none" className="w-20" src={buyer.avatar} username="" />
                             </td>
                             <td>{buyer.username}</td>
+                            <td>{buyer.email}</td>
+                            <td>{date(buyer.createdAt)}</td>
+                            <td>{buyer.isVerified ? "YES" : "NO"}</td>
                         </tr>
                     ))}
                     </tbody>

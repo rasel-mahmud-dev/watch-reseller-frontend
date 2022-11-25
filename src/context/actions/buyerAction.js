@@ -1,18 +1,21 @@
 import axios from "app/axios";
+import { useQuery } from "@tanstack/react-query";
 
 export function fetchSellerBuyers() {
-    return new Promise(async (resolve, reject) => {
-
-        try {
-            let {status, data} = await axios.get(`/api/v1/auth/buyers`);
-            if (status === 201) {
-                resolve(data)
-            } else {
-                resolve(null);
-            }
-
-        } catch (ex) {
-            reject(ex);
-        }
+    return useQuery({
+        queryKey: ["advertises"],
+        queryFn: () => {
+            return axios
+                .get(`/api/v1/auth/buyers`)
+                .then(({ data, status }) => {
+                    if (status === 200) {
+                        return data;
+                    }
+                })
+                .catch((ex) => {
+                    throw ex;
+                });
+        },
+        retry: 2,
     });
 }
