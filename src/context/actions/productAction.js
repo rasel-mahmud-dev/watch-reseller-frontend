@@ -1,6 +1,7 @@
 import axios, {backend} from "app/axios";
 import {useQuery} from "@tanstack/react-query";
 
+
 export function deleteWatchAction(_id) {
     return new Promise(async (resolve, _) => {
         try {
@@ -53,6 +54,13 @@ export function addProductAction(productDate) {
 }
 
 
+export function makeOrderAction(productDate) {
+    return new Promise(async (resolve, reject) => {
+
+    });
+}
+
+
 export function fetchAdvertiseProducts() {
     return useQuery({
         queryKey: ["advertises"],
@@ -72,6 +80,7 @@ export function fetchAdvertiseProducts() {
     });
 }
 
+
 export function addToAdvertiseProductAction(productId) {
     return new Promise(async (resolve, reject) => {
 
@@ -88,3 +97,4 @@ export function addToAdvertiseProductAction(productId) {
         }
     });
 }
+

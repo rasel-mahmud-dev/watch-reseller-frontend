@@ -1,5 +1,5 @@
 .input-group {
-    border-bottom: 1.5px solid rgba(147, 147, 147, 0.2);
+    /*border: 1.5px solid rgba(147, 147, 147, 0.2);*/
 }
 
 .input-group label {
@@ -8,20 +8,47 @@
     font-size: 16px;
 }
 
-.input-group .input {
+.custom-input input{
+    border: 1px solid;
+    border-color: #56565629;
+    transition: border .3s ease;
+    padding: 7px 10px;
+    width: 100%;
+    border-radius: 7px;
+    color: #6b6b6b !important;
+    font-weight: 400;
+    outline: none;
+}
+
+.custom-input input:focus{
+    border-color: var(--primary-500);
+}
+
+.custom-input.error input{
+    border-color: #ff3a3a8a;
+}
+
+
+.input-group .custom-input {
     height: auto;
     flex: 1;
     width: 100% !important;
-    background: transparent;
-    border: none;
     color: #545454;
     font-size: 16px;
     padding: 0px 0px;
     border-radius: 8px;
+    border: 1px solid red;
     outline: none !important;
 }
 
-.input-group .input::placeholder {
+.custom-input input::placeholder {
     color: currentColor;
+}
 
+.custom-input input::-webkit-input-placeholder { /* Edge */
+    color: currentColor;
+}
+
+.custom-input input::-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: currentColor;
 }

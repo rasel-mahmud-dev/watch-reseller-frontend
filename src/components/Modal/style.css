@@ -1,0 +1,56 @@
+.my-modal {
+}
+
+
+.modal-show .modal-backdrop {
+    visibility: visible;
+    opacity: 1;
+}
+
+.modal-backdrop {
+    transition: all 0.4s ease;
+    visibility: hidden;
+    opacity: 0;
+    cursor: pointer;
+    position: fixed;
+    width: 100%;
+    height: 110%;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    display: flex;
+    justify-content: center;
+    z-index: 999;
+    background-color: hsl(var(--nf, var(--n)) / var(--tw-bg-opacity));
+    --tw-bg-opacity: 0.4;
+    transition-duration: 200ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-property: transform, opacity, visibility;
+    overflow-y: hidden;
+    overscroll-behavior: contain;
+}
+
+.modal-show .modal-box2 {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+.modal-box2 {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
+    transition: all 0.4s ease;
+    cursor: auto;
+    max-height: calc(100vh - 5em);
+    min-width: 300px;
+    width: 100%;
+    z-index: 1000;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    background-color: hsl(var(--b1) / 1);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 25px 50px -12px rgb(0 0 0 / 25%);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}

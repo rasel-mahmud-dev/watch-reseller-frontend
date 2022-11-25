@@ -1,16 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
+import "./style.css";
 
 const Modal = (props) => {
-    const { className = "", id = "1", title, children } = props;
+    const { className = "", isOpen = false, id = "1", onClose, title, children } = props;
+
     return (
-        <div>
-            <input type="checkbox" id={id} className="modal-toggle" />
-            <label htmlFor={id} className="modal cursor-pointer">
-                <label className={`modal-box relative ${className}`} htmlFor="">
-                    <h3 className="text-lg font-bold">{title}</h3>
-                    {children}
-                </label>
-            </label>
+        <div className={`my-modal ${isOpen ? "modal-show" : ""}`}>
+            <div className="modal-backdrop cursor-pointer" onClick={onClose}></div>
+            <div className={`modal-box2 relative ${className}`}>
+                <h3 className="text-lg font-bold">{title}</h3>
+                {children}
+            </div>
         </div>
     );
 };

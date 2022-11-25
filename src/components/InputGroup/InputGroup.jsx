@@ -25,6 +25,7 @@ const InputGroup = (props) => {
         validate,
         type = "text",
         className,
+        disabled = false,
         defaultValue,
         error,
         labelIcon,
@@ -40,62 +41,33 @@ const InputGroup = (props) => {
         onChange(e, result);
     }
 
-
     return useMemo(() => {
         return (
-            <div>
-                {type === "date" && (
-                    <div className="flex items-center gap-x-1 my-2">
-                        {labelIcon}
-                        {placeholder}
+            <div className="">
+                <div className="mt-4">
+                    {label && (
+                        <label htmlFor={name} className="flex items-center  gap-x-1">
+                            {labelIcon}
+                            {label}
+                        </label>
+                    )}
+                    <div className={`custom-input mt-1.5 ${error ? "error" : ""}`}>
+                        <input
+                            onChange={handleChange}
+                            type={type}
+                            defaultValue={defaultValue}
+                            name={name}
+                            id={name}
+                            disabled={disabled}
+                            className={`${inputClass} `}
+                            placeholder={placeholder}
+                        />
                     </div>
-                )}
-
-                <div className={`input-group ${className}`}>
-                    <div
-                        className={`flex w-full ${type === "textarea" ? "items-start" : "items-center"} gap-x-2 ${
-                            type !== "date" ? "pb-2" : ""
-                        }`}
-                    >
-                        {type !== "date" && labelIcon}
-
-                        {type === "select" ? (
-                            <select
-                                onChange={handleChange}
-                                name={name}
-                                id={name}
-                                className={`input ${inputClass} `}
-                                placeholder={placeholder}
-                            >
-                                <option value="">{placeholder}</option>
-                                {options?.map((opt) => (
-                                    <option value={opt._id}>{opt.name}</option>
-                                ))}
-                            </select>
-                        ) : type === "textarea" ? (
-                            <textarea
-                                onChange={handleChange}
-                                name={name}
-                                id={name}
-                                className={`input ${inputClass} `}
-                                placeholder={placeholder}
-                            />
-                        ) : (
-                            <input
-                                onChange={handleChange}
-                                type={type}
-                                name={name}
-                                id={name}
-                                className={`input ${inputClass} `}
-                                placeholder={placeholder}
-                            />
-                        )}
-                    </div>
+                    <span className="text-red-500 font-medium text-xs">{error ? error : ""}</span>
                 </div>
-                <span className="text-red-500 font-medium text-xs">{error ? error : ""}</span>
             </div>
         );
-    }, [error, props?.defaultValue, options]);
+    }, [error, defaultValue, options]);
 };
 
 export default InputGroup;

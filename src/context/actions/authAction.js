@@ -33,7 +33,6 @@ export function loginAction(auth, userData, dispatch) {
     });
 }
 
-
 // user registration process
 export function registrationAction(auth, userData, dispatch) {
     return new Promise(async (resolve, reject) => {
@@ -112,7 +111,6 @@ export function googleSignInAction(auth) {
         });
 }
 
-
 export function validateToken() {
     return new Promise(async (resolve) => {
         try {
@@ -173,7 +171,6 @@ export function removeTokenFromCookie() {
     });
 }
 
-
 export function signOutAction(auth, dispatch) {
     return new Promise(async (resolve, _) => {
         try {
@@ -188,5 +185,23 @@ export function signOutAction(auth, dispatch) {
 
 }
 
+
+
+export function fetchSellerBuyers(productId) {
+    return new Promise(async (resolve, reject) => {
+
+        try {
+            let {status, data} = await axios.post(`/api/v1/auth/buyers`, {productId});
+            if (status === 201) {
+                resolve(data)
+            } else {
+                resolve(null);
+            }
+
+        } catch (ex) {
+            reject(ex);
+        }
+    });
+}
 
 
