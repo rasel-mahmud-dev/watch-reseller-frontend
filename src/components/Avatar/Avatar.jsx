@@ -14,13 +14,13 @@ function chooseFirstLetter(name) {
 }
 
 
-const Avatar = ({ className = "", username, src }) => {
+const Avatar = ({ className = "", imgClass="", username, src }) => {
     let letter = chooseFirstLetter(username)
 
     function handleErrorImage(e){
         let avatarRoot = e.target.parentNode
         avatarRoot.innerHTML = `
-			<span class="rounded-full bg-dark-600/50 w-9 h-9 flex items-center text-sm font-medium justify-center uppercase">${chooseFirstLetter(username)}</span>
+			<span class="rounded-full bg-dark-600/50 w-9 h-9 flex items-center text-sm font-medium justify-center uppercase ${imgClass}">${chooseFirstLetter(username)}</span>
 		`
     }
 
@@ -28,9 +28,9 @@ const Avatar = ({ className = "", username, src }) => {
         <div className={className + " text-white"}>
             {src
                 ? <div className="avatar-root">
-                    <img onError={handleErrorImage} src={src} alt="avatar" className="rounded-full w-full"/>
+                    <img onError={handleErrorImage} src={src} alt="avatar" className={`rounded-full w-full ${imgClass}`}/>
                 </div>
-                : <div className="rounded-full bg-dark-600/50 w-9 h-9 flex items-center justify-center uppercase">{letter}</div>
+                : <div className={`rounded-full bg-dark-600/50 w-9 h-9 flex items-center justify-center uppercase ${imgClass}`}>{letter}</div>
             }
         </div>
     );

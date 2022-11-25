@@ -8,10 +8,10 @@ const DashboardLayout = () => {
     return (
         <>
             <Navigation/>
-            <div className="flex">
+            <div className="container flex !pl-0">
 
                 <Sidebar className="w-72 h-screen bg-primary-900/10 "/>
-                <div className="content">
+                <div className="content w-full pl-0 lg:pl-4">
                     <Outlet/>
                 </div>
             </div>

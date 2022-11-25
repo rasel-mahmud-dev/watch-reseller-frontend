@@ -69,7 +69,7 @@ const Navigation = () => {
             <div
                 ref={header}
                 className={`navbar top-0 left-0 fixed shadow-md 
-                ${windowScroll < 500 && isHomePage ? "shadow-none navbar-transparent" : "bg-white"}`}
+                ${windowScroll < 500 && isHomePage ? "shadow-none navbar-transparent" : "bg-white/40 backdrop-blur-md"}`}
             >
                 <div className="container">
                     <div className="flex-1">

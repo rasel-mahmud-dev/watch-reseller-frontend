@@ -5,7 +5,7 @@
 
 @layer{
     :root{
-        --primary-100: #69c9f8;
+        --primary-100: #7cc7ea;
         --primary-200: #57bef1;
         --primary-300: #43b7f1;
         --primary-400: #38b1ed;
@@ -13,7 +13,7 @@
         --primary-600: #31a9e5;
         --primary-700: #28a0dc;
         --primary-800: #219ad7;
-        --primary-900: #1893d0;
+        --primary-900: #188bc4;
         --p: #38b1ed;
     }
 }

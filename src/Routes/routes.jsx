@@ -10,6 +10,7 @@ import ErrorPage from "../pages/Shared/ErrorPage";
 import CategoryWatch from "../pages/CategoryWatch/CategoryWatch";
 import ProtectedRoute from "app/Routes/ProtectedRoute";
 import AddProduct from "pages/Dashboard/Seller/AddProduct";
+import MyProducts from "pages/Dashboard/Seller/MyProducts";
 
 const router = createBrowserRouter([
     {
@@ -34,7 +35,7 @@ const router = createBrowserRouter([
         children: [
             { path: "", element: <DashboardHome /> },
             { path: "add-product", element: <ProtectedRoute role="SELLER"> <AddProduct /> </ProtectedRoute> },
-            { path: "my-products", element: <ProtectedRoute role="SELLER"> <AddProduct /> </ProtectedRoute> },
+            { path: "my-products", element: <ProtectedRoute role="SELLER"> <MyProducts /> </ProtectedRoute> },
         ],
     },
 ]);
