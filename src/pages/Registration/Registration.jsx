@@ -165,6 +165,7 @@ const Registration = () => {
         }
 
 
+
         // check form validation for field
         for (let key in dataInfo) {
             if (dataInfo[key]?.validate) {

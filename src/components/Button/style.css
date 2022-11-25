@@ -5,6 +5,11 @@
 .my-btn:active {
     transform: scale(1.1);
 }
+.my-btn-disable{
+    cursor: none;
+    pointer-events: none;
+    opacity: .4;
+}
 
 .my-btn-primary{
     @apply bg-primary-500 py-2 text-white

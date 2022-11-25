@@ -1,52 +1,18 @@
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import Avatar from "components/Avatar/Avatar";
 import Button from "components/Button/Button";
 import { AiFillDelete, RiEditBoxLine } from "react-icons/all";
 import Circle from "components/Circle/Circle";
 import ActionModal from "components/ActionModal/ActionModal";
-import {deleteWatchAction} from "context/actions/productAction";
+import {deleteWatchAction, fetchSellerProducts} from "context/actions/productAction";
+import {useLocation} from "react-router-dom";
+import toast from "react-hot-toast";
 
 const SellerProducts = () => {
-    const [products] = useState([
-        {
-            _id: "1",
-            title: "new products",
-            location: "new products",
-            isSold: "false",
-            resalePrice: 123,
-            originalPrice: 100,
-            picture: "new products",
-            conditionType: "Good",
-            mobileNumber: "0123123798123",
-            description: `
-            Pellentesque in ipsum id orci porta dapibus. Pellentesque in ipsum id orci porta dapibus. Vivamus suscipit tortor eget felis porttitor volutpat.
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Vivamus suscipit tortor eget felis porttitor volutpat.
-        Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Proin eget tortor risus. Proin eget tortor risus.
-            `,
-            purchaseDate: new Date(),
-            createdAt: new Date(),
-            updatedAt: new Date(),
-        },
-        {
-            _id: "1",
-            title: "new products",
-            location: "new products",
-            isSold: "false",
-            resalePrice: 123,
-            originalPrice: 100,
-            picture: "new products",
-            conditionType: "Good",
-            mobileNumber: "0123123798123",
-            description: `
-            Pellentesque in ipsum id orci porta dapibus. Pellentesque in ipsum id orci porta dapibus. Vivamus suscipit tortor eget felis porttitor volutpat.
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris blandit aliquet elit, eget tincidunt nibh pulvinar a. Vivamus suscipit tortor eget felis porttitor volutpat.
-        Curabitur non nulla sit amet nisl tempus convallis quis ac lectus. Proin eget tortor risus. Proin eget tortor risus.
-            `,
-            purchaseDate: new Date(),
-            createdAt: new Date(),
-            updatedAt: new Date(),
-        },
-    ]);
+
+    const {data: products, refetch} = fetchSellerProducts();
+
+    const location = useLocation();
 
     const deleteWatchId = useRef()
 
@@ -55,22 +21,35 @@ const SellerProducts = () => {
         deleteWatchId.current = id
     }
 
+    useEffect(()=>{
+        if(location.state?.isAddedProduct){
+            refetch()
+        }
+    }, [location.state])
+
 
     function handleDeleteActionHandler(isYes){
         if(isYes){
             let isDeleted = deleteWatchAction(deleteWatchId.current)
-
+            if(isDeleted) {
+                toast.success("Product has been deleted.")
+                refetch().then(r => {}).catch(ex=>{
+                    console.log(ex)
+                })
+            } else {
+                toast.error("Product delete fail.")
+            }
         } else {
             deleteWatchId.current = null
         }
     }
 
-    const columns = ["SL", "title", "isSold", "original price", "Reseller Price", "picture", "condition", "actions"];
+    const columns = ["SL","image", "title", "status", "original price", "Reseller Price", "condition", "Advertise", "actions"];
 
 
     return (
         <div>
-            <h1 className="page-section-title">My Products</h1>
+            <h1 className="page-section-title">My Products ({products?.length})</h1>
 
             <ActionModal title="Are your sure to delete this?" id="deleteConfirmationModal">
                 <div className="mt-4 flex items-center gap-x-2 justify-end">
@@ -89,17 +68,21 @@ const SellerProducts = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {products.map((product, index) => (
+                        {products?.map((product, index) => (
                             <tr>
                                 <td>{index + 1}</td>
                                 <td>
-                                    <Avatar imgClass="!rounded-none" src={product.picture} username="" />
+                                    <Avatar imgClass="!rounded-none" className="w-20" src={product.picture} username="" />
                                 </td>
-                                <td>{product.title}</td>
-                                <td>{product.isSold}</td>
-                                <td>{product.originalPrice}</td>
-                                <td>{product.resalePrice}</td>
+                                <td>{product.title}
+                                </td>
+                                <td>{product.isSold ? "Sold" : "Available" }</td>
+                                <td>{product.originalPrice}.Tk</td>
+                                <td>{product.resalePrice}.Tk</td>
                                 <td>{product.conditionType}</td>
+                                <td>
+                                    <Button disable={product.isSold}>Select for Advertise</Button>
+                                </td>
                                 <td>
                                     <div className="flex items-center gap-x-2">
                                         <Circle className="" >

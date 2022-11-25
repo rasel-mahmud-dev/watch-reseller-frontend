@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import "./login.css";
 import validator from "utils/validator";
 import {BsGoogle, FiLock, FiMail} from "react-icons/all";
@@ -12,10 +12,13 @@ import Modal from "components/Modal/Modal";
 import SocialLogin from "components/SocialLogin/SocialLogin";
 import toast from "react-hot-toast";
 import catchErrorMessage from "utils/catchErrorMessage";
+import useScrollTop from "hooks/useScrollTop";
 
 
 const Login = () => {
     const [{state, actions: { loginAction }}, dispatch] = useStore();
+
+    useScrollTop(0)
 
     const location = useLocation()
     const navigate=  useNavigate()

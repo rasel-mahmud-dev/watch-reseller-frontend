@@ -1,10 +1,11 @@
 import { useState } from "react";
 import validator from "utils/validator";
 import {
+    AiOutlinePhone,
     BiCategoryAlt,
-    BsCalendarDate,
+    BsCalendarDate, CiLocationOn,
     FcAddImage,
-    GrStatusGood,
+    GrStatusGood, IoLocationOutline,
     IoPricetagOutline,
     IoPricetagsOutline,
     MdTitle,
@@ -19,7 +20,8 @@ import ImageChooser from "components/ImageChooser/ImageChooser";
 import toast from "react-hot-toast";
 import imageUpload from "utils/imageUpload";
 import catchErrorMessage from "utils/catchErrorMessage";
-import { fetchCategories } from "context/actions/categoryAction";
+import {fetchCategories} from "context/actions/categoryAction";
+import {addProductAction} from "context/actions/productAction";
 
 const AddProduct = () => {
     const [
@@ -124,6 +126,27 @@ const AddProduct = () => {
             labelIcon: <GrStatusGood className="text-dark-400 text-lg" />,
         },
 
+        phone: {
+            name: "phone",
+            placeholder: "Phone number",
+            type: "number",
+            onChange: handleChange,
+            validate: {
+                required: "Phone number required",
+            },
+            labelIcon: <AiOutlinePhone className="text-dark-400 text-lg" />,
+        },
+
+        location: {
+            name: "location",
+            placeholder: "Location",
+            onChange: handleChange,
+            validate: {
+                required: "Location required",
+            },
+            labelIcon: <IoLocationOutline className="text-dark-400 text-lg" />,
+        },
+
         description: {
             name: "description",
             placeholder: "Description",
@@ -141,11 +164,12 @@ const AddProduct = () => {
     // user input state
     const [userInput, setUserInput] = useState({
         title: "",
-        location: "",
+        categoryId: "",
         resalePrice: null,
         originalPrice: "BUYER",
         picture: "",
-        categoryId: "",
+        phone: "",
+        location: "",
         conditionType: "",
         mobileNumber: "",
         description: "",
@@ -194,7 +218,42 @@ const AddProduct = () => {
         }
 
         try {
-            setHttpResponse({ ...httpResponse, loading: false });
+
+            if (!userInput?.picture || typeof userInput?.picture !== "object") {
+                toast.error("Please select a valid picture file")
+            }
+
+            let uploadResult = await imageUpload(userInput.picture)
+            if (!uploadResult || !uploadResult.data) {
+                toast.error("Picture upload fail please try again")
+                return;
+            }
+
+
+            setHttpResponse({ ...httpResponse, loading: true });
+
+            let result = await addProductAction({
+                title: userInput.title,
+                resalePrice: userInput.resalePrice,
+                originalPrice: userInput.originalPrice,
+                picture: uploadResult.data.url,
+                categoryId: userInput.categoryId,
+                conditionType: userInput.conditionType,
+                mobileNumber: userInput.mobileNumber,
+                phone: userInput.phone,
+                location: userInput.location,
+                description: userInput.description,
+                purchaseDate: userInput.purchaseDate,
+            })
+
+            if(!result){
+                return toast.error("Product Upload fail, Please try again");
+            }
+            toast.success("Product Successfully added");
+            setTimeout(()=>{
+                navigate("/dashboard/my-products", { state: {isAddedProduct: true} })
+            },500)
+
         } catch (ex) {
             toast.error(catchErrorMessage(ex));
         } finally {
@@ -207,9 +266,9 @@ const AddProduct = () => {
             <form onSubmit={handleLogin}>
                 <h1 className="section_title !text-start pt-1">Add Product</h1>
 
-                <HttpResponse state={httpResponse} />
+                <HttpResponse state={httpResponse} title="Please wait your product is added soon" />
 
-                <div className=" mt-6">
+                <div className="mt-6">
                     <h3 className="text-md font-semibold text-dark-400">Product Info</h3>
 
                     <div className="grid grid-cols-1 gap-4 mt-2">

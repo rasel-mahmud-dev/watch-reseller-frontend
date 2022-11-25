@@ -1,0 +1,5 @@
+.sidebar{
+    @apply w-72 h-screen bg-primary-900/10;
+    position: sticky;
+    top: var(--header-height);
+}
