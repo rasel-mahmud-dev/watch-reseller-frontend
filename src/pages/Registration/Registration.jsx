@@ -31,6 +31,7 @@ const Registration = () => {
 
     const sellerInfo = {
         phone: {
+            label: "Phone",
             name: "phone",
             placeholder: "Your phone",
             onChange: handleChange,
@@ -40,6 +41,7 @@ const Registration = () => {
             labelIcon: <BiPhone className="text-dark-400 text-lg"/>,
         },
         address: {
+            label: "Address",
             name: "address",
             type: "textarea",
             placeholder: "Your address",
@@ -50,6 +52,7 @@ const Registration = () => {
             labelIcon: <BiGlobe className="text-dark-400 text-lg mt-1"/>,
         },
         location: {
+            label: "Location",
             name: "location",
             type: "textarea",
             placeholder: "Your location",
@@ -62,6 +65,7 @@ const Registration = () => {
     }
     const basicInfo = {
         firstName: {
+            label: "FirstName",
             name: "firstName",
             placeholder: "First Name",
             onChange: handleChange,
@@ -72,6 +76,7 @@ const Registration = () => {
         },
 
         lastName: {
+            label: "LastName",
             name: "lastName",
             placeholder: "Last Name",
             onChange: handleChange,
@@ -79,6 +84,7 @@ const Registration = () => {
         },
 
         email: {
+            label: "Email",
             name: "email",
             placeholder: "Enter email",
             type: "email",
@@ -90,8 +96,9 @@ const Registration = () => {
             labelIcon: <FiMail className="text-dark-400 text-lg"/>,
         },
         avatar: {
+            label: "Avatar",
             name: "avatar",
-            placeholder: "Enter Avatar",
+            placeholder: "Choose Avatar",
             imagePreviewClass: "w-32",
             type: "avatar",
             onChange: handleChange,
@@ -103,6 +110,7 @@ const Registration = () => {
         },
 
         password: {
+            label: "Password",
             type: "password",
             name: "password",
             placeholder: "Enter password",
@@ -114,6 +122,7 @@ const Registration = () => {
             labelIcon: <FiLock className="text-dark-400 text-lg"/>,
         },
         confirmPassword: {
+            label: "Confirm Password",
             type: "password",
             name: "confirmPassword",
             placeholder: "Confirm Password",

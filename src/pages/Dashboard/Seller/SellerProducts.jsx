@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import Avatar from "components/Avatar/Avatar";
 import Button from "components/Button/Button";
-import { AiFillDelete, RiEditBoxLine } from "react-icons/all";
+import {AiFillDelete, FaBars, RiEditBoxLine} from "react-icons/all";
 import Circle from "components/Circle/Circle";
 import ActionModal from "components/ActionModal/ActionModal";
 import { addToAdvertiseProductAction, deleteProductAction, fetchSellerProducts } from "context/actions/productAction";
 import { useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
+import SidebarButton from "components/SidebarButton/SidebarButton";
 
 const SellerProducts = () => {
     const { data: products, refetch } = fetchSellerProducts();
@@ -71,7 +72,10 @@ const SellerProducts = () => {
 
     return (
         <div>
-            <h1 className="page-section-title">My Products ({products?.length})</h1>
+
+            <SidebarButton>
+                <h1 className="page-section-title !my-0">My Products ({products?.length})</h1>
+            </SidebarButton>
 
             <ActionModal
                 title="Are your sure to delete this?"

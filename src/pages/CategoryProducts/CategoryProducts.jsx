@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "../../axios";
 import { useQuery } from "@tanstack/react-query";
-import Watch from "components/Watch/Watch";
+import Product from "components/Product/Product";
 import Loader from "components/Loader/Loader";
 
 import Modal from "components/Modal/Modal";
@@ -157,19 +157,19 @@ const CategoryProducts = () => {
 
     return (
         <div className="container py-6">
-            <h1 className="page-section-title !text-start mt-3">Watch for Smartwatch</h1>
+            <h1 className="page-section-title !text-start mt-3">Product for Smartwatch</h1>
 
             {bookingModal()}
 
             {isLoading && (
                 <div>
-                    <Loader title="Watch are fetching" size={28} className="flex justify-center my-10" />
+                    <Loader title="Product are fetching" size={28} className="flex justify-center my-10" />
                 </div>
             )}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mt-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-5 mt-6">
                 {products?.map((product) => (
-                    <Watch onClick={() => handleBookingClick(product)} watch={product} key={product._id} />
+                    <Product onClick={() => handleBookingClick(product)} product={product} key={product._id} />
                 ))}
             </div>
         </div>

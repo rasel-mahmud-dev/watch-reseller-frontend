@@ -31,7 +31,6 @@ const Sidebar = (props) => {
                     )) }
                 </div>
             </div>
-
         </div>
     );
 };

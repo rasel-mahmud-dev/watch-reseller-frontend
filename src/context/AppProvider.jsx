@@ -20,6 +20,7 @@ const initialState = {
     auth: null,
     isAuthLoaded: false,
     name: "",
+    isOpenSidebar: false,
 };
 
 function AppProvider(props) {
@@ -33,6 +34,11 @@ function AppProvider(props) {
         signOutAction: (dispatch) => signOutAction(auth, dispatch),
         loginAction: (userData) => loginAction(auth, userData, dispatch),
         registrationAction: (userData) => registrationAction(auth, userData, dispatch),
+        toggleSidebar: ()=>{
+            dispatch({
+                type: "TOGGLE_SIDEBAR"
+            })
+        }
     };
 
     useEffect(() => {

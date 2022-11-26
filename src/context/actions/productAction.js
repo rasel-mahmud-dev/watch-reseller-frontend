@@ -4,10 +4,10 @@ import { useQuery } from "@tanstack/react-query";
 
 export function fetchProductForCategory(categoryId) {
     return useQuery({
-        queryKey: ["watches", categoryId],
+        queryKey: ["products", categoryId],
         queryFn: () =>
             axios
-                .get(`/api/v1/product?categoryId=${categoryId}`)
+                .get(`/api/v1/category/category-product/${categoryId}`)
                 .then((res) => {
                     return res.data;
                 })

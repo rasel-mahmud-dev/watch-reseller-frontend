@@ -18,6 +18,10 @@
 .my-btn-danger{
     @apply bg-red-400 py-2 text-white
 }
+.my-btn-primary-outline{
+    @apply bg-transparent border border-primary-500 hover:bg-primary-500 hover:text-white border-solid text-primary-500 py-2;
+    transition: background-color .2s ease, color .2s ease;
+}
 .my-btn-danger-outline{
     @apply bg-transparent border border-red-400 hover:bg-red-400 hover:text-white border-solid text-red-400 py-2;
     transition: background-color .2s ease, color .2s ease;

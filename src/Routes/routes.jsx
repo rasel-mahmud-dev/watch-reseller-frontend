@@ -25,7 +25,7 @@ const router = createBrowserRouter([
             { path: "registration", element: <Registration /> },
             {
                 path: "category/:id",
-                element: <CategoryProducts />
+                element: <ProtectedRoute><CategoryProducts /></ProtectedRoute>
             },
 
         ],

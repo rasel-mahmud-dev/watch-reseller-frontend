@@ -10,6 +10,12 @@ function reducer(state, action) {
                 auth: action.payload
             }
 
+        case "TOGGLE_SIDEBAR":
+            return {
+                ...state,
+                isOpenSidebar: !state.isOpenSidebar,
+            }
+
         case "LOGOUT":
             return {
                 ...state,

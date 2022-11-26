@@ -1,10 +1,11 @@
 import React from "react";
 import Avatar from "components/Avatar/Avatar";
-import { BiCurrentLocation } from "react-icons/all";
+import {BiCurrentLocation, MdVerified, VscVerified} from "react-icons/all";
 import Button from "components/Button/Button";
 import { compareDate } from "utils/date";
 
-const Watch = ({ watch, onClick }) => {
+const Product = ({ product, onClick }) => {
+
     const {
         title,
         picture,
@@ -16,7 +17,8 @@ const Watch = ({ watch, onClick }) => {
         description,
         location,
         address,
-    } = watch;
+        seller,
+    } = product;
 
     return (
         <div className="card">
@@ -26,6 +28,14 @@ const Watch = ({ watch, onClick }) => {
             <h2 className="font-semibold text-sm text-dark-900  mt-4">
                 {title?.length > 50 ? title?.substring(0, 50) + "..." : title}
             </h2>
+
+            <div className="flex items-center mt-2">
+                <Avatar imgClass="w-5" src={seller?.avatar} username={seller?.username} />
+                <div className="flex items-center gap-x-2 ml-1">
+                    <h4 className="text-sm font-semibold">{seller?.username}</h4>
+                    { seller?.isVerified ? <MdVerified className="text-green-600" /> : <MdVerified className="text-red-500" />}
+                </div>
+            </div>
 
             <div className="text-dark-400 text-sm">
                 <div className="gap-x-2 py-2 font-normal">
@@ -64,4 +74,4 @@ const Watch = ({ watch, onClick }) => {
     );
 };
 
-export default Watch;
+export default Product;
