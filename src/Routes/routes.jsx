@@ -13,6 +13,8 @@ import AddProduct from "pages/Dashboard/Seller/AddProduct";
 import SellerProducts from "pages/Dashboard/Seller/SellerProducts";
 import SellerBuyers from "pages/Dashboard/Seller/SellerBuyers";
 import MyOrders from "pages/Dashboard/Buyer/MyOrders";
+import AllSellers from "pages/Dashboard/Admin/AllSellers";
+
 
 const router = createBrowserRouter([
     {
@@ -40,6 +42,7 @@ const router = createBrowserRouter([
             { path: "my-products", element: <ProtectedRoute role="SELLER"> <SellerProducts /> </ProtectedRoute> },
             { path: "my-buyers", element: <ProtectedRoute role="SELLER"> <SellerBuyers /> </ProtectedRoute> },
             { path: "my-orders", element: <ProtectedRoute> <MyOrders /> </ProtectedRoute> },
+            { path: "all-sellers", element: <ProtectedRoute role="ADMIN"> <AllSellers /> </ProtectedRoute> },
         ],
     },
 ]);

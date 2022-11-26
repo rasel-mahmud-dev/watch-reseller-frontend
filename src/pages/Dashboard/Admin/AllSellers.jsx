@@ -1,11 +1,12 @@
 import React from "react";
 import Avatar from "components/Avatar/Avatar";
-import { fetchSellerBuyers } from "context/actions/userAction";
+import { fetchAllSellers } from "context/actions/userAction";
 import date from "utils/date";
 import Table from "components/Table/Table";
+import SidebarButton from "components/SidebarButton/SidebarButton";
 
-const SellerBuyers = () => {
-    const { data: buyers } = fetchSellerBuyers();
+const AllSellers = () => {
+    const { data: buyers } = fetchAllSellers();
 
     const columns = [
         { title: "SL", dataIndex: "", className: "" },
@@ -28,7 +29,9 @@ const SellerBuyers = () => {
 
     return (
         <div>
-            <h1 className="page-section-title">My Buyers</h1>
+            <SidebarButton>
+                <h1 className="page-section-title !my-0">All Sellers</h1>
+            </SidebarButton>
 
             <div className="card">
                 <Table fixed={true} scroll={{ x: 900, y: "80vh" }} columns={columns} dataSource={buyers} />
@@ -37,4 +40,4 @@ const SellerBuyers = () => {
     );
 };
 
-export default SellerBuyers;
+export default AllSellers;

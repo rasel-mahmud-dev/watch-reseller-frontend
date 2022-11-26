@@ -13,8 +13,11 @@ import ImageChooser from "components/ImageChooser/ImageChooser";
 import toast from "react-hot-toast";
 import imageUpload from "utils/imageUpload";
 import catchErrorMessage from "utils/catchErrorMessage";
+import useScrollTop from "hooks/useScrollTop";
 
 const Registration = () => {
+    useScrollTop();
+
     const [
         {
             state,
@@ -210,6 +213,7 @@ const Registration = () => {
                 toast.error("Avatar upload fail please try again");
                 return;
             }
+            setHttpResponse({ ...httpResponse, loading: true });
 
             let result = await registrationAction({
                 firstName: userInput.firstName,
@@ -225,7 +229,10 @@ const Registration = () => {
             });
 
             let redirectPath = location.state?.from || "/";
+            toast.success("Your are registered");
+
             navigate(redirectPath, { replace: true });
+
             setHttpResponse({ ...httpResponse, loading: false });
         } catch (ex) {
             toast.error(catchErrorMessage(ex));
@@ -314,6 +321,5 @@ const Registration = () => {
         </div>
     );
 };
-
 
 export default Registration;

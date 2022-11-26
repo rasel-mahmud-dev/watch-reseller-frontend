@@ -186,22 +186,3 @@ export function signOutAction(auth, dispatch) {
 }
 
 
-
-export function fetchSellerBuyers(productId) {
-    return new Promise(async (resolve, reject) => {
-
-        try {
-            let {status, data} = await axios.post(`/api/v1/auth/buyers`, {productId});
-            if (status === 201) {
-                resolve(data)
-            } else {
-                resolve(null);
-            }
-
-        } catch (ex) {
-            reject(ex);
-        }
-    });
-}
-
-

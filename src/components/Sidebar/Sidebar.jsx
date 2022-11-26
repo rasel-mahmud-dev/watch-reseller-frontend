@@ -5,19 +5,12 @@ import {CgUser, FaProductHunt} from "react-icons/all";
 import "./sidebar.css"
 import Avatar from "components/Avatar/Avatar";
 
-const Sidebar = (props) => {
+const Sidebar = ({sidebarLink, ...attr}) => {
 
     const [{state: { auth }}]  = useStore();
 
-    const sidebarLinks = [
-        { label: "Add Product", roles: ["SELLER"], to: "/dashboard/add-product", icon: <FaProductHunt /> },
-        { label: "My Products", roles: ["SELLER"], to: "/dashboard/my-products", icon: <FaProductHunt /> },
-        { label: "My Buyers", roles: ["SELLER"], to: "/dashboard/my-buyers", icon: <CgUser /> },
-        { label: "My Orders", roles: ["BUYER", "SELLER"], to: "/dashboard/my-orders", icon: <CgUser /> },
-    ]
-
     return (
-        <div {...props}>
+        <div {...attr}>
             <div className="p-4">
                 <div className="text-center border-b-2 border-primary-200/20 pb-3">
                     <Avatar className="w-20 mx-auto" src={auth.avatar} username={auth.username} />
@@ -26,7 +19,7 @@ const Sidebar = (props) => {
                 </div>
 
                 <div className="flex flex-col mt-2">
-                    {sidebarLinks.map(item=>(
+                    {sidebarLink?.map(item=>(
                         item.roles.includes(auth?.role) && (
                             <Link to={item.to} className="flex items-center gap-x-1 hover:bg-primary-900/10 text-sm font-semibold py-2 px-2 rounded">
                                 {item.icon}
