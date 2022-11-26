@@ -1,13 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import Avatar from "components/Avatar/Avatar";
 import Button from "components/Button/Button";
-import {AiFillDelete, FaBars, RiEditBoxLine} from "react-icons/all";
+import { AiFillDelete, FaBars, RiEditBoxLine } from "react-icons/all";
 import Circle from "components/Circle/Circle";
 import ActionModal from "components/ActionModal/ActionModal";
 import { addToAdvertiseProductAction, deleteProductAction, fetchSellerProducts } from "context/actions/productAction";
 import { useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 import SidebarButton from "components/SidebarButton/SidebarButton";
+import Table from "components/Table/Table";
 
 const SellerProducts = () => {
     const { data: products, refetch } = fetchSellerProducts();
@@ -47,8 +48,6 @@ const SellerProducts = () => {
         setOpenConfirmationModal(false);
     }
 
-
-
     async function addToAdvertiseHandler(productId) {
         try {
             await addToAdvertiseProductAction(productId);
@@ -59,20 +58,68 @@ const SellerProducts = () => {
     }
 
     const columns = [
-        "SL",
-        "image",
-        "title",
-        "status",
-        "original price",
-        "Reseller Price",
-        "condition",
-        "Advertise",
-        "actions",
+        { title: "SL", dataIndex: "", className: "" },
+        {
+            title: "image",
+            dataIndex: "picture",
+            className: "",
+            render: (picture) => <Avatar imgClass="!rounded-none" className="w-20" src={picture} username="" />,
+        },
+        { title: "title", dataIndex: "title", tdClass:"min-w-[200px]" },
+        {
+            title: "status",
+            dataIndex: "isSold",
+            className: "w2",
+            render: (isSold) => (isSold ? "Sold" : "Available"),
+        },
+        {
+            title: "original price",
+            dataIndex: "originalPrice",
+            className: "whitespace-nowrap",
+            render: (data) => data + "Tk",
+        },
+        {
+            title: "Reseller Price",
+            dataIndex: "resalePrice",
+            className: "whitespace-nowrap",
+            render: (data) => data + "Tk",
+        },
+        { title: "condition", dataIndex: "conditionType", className: "" },
+        {
+            title: "Advertise",
+            dataIndex: "advertise",
+            render: (_, product) => (
+                <Button onClick={() => addToAdvertiseHandler(product._id)} disable={product.isSold}>
+                    Select for Advertise
+                </Button>
+            ),
+        },
+        {
+            title: "actions",
+            dataIndex: "",
+            render: (_, product) => (
+                <div className="flex items-center gap-x-2">
+                    <Circle className="">
+                        <RiEditBoxLine className="text-white" />
+                    </Circle>
+                    <label htmlFor="deleteConfirmationModal">
+                        <Circle
+                            className="!bg-red-300 "
+                            onClick={() => {
+                                setOpenConfirmationModal(true);
+                                prepareDeleteWatch(product._id);
+                            }}
+                        >
+                            <AiFillDelete className="text-white" />
+                        </Circle>
+                    </label>
+                </div>
+            ),
+        },
     ];
 
     return (
         <div>
-
             <SidebarButton>
                 <h1 className="page-section-title !my-0">My Products ({products?.length})</h1>
             </SidebarButton>
@@ -91,60 +138,10 @@ const SellerProducts = () => {
                 </div>
             </ActionModal>
 
-            <div className="overflow-x-auto">
-                <table className="table table-compact w-full">
-                    <thead>
-                        <tr>
-                            {columns.map((th) => (
-                                <th>{th}</th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {products?.map((product, index) => (
-                            <tr>
-                                <td>{index + 1}</td>
-                                <td>
-                                    <Avatar
-                                        imgClass="!rounded-none"
-                                        className="w-20"
-                                        src={product.picture}
-                                        username=""
-                                    />
-                                </td>
-                                <td>{product.title}</td>
-                                <td>{product.isSold ? "Sold" : "Available"}</td>
-                                <td>{product.originalPrice}.Tk</td>
-                                <td>{product.resalePrice}.Tk</td>
-                                <td>{product.conditionType}</td>
-                                <td>
-                                    <Button onClick={() => addToAdvertiseHandler(product._id)} disable={product.isSold}>
-                                        Select for Advertise
-                                    </Button>
-                                </td>
-                                <td>
-                                    <div className="flex items-center gap-x-2">
-                                        <Circle className="">
-                                            <RiEditBoxLine className="text-white" />
-                                        </Circle>
-                                        <label htmlFor="deleteConfirmationModal">
-                                            <Circle
-                                                className="!bg-red-300 "
-                                                onClick={() => {
-                                                    setOpenConfirmationModal(true);
-                                                    prepareDeleteWatch(product._id);
-                                                }}
-                                            >
-                                                <AiFillDelete className="text-white" />
-                                            </Circle>
-                                        </label>
-                                    </div>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+            <div className="card">
+                <Table fixed={true} scroll={{ x: 900, y: "80vh" }} columns={columns} dataSource={products} />
             </div>
+
         </div>
     );
 };

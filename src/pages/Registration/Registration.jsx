@@ -1,8 +1,8 @@
-import {useState} from "react";
+import { useState } from "react";
 import validator from "utils/validator";
-import {BiGlobe, BiLocationPlus, BiPhone, BsGoogle, FcAddImage, FiLock, FiMail} from "react-icons/all";
-import {HiOutlineUser} from "react-icons/hi";
-import {Link, useLocation, useNavigate} from "react-router-dom";
+import { BiGlobe, BiLocationPlus, BiPhone, BsGoogle, FcAddImage, FiLock, FiMail } from "react-icons/all";
+import { HiOutlineUser } from "react-icons/hi";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import HttpResponse from "components/HttpResponse/HttpResponse";
 import InputGroup from "components/InputGroup/InputGroup";
@@ -14,20 +14,24 @@ import toast from "react-hot-toast";
 import imageUpload from "utils/imageUpload";
 import catchErrorMessage from "utils/catchErrorMessage";
 
-
 const Registration = () => {
-    const [{state, actions: {registrationAction}}, dispatch] = useStore();
+    const [
+        {
+            state,
+            actions: { registrationAction },
+        },
+        dispatch,
+    ] = useStore();
 
-    const location = useLocation()
+    const location = useLocation();
 
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     const [httpResponse, setHttpResponse] = useState({
         isSuccess: false,
         message: "",
         loading: false,
     });
-
 
     const sellerInfo = {
         phone: {
@@ -38,7 +42,7 @@ const Registration = () => {
             validate: {
                 required: "phone Required",
             },
-            labelIcon: <BiPhone className="text-dark-400 text-lg"/>,
+            labelIcon: <BiPhone className="text-dark-400 text-lg" />,
         },
         address: {
             label: "Address",
@@ -49,7 +53,7 @@ const Registration = () => {
             validate: {
                 required: "Address Required",
             },
-            labelIcon: <BiGlobe className="text-dark-400 text-lg mt-1"/>,
+            labelIcon: <BiGlobe className="text-dark-400 text-lg mt-1" />,
         },
         location: {
             label: "Location",
@@ -60,9 +64,9 @@ const Registration = () => {
             validate: {
                 required: "location Required",
             },
-            labelIcon: <BiLocationPlus className="text-dark-400 text-lg"/>,
+            labelIcon: <BiLocationPlus className="text-dark-400 text-lg" />,
         },
-    }
+    };
     const basicInfo = {
         firstName: {
             label: "FirstName",
@@ -72,7 +76,7 @@ const Registration = () => {
             validate: {
                 required: "firstName Required",
             },
-            labelIcon: <HiOutlineUser className="text-dark-400 text-lg"/>,
+            labelIcon: <HiOutlineUser className="text-dark-400 text-lg" />,
         },
 
         lastName: {
@@ -80,7 +84,7 @@ const Registration = () => {
             name: "lastName",
             placeholder: "Last Name",
             onChange: handleChange,
-            labelIcon: <HiOutlineUser className="text-dark-400 text-lg"/>,
+            labelIcon: <HiOutlineUser className="text-dark-400 text-lg" />,
         },
 
         email: {
@@ -91,9 +95,8 @@ const Registration = () => {
             onChange: handleChange,
             validate: {
                 required: "Email required",
-
             },
-            labelIcon: <FiMail className="text-dark-400 text-lg"/>,
+            labelIcon: <FiMail className="text-dark-400 text-lg" />,
         },
         avatar: {
             label: "Avatar",
@@ -104,9 +107,9 @@ const Registration = () => {
             onChange: handleChange,
             validate: {
                 required: "Avatar Required",
-                maxFileSize: {value: 200, message: "Avatar image size should be max 200kb"},
+                maxFileSize: { value: 200, message: "Avatar image size should be max 200kb" },
             },
-            labelIcon: <FcAddImage className="text-dark-400 text-lg"/>,
+            labelIcon: <FcAddImage className="text-dark-400 text-lg" />,
         },
 
         password: {
@@ -117,9 +120,9 @@ const Registration = () => {
             onChange: handleChange,
             validate: {
                 required: "Password required",
-                minLength: {value: 6, message: "Password should be min 6 character"},
+                minLength: { value: 6, message: "Password should be min 6 character" },
             },
-            labelIcon: <FiLock className="text-dark-400 text-lg"/>,
+            labelIcon: <FiLock className="text-dark-400 text-lg" />,
         },
         confirmPassword: {
             label: "Confirm Password",
@@ -129,12 +132,11 @@ const Registration = () => {
             onChange: handleChange,
             validate: {
                 required: "Confirm Password Password required",
-                minLength: {value: 6, message: "Confirm Password should be min 6 character"},
+                minLength: { value: 6, message: "Confirm Password should be min 6 character" },
             },
-            labelIcon: <FiLock className="text-dark-400 text-lg"/>,
+            labelIcon: <FiLock className="text-dark-400 text-lg" />,
         },
     };
-
 
     // user input state
     const [userInput, setUserInput] = useState({
@@ -149,31 +151,28 @@ const Registration = () => {
     });
     const [errors, setErrors] = useState({});
 
-
     function handleChange(e, error) {
-        const {name, value} = e.target
+        const { name, value } = e.target;
         setUserInput((prevState) => ({
             ...prevState,
-            [name]: value
+            [name]: value,
         }));
-        setErrors((prev) => ({...prev, [name]: error}));
+        setErrors((prev) => ({ ...prev, [name]: error }));
     }
 
     async function handleLogin(e) {
         e.preventDefault();
-        setHttpResponse((p) => ({...p, loading: false, message: ""}));
+        setHttpResponse((p) => ({ ...p, loading: false, message: "" }));
 
         let isCompleted = true;
         // check validation before submit form
-        let errorMessage = ""
-        let tempErrors = {...errors};
+        let errorMessage = "";
+        let tempErrors = { ...errors };
 
-        let dataInfo = basicInfo
+        let dataInfo = basicInfo;
         if (userInput.role === "SELLER") {
-            dataInfo = {...dataInfo, ...sellerInfo}
+            dataInfo = { ...dataInfo, ...sellerInfo };
         }
-
-
 
         // check form validation for field
         for (let key in dataInfo) {
@@ -182,35 +181,33 @@ const Registration = () => {
                 if (validate) {
                     isCompleted = false;
                     if (!errorMessage) {
-                        errorMessage = validate
+                        errorMessage = validate;
                     }
                 }
                 tempErrors[key] = validate;
             }
         }
-        if (userInput.password && userInput.confirmPassword && (userInput.password !== userInput.confirmPassword)) {
-            errorMessage = "Please Check password or confirm password"
-            tempErrors['confirmPassword'] = errorMessage
-            isCompleted = false
+        if (userInput.password && userInput.confirmPassword && userInput.password !== userInput.confirmPassword) {
+            errorMessage = "Please Check password or confirm password";
+            tempErrors["confirmPassword"] = errorMessage;
+            isCompleted = false;
         }
 
         // if form input has any validation error
         if (!isCompleted) {
             setErrors(tempErrors);
-            toast.error(errorMessage)
+            toast.error(errorMessage);
             return;
         }
 
-
         try {
-
             if (!userInput?.avatar || typeof userInput?.avatar !== "object") {
-                toast.error("Please select a valid photo file")
+                toast.error("Please select a valid photo file");
             }
 
-            let uploadResult = await imageUpload(userInput.avatar)
+            let uploadResult = await imageUpload(userInput.avatar);
             if (!uploadResult || !uploadResult.data) {
-                toast.error("Avatar upload fail please try again")
+                toast.error("Avatar upload fail please try again");
                 return;
             }
 
@@ -224,21 +221,18 @@ const Registration = () => {
                 email: userInput.email,
                 address: userInput.address,
                 password: userInput.password,
-                location: userInput.location
-            })
+                location: userInput.location,
+            });
 
-            let redirectPath = location.state?.from || "/"
-            navigate(redirectPath, {replace: true})
-            setHttpResponse({...httpResponse, loading: false})
-
+            let redirectPath = location.state?.from || "/";
+            navigate(redirectPath, { replace: true });
+            setHttpResponse({ ...httpResponse, loading: false });
         } catch (ex) {
-            toast.error(catchErrorMessage(ex))
-
+            toast.error(catchErrorMessage(ex));
         } finally {
-            setHttpResponse((p) => ({...p, loading: false}));
+            setHttpResponse((p) => ({ ...p, loading: false }));
         }
     }
-
 
     return (
         <div className="container">
@@ -247,18 +241,19 @@ const Registration = () => {
                     <form onSubmit={handleLogin}>
                         <h1 className="text-center text-3xl text-dark-900 font-semibold">Registration Form</h1>
 
-                        <HttpResponse state={httpResponse}/>
+                        <HttpResponse state={httpResponse} />
 
                         <div className="card !shadow-xxs mt-6">
                             <h3 className="text-md font-semibold text-dark-400">Basic Info</h3>
 
-                            <div className="grid grid-cols-1 gap-4 mt-2">
-                                {Object.keys(basicInfo).map((key, i) => (
+                            <div className="">
+                                {Object.keys(basicInfo).map((key, i) =>
                                     basicInfo[key].type === "avatar" ? (
                                         <ImageChooser error={errors[key]} {...basicInfo[key]} />
                                     ) : (
-                                        <InputGroup error={errors[key]} {...basicInfo[key]} className="mt-3"/>)
-                                ))}
+                                        <InputGroup error={errors[key]} {...basicInfo[key]} />
+                                    )
+                                )}
                             </div>
                         </div>
 
@@ -266,9 +261,9 @@ const Registration = () => {
                             <div className="card !shadow-xxs mt-6">
                                 <h3 className="text-md font-semibold text-dark-400">Seller Info</h3>
 
-                                <div className="grid grid-cols-1 gap-4 mt-2">
+                                <div className="">
                                     {Object.keys(sellerInfo).map((key, i) => (
-                                        <InputGroup error={errors[key]} {...sellerInfo[key]} className="mt-3"/>
+                                        <InputGroup error={errors[key]} {...sellerInfo[key]} />
                                     ))}
                                 </div>
                             </div>
@@ -277,31 +272,35 @@ const Registration = () => {
                         <div className="text-dark-100 text-sm font-normal mt-5">
                             <div className="form-control">
                                 <label className="flex gap-x-1 items-center cursor-pointer">
-                                    <input onChange={() => setUserInput(p => ({...p, role: "BUYER"}))} type="radio"
-                                           name="role"
-                                           checked={userInput.role === "BUYER"}
-                                           className="radio radio-primary radio-sm "/>
+                                    <input
+                                        onChange={() => setUserInput((p) => ({ ...p, role: "BUYER" }))}
+                                        type="radio"
+                                        name="role"
+                                        checked={userInput.role === "BUYER"}
+                                        className="radio radio-primary radio-sm "
+                                    />
                                     <span className="label-text">Create account as customer</span>
                                 </label>
                             </div>
                             <div className="form-control mt-2">
                                 <label className="flex gap-x-1 items-center cursor-pointer">
-                                    <input onChange={() => setUserInput(p => ({...p, role: "SELLER"}))} type="radio"
-                                           name="role"
-                                           checked={userInput.role === "SELLER"}
-                                           className="radio radio-primary radio-sm "/>
+                                    <input
+                                        onChange={() => setUserInput((p) => ({ ...p, role: "SELLER" }))}
+                                        type="radio"
+                                        name="role"
+                                        checked={userInput.role === "SELLER"}
+                                        className="radio radio-primary radio-sm "
+                                    />
                                     <span className="label-text">Create account as seller </span>
                                 </label>
                             </div>
                         </div>
 
-
                         <Button className="mt-4 w-full">Register</Button>
-
 
                         <div className="divider text-dark-100 text-sm py-5">OR</div>
 
-                        <SocialLogin/>
+                        <SocialLogin />
 
                         <p className="text-center  mb-4 mt-6 text-dark-300">
                             Have an account?
@@ -309,7 +308,6 @@ const Registration = () => {
                                 Login
                             </Link>
                         </p>
-
                     </form>
                 </div>
             </div>

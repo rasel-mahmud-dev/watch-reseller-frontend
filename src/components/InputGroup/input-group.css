@@ -1,10 +1,17 @@
-.input-group {
-    /*border: 1.5px solid rgba(147, 147, 147, 0.2);*/
+.custom-input-group {
+    margin-top: 20px;
 }
 
-.input-group label {
-    color: #2f2f2f;
-    font-weight: 500;
+.custom-input-group label {
+    color: #7c7c7c;
+    font-weight: 400;
+    font-size: 16px;
+
+}
+
+.custom-input-group svg {
+    color: #7c7c7c;
+    font-weight: 400;
     font-size: 16px;
 }
 
@@ -19,7 +26,7 @@
     padding: 7px 10px;
     width: 100%;
     border-radius: 7px;
-    color: #6b6b6b !important;
+    color: #9b9b9b !important;
     font-weight: 400;
     outline: none !important;
 }

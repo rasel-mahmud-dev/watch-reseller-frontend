@@ -56,9 +56,9 @@ const ImageChoose = ({
     }
 
     return (
-        <div className="flex flex-col mt-2">
+        <div className="flex flex-col custom-input-group mt-2">
             {label && (
-                <label className="cursor-pointer font-medium text-dark-500 " htmlFor={name}>
+                <label className="cursor-pointer font-medium text-dark-500 mb-1.5" htmlFor={name}>
                     {label}
                 </label>
             )}

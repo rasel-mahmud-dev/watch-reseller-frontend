@@ -1,44 +1,37 @@
-import React, {useEffect, useRef, useState} from "react";
+import React from "react";
 import Avatar from "components/Avatar/Avatar";
-import {fetchSellerBuyers} from "context/actions/buyerAction";
+import { fetchSellerBuyers } from "context/actions/buyerAction";
 import date from "utils/date";
-
+import Table from "components/Table/Table";
 
 const SellerBuyers = () => {
+    const { data: buyers } = fetchSellerBuyers();
 
-    const {data: buyers} = fetchSellerBuyers();
-
-
-    const columns = ["SL","image", "name", "email", "join on", "status"];
+    const columns = [
+        { title: "SL", dataIndex: "", className: "" },
+        {
+            title: "image",
+            dataIndex: "avatar",
+            className: "",
+            render: (avatar) => <Avatar imgClass="!rounded-none" className="w-20" src={avatar} username="" />,
+        },
+        { title: "Name", dataIndex: "username" },
+        { title: "email", dataIndex: "email" },
+        { title: "Join on", dataIndex: "createdAt", render: (createdAt) => date(createdAt) },
+        {
+            title: "status",
+            dataIndex: "isVerified",
+            className: "w2",
+            render: (isVerified) => (isVerified ? "YES" : "NO"),
+        },
+    ];
 
     return (
         <div>
             <h1 className="page-section-title">My Buyers</h1>
 
-            <div className="overflow-x-auto">
-                <table className="table table-compact w-full">
-                    <thead>
-                    <tr>
-                        {columns.map((th) => (
-                            <th>{th}</th>
-                        ))}
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {buyers?.map((buyer, index) => (
-                        <tr>
-                            <td>{index + 1}</td>
-                            <td>
-                                <Avatar imgClass="!rounded-none" className="w-20" src={buyer.avatar} username="" />
-                            </td>
-                            <td>{buyer.username}</td>
-                            <td>{buyer.email}</td>
-                            <td>{date(buyer.createdAt)}</td>
-                            <td>{buyer.isVerified ? "YES" : "NO"}</td>
-                        </tr>
-                    ))}
-                    </tbody>
-                </table>
+            <div className="card">
+                <Table fixed={true} scroll={{ x: 900, y: "80vh" }} columns={columns} dataSource={buyers} />
             </div>
         </div>
     );

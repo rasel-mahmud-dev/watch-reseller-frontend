@@ -137,9 +137,10 @@ const Navigation = () => {
                             </Button>
                         )}
                         <div className="pl-8">
-                            <div className="flex items-center block sm:hidden fixed top-5 right-4 z-1000">
+                            <div className="flex items-center block sm:hidden fixed top-6 right-4 z-1000">
                                 <div className="pl-3">
-                                    <HiBars4 className="bar-icon text-dark-700 text-2xl" onClick={toggleNavigation} />
+                                    <img onClick={toggleNavigation} className="bar-icon w-6" src="/Group-3.svg "/>
+                                    {/*<HiBars4 className="bar-icon text-dark-700 text-2xl" onClick={toggleNavigation} />*/}
                                 </div>
                             </div>
                         </div>

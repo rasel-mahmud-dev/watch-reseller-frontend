@@ -3,9 +3,11 @@ import Avatar from "components/Avatar/Avatar";
 import Button from "components/Button/Button";
 import { deleteOrderAction, fetchOrdersAction } from "context/actions/productAction";
 import useStore from "hooks/useStore";
-import { MdDelete, MdOutlineAttachMoney } from "react-icons/all";
+import { AiFillDelete, MdDelete, MdOutlineAttachMoney, RiEditBoxLine } from "react-icons/all";
 import toast from "react-hot-toast";
 import ActionModal from "components/ActionModal/ActionModal";
+import Table from "components/Table/Table";
+import Circle from "components/Circle/Circle";
 
 const MyOrders = () => {
     const [
@@ -38,8 +40,70 @@ const MyOrders = () => {
         setOpenConfirmationModal(false);
     }
 
-
-    const columns = ["SL", "image", "title", "Price", "Meeting Location", "Payment", "actions"];
+    const columns = [
+        { title: "SL", dataIndex: "", className: "" },
+        {
+            title: "image",
+            dataIndex: "picture",
+            className: "",
+            render: (picture) => <Avatar imgClass="!rounded-none" className="w-20" src={picture} username="" />,
+        },
+        { title: "title", dataIndex: "title", tdClass: "min-w-[200px]" },
+        {
+            title: "status",
+            dataIndex: "isSold",
+            className: "w2",
+            render: (isSold) => (isSold ? "Sold" : "Available"),
+        },
+        {
+            title: "Price",
+            dataIndex: "Price",
+            className: "whitespace-nowrap",
+            render: (data) => data + "Tk",
+        },
+        {
+            title: "Meeting Location",
+            dataIndex: "Meeting Location",
+            className: "whitespace-nowrap",
+            render: (data) => data + "Tk",
+        },
+        {
+            title: "Payment",
+            dataIndex: "isPay",
+            render: (_, order) => (
+                <div>
+                    {order.isPay ? (
+                        <span className="bg-primary-500/40 py-1 text-sm px-2 rounded-md">Paid</span>
+                    ) : (
+                        <span className="bg-dark-100/40 py-1 px-2 text-sm rounded-md">UnPaid</span>
+                    )}
+                </div>
+            ),
+        },
+        {
+            title: "actions",
+            dataIndex: "",
+            render: (_, order) => (
+                <div className="flex items-center gap-x-1">
+                    <Button className="flex items-center px-2">
+                        <MdOutlineAttachMoney className="text-lg" />
+                        Pay Now
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            setOpenConfirmationModal(true);
+                            deleteOrderId.current = order._id;
+                        }}
+                        theme="danger"
+                        className="flex items-center px-2"
+                    >
+                        <MdDelete className="text-lg" />
+                        Delete
+                    </Button>
+                </div>
+            ),
+        },
+    ];
 
     return (
         <div>
@@ -59,56 +123,8 @@ const MyOrders = () => {
                 </div>
             </ActionModal>
 
-            <div className="overflow-x-auto">
-                <table className="table table-compact w-full">
-                    <thead>
-                        <tr>
-                            {columns.map((th) => (
-                                <th>{th}</th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {orders?.map((order, index) => (
-                            <tr>
-                                <td>{index + 1}</td>
-                                <td>
-                                    <Avatar src={order.picture} imgClass="!rounded-none" className="w-20" username="" />
-                                </td>
-                                <td>{order.title}</td>
-
-                                <td>{order.price}.Taka</td>
-                                <td>{order.meetingAddress}</td>
-                                <td className="uppercase font-medium text-dark-800">
-                                    {order.isPay ? (
-                                        <span className="bg-primary-500/40 py-1 text-sm px-2 rounded-md">Paid</span>
-                                    ) : (
-                                        <span className="bg-dark-100/40 py-1 px-2 text-sm rounded-md">UnPaid</span>
-                                    )}
-                                </td>
-                                <td>
-                                    <div className="flex items-center gap-x-1">
-                                        <Button className="flex items-center px-2">
-                                            <MdOutlineAttachMoney className="text-lg" />
-                                            Pay Now
-                                        </Button>
-                                        <Button
-                                            onClick={() => {
-                                                setOpenConfirmationModal(true);
-                                                deleteOrderId.current = order._id;
-                                            }}
-                                            theme="danger"
-                                            className="flex items-center px-2"
-                                        >
-                                            <MdDelete className="text-lg" />
-                                            Delete
-                                        </Button>
-                                    </div>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+            <div className="card">
+                <Table fixed={true} scroll={{ x: 600, y: "80vh" }} columns={columns} dataSource={orders} />
             </div>
         </div>
     );

@@ -43,7 +43,7 @@ const InputGroup = (props) => {
 
     return useMemo(() => {
         return (
-            <div className="mt-3">
+            <div className="custom-input-group">
                 {label && (
                     <label htmlFor={name} className="flex items-center  gap-x-1">
                         {labelIcon}

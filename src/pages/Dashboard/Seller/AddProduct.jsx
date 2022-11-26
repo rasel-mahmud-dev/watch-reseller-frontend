@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import validator from "utils/validator";
 import {
     AiOutlinePhone,
@@ -22,6 +22,7 @@ import imageUpload from "utils/imageUpload";
 import catchErrorMessage from "utils/catchErrorMessage";
 import {fetchCategories} from "context/actions/categoryAction";
 import {addProductAction} from "context/actions/productAction";
+import SidebarButton from "components/SidebarButton/SidebarButton";
 
 const AddProduct = () => {
     const [
@@ -272,9 +273,17 @@ const AddProduct = () => {
     }
 
     return (
-        <div className="card ml-4 mt-6">
+        <div className="">
+
+            <SidebarButton>
+                <h1 className="section_title !my-0">Add Product</h1>
+            </SidebarButton>
+
+
+            <div className="card my-6">
+
+
             <form onSubmit={handleLogin}>
-                <h1 className="section_title !text-start pt-1">Add Product</h1>
 
                 <HttpResponse state={httpResponse} title="Please wait your product is added soon" />
 
@@ -298,6 +307,7 @@ const AddProduct = () => {
 
                 <Button className="mt-4">Add Product</Button>
             </form>
+        </div>
         </div>
     );
 };

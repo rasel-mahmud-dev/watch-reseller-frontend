@@ -7,7 +7,7 @@ const SocialLogin = () => {
     const [{ state, actions }]  = useStore();
 
     return (
-        <Button onClick={actions.googleSignInAction} className="!bg-red-400 flex gap-x-1 items-center w-full justify-center">
+        <Button type="button" onClick={actions.googleSignInAction} className="!bg-red-400 flex gap-x-1 items-center w-full justify-center">
             <BsGoogle className="text-sm"/>
             <span>Login With Google</span>
         </Button>

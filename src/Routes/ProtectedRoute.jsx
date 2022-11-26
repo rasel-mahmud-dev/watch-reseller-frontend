@@ -13,11 +13,11 @@ const ProtectedRoute = (props) => {
         return <Loader title="Please wait your role checking. Soon redirect" size={40} className="fixed top-1/4 left-1/2 transform -translate-x-1/2" />
     }
 
-    if(!role && allRoles.includes(auth?.role)){
+    if(auth && !role && allRoles.includes(auth.role)){
         // all authenticate user can access route
         return props.children
 
-    } else if (role === auth?.role) {
+    } else if (auth && role === auth.role) {
         // specific role can access these route
         return props.children
 
