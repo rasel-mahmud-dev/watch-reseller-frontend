@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "host": "src/firebase deploy"
+    "host": "firebase deploy --only hosting"
   },
   "dependencies": {
     "@tanstack/react-query": "^4.16.1",

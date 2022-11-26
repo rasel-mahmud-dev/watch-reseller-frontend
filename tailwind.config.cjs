@@ -4,6 +4,7 @@ module.exports = {
         "./index.html",
         "./src/**/*.{js,ts,jsx,tsx}",
     ],
+    safelist: ["w-5"],
     theme: {
         extend: {
             colors: {

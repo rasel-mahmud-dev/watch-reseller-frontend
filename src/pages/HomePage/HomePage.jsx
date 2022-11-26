@@ -1,10 +1,12 @@
-import React from 'react';
+import React, {lazy, useEffect} from 'react';
 import "./homePage.css"
 import SliderSection from "./SliderSection";
-import CategorySection from "./CategorySection";
-import WhyChooseUsSection from "./WhyChooseUsSection";
-import Testimonials from "./Testimonials";
-import AdvertiseProducts from "pages/HomePage/AdvertiseProducts";
+
+
+const  CategorySection = lazy(()=>import("./CategorySection"));
+const  WhyChooseUsSection = lazy(()=>import("./WhyChooseUsSection"));
+const  Testimonials = lazy(()=>import("./Testimonials"));
+const  AdvertiseProducts = lazy(()=>import("pages/HomePage/AdvertiseProducts"));
 
 const HomePage = () => {
     return (

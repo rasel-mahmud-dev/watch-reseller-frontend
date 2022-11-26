@@ -99,6 +99,7 @@ const Login = () => {
             let result = await loginAction(userInput);
             setHttpResponse((p) => ({ ...p, loading: false }));
             let redirectPath = location.state?.from || "/";
+            if(redirectPath === "/login") redirectPath = "/"
             navigate(redirectPath, { replace: true });
         } catch (ex) {
             toast.error(catchErrorMessage(ex));

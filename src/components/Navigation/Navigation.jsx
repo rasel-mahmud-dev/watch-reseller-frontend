@@ -8,6 +8,7 @@ import Button from "../Button/Button";
 import useStore from "hooks/useStore";
 import Avatar from "../Avatar/Avatar";
 import { MdSpaceDashboard } from "react-icons/all";
+import Dropdown from "components/Dropdown/Dropdown";
 
 const Navigation = () => {
     const navigate = useNavigate();
@@ -64,6 +65,10 @@ const Navigation = () => {
         { path: "/", label: "FAQs" },
     ];
 
+    function closeAuthDropdown(){
+        setOpenAuthMenu(false)
+    }
+
     return (
         <div>
             <div
@@ -95,35 +100,36 @@ const Navigation = () => {
                             <div
                                 className="relative "
                                 onMouseOver={() => setOpenAuthMenu(true)}
-                                onMouseLeave={() => setOpenAuthMenu(false)}
+                                onMouseLeave={closeAuthDropdown}
+                                onClick={()=>setOpenAuthMenu(!openAuthMenu)}
                             >
                                 <div className="w-14 h-10 flex justify-center items-center">
-                                    <Avatar src={auth.avatar} d username={auth.username} className="ml-4" />
+                                    <Avatar src={auth.avatar} username={auth.username} className="ml-4" />
                                 </div>
 
-                                <ul
-                                    tabIndex={0}
-                                    className={`absolute opacity-0 z-50 invisible top-7 -right-3 mt-3 p-4 bg-white shadow-sm2 rounded-box w-52 
-                            ${openAuthMenu ? "!opacity-100 !visible" : ""}`}
-                                >
-                                    <li className="pt-1 flex items-center">
+                                <Dropdown isOpen={openAuthMenu}>
+                                    <a className="pt-1 flex items-center">
                                         <Avatar className="w-8 mr-1" src={auth.avatar} username={auth.username} />
-                                        {auth.firstName}
-                                    </li>
+                                        <div className="flex flex-col">
+                                            <span className="text-sm font-semibold text-dark-400">{auth.username}</span>
+                                            <span className="text-light-100 text-xs font-medium">{auth.role}</span>
+                                        </div>
+                                    </a>
                                     <div className="mt-2">
                                         <li className="pt-1 flex items-center gap-x-1 hover:text-primary-500">
                                             <MdSpaceDashboard className="text-xl text-dark-400" />
-                                            <Link to={`/dashboard`}>Dashboard</Link>
+                                            <Link onClick={closeAuthDropdown} to={`/dashboard`}>Dashboard</Link>
                                         </li>
                                         <li
                                             className="pt-1 flex items-center gap-x-1 cursor-pointer hover:text-primary-500"
                                             onClick={handleLogout}
                                         >
-                                            <FaSignOutAlt className="text-xl text-dark-400" />
+                                            <FaSignOutAlt onClick={closeAuthDropdown} className="text-xl text-dark-400" />
                                             Logout
                                         </li>
                                     </div>
-                                </ul>
+                                </Dropdown>
+
                             </div>
                         )}
                     </div>

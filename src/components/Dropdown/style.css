@@ -1,0 +1,16 @@
+.dropdown-panel {
+    @apply absolute opacity-0 z-50 invisible top-7 -right-3 mt-3 p-4 bg-white shadow-sm2 rounded-box w-52;
+    transition: all .2s ease;
+    transform: translateY(10px);
+}
+
+.dropdown-panel.dropdown-panel-open{
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    /*!opacity-100 !visible*/
+}
+
+.dropdown-panel a {
+    @apply text-dark-700;
+}

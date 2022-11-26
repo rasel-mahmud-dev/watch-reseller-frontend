@@ -30,7 +30,7 @@ const Product = ({ product, onClick }) => {
             </h2>
 
             <div className="flex items-center mt-2">
-                <Avatar imgClass="w-5" src={seller?.avatar} username={seller?.username} />
+                <Avatar imgClass="!w-5" src={seller?.avatar} username={seller?.username} />
                 <div className="flex items-center gap-x-2 ml-1">
                     <h4 className="text-sm font-semibold">{seller?.username}</h4>
                     { seller?.isVerified ? <MdVerified className="text-green-600" /> : <MdVerified className="text-red-500" />}
@@ -54,7 +54,7 @@ const Product = ({ product, onClick }) => {
                 </h3>
 
                 <h3 className="flex items-center gap-x-1">
-                    Used
+                    Used:
                     <span className=" font-medium">{compareDate(purchaseDate)}</span>
                 </h3>
 

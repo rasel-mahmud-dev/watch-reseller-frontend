@@ -5,7 +5,7 @@ import Footer from "../pages/Shared/Footer";
 import Sidebar from "../components/Sidebar/Sidebar";
 import useStore from "hooks/useStore";
 import useScrollTop from "hooks/useScrollTop";
-import {CgUser, FaProductHunt} from "react-icons/all";
+import Avatar from "components/Avatar/Avatar";
 
 const DashboardLayout = () => {
     const [
@@ -20,12 +20,12 @@ const DashboardLayout = () => {
 
 
     const sidebarLinks = [
-        { label: "Add Product", roles: ["SELLER"], to: "/dashboard/add-product", icon: <FaProductHunt /> },
-        { label: "My Products", roles: ["SELLER"], to: "/dashboard/my-products", icon: <FaProductHunt /> },
-        { label: "My Buyers", roles: ["SELLER"], to: "/dashboard/my-buyers", icon: <CgUser /> },
-        { label: "My Orders", roles: ["BUYER", "SELLER"], to: "/dashboard/my-orders", icon: <CgUser /> },
-        { label: "All Sellers", roles: ["ADMIN"], to: "/dashboard/all-sellers", icon: <CgUser /> },
-        { label: "All Buyers", roles: ["ADMIN"], to: "/dashboard/all-buyers", icon: <CgUser /> },
+        { label: "Add Product", roles: ["SELLER"], to: "/dashboard/add-product", icon:  <Avatar className="w-5" src="/icons/add-product.svg" />},
+        { label: "My Products", roles: ["SELLER"], to: "/dashboard/my-products", icon: <Avatar className="w-5" src="/icons/product.svg" />},
+        { label: "My Buyers", roles: ["SELLER"], to: "/dashboard/my-buyers", icon: <Avatar className="w-5" src="/icons/seller.svg" />},
+        { label: "My Orders", roles: ["BUYER", "SELLER"], to: "/dashboard/my-orders", icon:  <Avatar className="w-5" src="/icons/cart.svg" />},
+        { label: "All Sellers", roles: ["ADMIN"], to: "/dashboard/all-sellers", icon: <Avatar className="w-5" src="/icons/seller.svg" />  },
+        { label: "All Buyers", roles: ["ADMIN"], to: "/dashboard/all-buyers", icon: <Avatar className="w-5" src="/icons/user.svg" /> },
     ]
 
     return (

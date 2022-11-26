@@ -4,8 +4,6 @@ import "./style.css";
 const Modal = (props) => {
     const { className = "", isOpen = false, onClose, title, children } = props;
 
-    console.log(isOpen)
-
     return (
         <div className={`my-modal ${isOpen ? "modal-show" : ""}`}>
             <div className="modal-backdrop cursor-pointer" onClick={onClose}></div>

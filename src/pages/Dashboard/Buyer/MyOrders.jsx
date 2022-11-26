@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import ActionModal from "components/ActionModal/ActionModal";
 import Table from "components/Table/Table";
 import Circle from "components/Circle/Circle";
+import SidebarButton from "components/SidebarButton/SidebarButton";
 
 const MyOrders = () => {
     const [
@@ -107,7 +108,9 @@ const MyOrders = () => {
 
     return (
         <div>
-            <h1 className="page-section-title">My Orders ({orders?.length})</h1>
+            <SidebarButton>
+                <h1 className="page-section-title !my-0">My Orders ({orders?.length})</h1>
+            </SidebarButton>
 
             <ActionModal
                 title="Are your sure to delete this order ?"
