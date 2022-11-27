@@ -4,10 +4,13 @@ import HttpResponse from "components/HttpResponse/HttpResponse";
 import InputGroup from "components/InputGroup/InputGroup";
 import Button from "components/Button/Button";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import {makeOrderAction} from "context/actions/orderAction";
 
 const BookingModal = ({ auth, bookingData, onClose }) => {
+
+    const location = useLocation()
+
     const [httpResponse, setHttpResponse] = useState({
         isSuccess: false,
         message: "",
@@ -113,14 +116,14 @@ const BookingModal = ({ auth, bookingData, onClose }) => {
 
     return (
         <div>
-            <Modal className={`!max-w-md ${!auth ? "!top-1/4" : ""}`} isOpen={bookingData} onClose={onClose}>
+            <Modal className={`!max-w-md ${!auth ? "!top-1/3" : ""}`} isOpen={bookingData} onClose={onClose}>
                 {!auth ? (
                     <div>
                         <h1 className="text-center text-xl text-dark-900 font-semibold pb-2">
                             Please Login to Booking this
                         </h1>
                         <Button className="block mx-auto">
-                            <Link to="/login">Login</Link>
+                            <Link to="/login" state={location.pathname}>Login</Link>
                         </Button>
                     </div>
                 ) : auth.role !== "BUYER" ? (
@@ -139,8 +142,8 @@ const BookingModal = ({ auth, bookingData, onClose }) => {
 
                         <HttpResponse state={httpResponse} />
 
-                        {Object.keys(data).map((key, i) => (
-                            <InputGroup {...data[key]} defaultValue={userInput[key]} className="mt-3" />
+                        {Object.keys(data).map((key) => (
+                            <InputGroup {...data[key]} defaultValue={userInput[key]} key={key} className="mt-3" />
                         ))}
 
                         <Button className="mt-4 w-full">Submit Order</Button>

@@ -292,9 +292,9 @@ const Registration = () => {
                             <div className="">
                                 {Object.keys(basicInfo).map((key, i) =>
                                     basicInfo[key].type === "avatar" ? (
-                                        <ImageChooser error={errors[key]} {...basicInfo[key]} />
+                                        <ImageChooser key={key} error={errors[key]} {...basicInfo[key]} />
                                     ) : (
-                                        <InputGroup error={errors[key]} {...basicInfo[key]} />
+                                        <InputGroup key={key} error={errors[key]} {...basicInfo[key]} />
                                     )
                                 )}
                             </div>
@@ -306,7 +306,7 @@ const Registration = () => {
 
                                 <div className="">
                                     {Object.keys(sellerInfo).map((key, i) => (
-                                        <InputGroup error={errors[key]} {...sellerInfo[key]} />
+                                        <InputGroup key={key} error={errors[key]} {...sellerInfo[key]} />
                                     ))}
                                 </div>
                             </div>

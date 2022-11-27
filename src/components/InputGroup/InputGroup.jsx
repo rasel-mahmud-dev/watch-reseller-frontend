@@ -61,7 +61,7 @@ const InputGroup = (props) => {
                         >
                             <option value="">{placeholder}</option>
                             {options?.map((opt) => (
-                                <option value={opt._id}>{opt.name}</option>
+                                <option value={opt._id} key={opt._id}>{opt.name}</option>
                             ))}
                         </select>
                     ) : type === "textarea" ? (

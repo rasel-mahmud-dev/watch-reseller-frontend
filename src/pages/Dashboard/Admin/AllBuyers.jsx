@@ -1,13 +1,40 @@
 import React from "react";
 import Avatar from "components/Avatar/Avatar";
-import { fetchAllBuyers } from "context/actions/userAction";
+import {deleteBuyerAction, deleteSellerAction, fetchAllBuyers} from "context/actions/userAction";
 import Table from "components/Table/Table";
 import SidebarButton from "components/SidebarButton/SidebarButton";
 import Button from "components/Button/Button";
 import { MdDelete } from "react-icons/all";
+import toast from "react-hot-toast";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
 
 const AllBuyers = () => {
     const { data: buyers } = fetchAllBuyers();
+
+    const queryClient = useQueryClient();
+
+    const mutation = useMutation((payload) => payload, {
+        onSuccess: (payload) => {
+            queryClient.setQueryData(["all-buyers"], (prev) => {
+                if (payload.type === "delete") {
+                    return prev.filter((item) => item._id !== payload.id);
+                }
+            });
+        },
+    });
+    function handleDeleteBuyer(buyerId) {
+        deleteBuyerAction(buyerId)
+            .then(() => {
+                mutation.mutate({
+                    type: "delete",
+                    id: buyerId,
+                });
+                toast.success("Buyer Deleted Successfully")
+            })
+            .catch((ex) => {
+                toast.success("Buyer Deleted fail")
+            });
+    }
 
     const columns = [
         { title: "SL", dataIndex: "", className: "" },
@@ -31,7 +58,7 @@ const AllBuyers = () => {
             dataIndex: "",
             render: (_, buyer) => (
                 <div className="flex items-center gap-x-2">
-                    <Button onClick={() => {}} theme="danger" className="flex items-center px-2">
+                    <Button onClick={() => handleDeleteBuyer(buyer._id)} theme="danger" className="flex items-center px-2">
                         <MdDelete className="text-lg" />
                         Delete
                     </Button>

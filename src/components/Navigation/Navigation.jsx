@@ -63,7 +63,6 @@ const Navigation = () => {
 
     const items = [
         { path: "/", label: "Home" },
-        // { path: "/", label: "Courses" },
         {
             path: "/blogs",
             label: "Blogs",
@@ -124,10 +123,10 @@ const Navigation = () => {
                     </div>
 
                     <div className={`flex gap-6 items-center main-nav ${expandNavigation ? "expand" : ""}`}>
-                        {items.map((item) =>
+                        {items.map((item, i) =>
                             item.private ? (
                                 auth && (
-                                    <NavLink
+                                    <NavLink key={i}
                                         end={true}
                                         onClick={() => setExpandNavigation(false)}
                                         to={item.path}
@@ -137,7 +136,7 @@ const Navigation = () => {
                                     </NavLink>
                                 )
                             ) : (
-                                <NavLink
+                                <NavLink key={i}
                                     end={true}
                                     onClick={() => setExpandNavigation(false)}
                                     to={item.path}

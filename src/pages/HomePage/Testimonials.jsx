@@ -14,7 +14,7 @@ const Testimonials = () => {
 
     useEffect(() => {
         axios
-            .get("/api/testimonials")
+            .get("/api/v1/testimonials")
             .then(({ data, status }) => {
                 if (status === 200) {
                     setTestimonials(data);

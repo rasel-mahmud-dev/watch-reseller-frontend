@@ -1,12 +1,12 @@
 import React from "react";
 import Avatar from "components/Avatar/Avatar";
 import { deleteSellerAction, fetchAllSellers, makeSellerVerified } from "context/actions/userAction";
-import date from "utils/date";
 import Table from "components/Table/Table";
 import SidebarButton from "components/SidebarButton/SidebarButton";
 import Button from "components/Button/Button";
 import { MdDelete } from "react-icons/all";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 const AllSellers = () => {
     const { data: sellers } = fetchAllSellers();
@@ -35,28 +35,28 @@ const AllSellers = () => {
 
     function handleSellerVerification(seller) {
         makeSellerVerified(seller._id, !seller.isVerified)
-            .then(({ status }) => {
-                if (status === 201) {
-                    mutation.mutate({
-                        type: "update",
-                        id: seller._id,
-                    });
-                }
+            .then(() => {
+                mutation.mutate({
+                    type: "update",
+                    id: seller._id,
+                });
+                toast.success("Seller status  updated Successfully")
             })
             .catch((ex) => {});
     }
 
     function handleDeleteSeller(sellerId) {
         deleteSellerAction(sellerId)
-            .then(({ status }) => {
-                if (status === 201) {
-                    mutation.mutate({
-                        type: "delete",
-                        id: sellerId,
-                    });
-                }
+            .then(() => {
+                mutation.mutate({
+                    type: "delete",
+                    id: sellerId,
+                });
+                toast.success("Seller Deleted Successfully")
             })
-            .catch((ex) => {});
+            .catch((ex) => {
+                toast.success("Seller Deleted fail")
+            });
     }
 
     const columns = [

@@ -92,3 +92,17 @@ export function deleteSellerAction(sellerId) {
         }
     });
 }
+
+// for admin buyer delete action.
+export function deleteBuyerAction(buyerId) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let { data, status } = await axios.delete(`/api/v1/auth/buyer-delete/${buyerId}`);
+            if (status === 201) {
+                resolve(data);
+            }
+        } catch (ex) {
+            reject(ex);
+        }
+    });
+}
