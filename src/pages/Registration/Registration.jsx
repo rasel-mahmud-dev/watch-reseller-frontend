@@ -3,8 +3,6 @@ import validator from "utils/validator";
 import { BiGlobe, BiLocationPlus, BiPhone, BsGoogle, FcAddImage, FiLock, FiMail } from "react-icons/all";
 import { HiOutlineUser } from "react-icons/hi";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-
-import HttpResponse from "components/HttpResponse/HttpResponse";
 import InputGroup from "components/InputGroup/InputGroup";
 import Button from "components/Button/Button";
 import useStore from "hooks/useStore";
@@ -15,6 +13,9 @@ import imageUpload from "utils/imageUpload";
 import catchErrorMessage from "utils/catchErrorMessage";
 import useScrollTop from "hooks/useScrollTop";
 import SEO from "components/SEO/SEO";
+import Loader from "components/Loader/Loader";
+import Modal from "components/Modal/Modal";
+import { generateAccessTokenAction } from "context/actions/authAction";
 
 const Registration = () => {
     useScrollTop();
@@ -24,20 +25,14 @@ const Registration = () => {
             state: { auth },
             actions: { registrationAction },
         },
+        dispatch,
     ] = useStore();
 
-    const loginSession = useRef();
-
+    const loginSession = useRef(null);
     const location = useLocation();
-
     const navigate = useNavigate();
 
-    const [httpResponse, setHttpResponse] = useState({
-        isSuccess: false,
-        message: "",
-        loading: false,
-    });
-
+    const [requestLoading, setRequestLoading] = useState(false);
     const sellerInfo = {
         phone: {
             label: "Phone",
@@ -167,7 +162,7 @@ const Registration = () => {
 
     async function handleLogin(e) {
         e.preventDefault();
-        setHttpResponse((p) => ({ ...p, loading: false, message: "" }));
+        setRequestLoading(false);
 
         let isCompleted = true;
         // check validation before submit form
@@ -210,17 +205,17 @@ const Registration = () => {
                 toast.error("Please select a valid photo file");
             }
 
+            setRequestLoading(true);
+
             let uploadResult = await imageUpload(userInput.avatar);
             if (!uploadResult || !uploadResult.data) {
                 toast.error("Avatar upload fail please try again");
                 return;
             }
-            setHttpResponse({ ...httpResponse, loading: true });
 
             let result = await registrationAction({
                 firstName: userInput.firstName,
                 lastName: userInput.lastName,
-                username: userInput.username,
                 avatarUrl: uploadResult.data.url,
                 role: userInput.role,
                 phone: userInput.phone,
@@ -229,37 +224,67 @@ const Registration = () => {
                 password: userInput.password,
                 location: userInput.location,
             });
-            toast.success("Your are registered");
+            if (result) {
+                let data = await generateAccessTokenAction({
+                    googleId: result.googleId,
+                    firstName: userInput.firstName,
+                    lastName: userInput.lastName,
+                    username: result.username,
+                    avatar: result.avatar,
+                    role: userInput.role,
+                    phone: userInput.phone,
+                    email: userInput.email,
+                    location: userInput.location,
+                    address: userInput.address,
+                    isEntry: false,
+                });
+                if (data) {
+                    dispatch({
+                        type: "LOGIN",
+                        payload: result,
+                    });
+                }
+                toast.success("Your are registered");
+                loginSession.current = true;
+                return;
+            }
+
+            toast.error("Something were wrong. Please try again.");
         } catch (ex) {
             toast.error(catchErrorMessage(ex));
         } finally {
-            setHttpResponse((p) => ({ ...p, loading: false }));
+            setRequestLoading(false);
         }
     }
 
-    // after auth change then should be redirect if redirect fail
+    // after auth change then should be redirected
     useEffect(() => {
-        // if (auth) {
-        //     let redirectPath = location.state || "/";
-        //     if (redirectPath === "/login") redirectPath = "/";
-        //     navigate(redirectPath, { replace: true });
-        //     location.state = "/"
-        // }
+        if (auth) {
+            let redirectPath = location.state || "/";
+            if (loginSession.current) {
+                navigate(redirectPath);
+                loginSession.current = false;
+            } else {
+                // console.log("redirect home")
+                navigate("/");
+            }
+        }
+    }, [auth, loginSession.current]);
 
-
-
-    }, [auth]);
+    console.log(location.state);
 
     return (
         <div className="container">
-            <div className="mt-4">
+            <SEO title="Registration" />
 
-                <SEO title="Registration" />
+            <Modal className="max-w-sm !top-1/3" isOpen={requestLoading}>
+                <Loader size={30} title="Registration Processing, Please wait." />
+            </Modal>
+
+            <div className="mt-4">
                 <div className="max-w-xl mx-auto  rounded p-4 m-3 mt-4 rounded-xl">
                     <form onSubmit={handleLogin}>
                         <h1 className="text-center text-3xl text-dark-900 font-semibold">Registration Form</h1>
-
-                        <HttpResponse state={httpResponse} />
 
                         <div className="card !shadow-xxs mt-6">
                             <h3 className="text-md font-semibold text-dark-400">Basic Info</h3>
@@ -318,11 +343,16 @@ const Registration = () => {
 
                         <div className="divider text-dark-100 text-sm py-5">OR</div>
 
-                        <SocialLogin />
+                        {/**** social login button */}
+                        <SocialLogin onCreateLoginSession={() => (loginSession.current = true)} />
 
                         <p className="text-center  mb-4 mt-6 text-dark-300">
                             Have an account?
-                            <Link to="/login" className="font-medium !text-primary-500 text-link ml-2 ">
+                            <Link
+                                to="/login"
+                                state={location.state}
+                                className="font-medium !text-primary-500 text-link ml-2 "
+                            >
                                 Login
                             </Link>
                         </p>

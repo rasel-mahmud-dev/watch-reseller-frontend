@@ -60,7 +60,7 @@
     opacity: 1;
 }
 
-@media screen and (min-width: 640px){
+@media screen and (min-width: 768px){
     .mobile-searchbar{
         transform: scaleY(0);
     }

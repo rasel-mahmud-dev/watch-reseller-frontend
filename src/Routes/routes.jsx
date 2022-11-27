@@ -37,7 +37,7 @@ const router = createBrowserRouter([
             { path: "registration", element: <Registration /> },
             {
                 path: "category/:id",
-                element: <ProtectedRoute><CategoryProducts /></ProtectedRoute>
+                element: <ProtectedRoute roles={["SELLER", "ADMIN", "BUYER"]}><CategoryProducts /></ProtectedRoute>
             },
             { path: "blogs", element: <Blogs /> },
             { path: "search", element: <SearchProducts /> },
@@ -46,18 +46,18 @@ const router = createBrowserRouter([
     },
     {
         path: "/dashboard",
-        element: <ProtectedRoute> <DashboardLayout/> </ProtectedRoute>,
+        element: <ProtectedRoute roles={["SELLER", "ADMIN", "BUYER"]}> <DashboardLayout/> </ProtectedRoute>,
         errorElement: <ErrorPage />,
         children: [
             { path: "", element: <DashboardHome /> },
-            { path: "add-product", element: <ProtectedRoute role="SELLER"> <AddProduct /> </ProtectedRoute> },
-            { path: "my-products", element: <ProtectedRoute role="SELLER"> <SellerProducts /> </ProtectedRoute> },
-            { path: "my-buyers", element: <ProtectedRoute role="SELLER"> <SellerBuyers /> </ProtectedRoute> },
-            { path: "my-orders", element: <ProtectedRoute role="BUYER" > <MyOrders /> </ProtectedRoute> },
-            { path: "my-wishlist", element: <ProtectedRoute role="BUYER" > <Wishlist /> </ProtectedRoute> },
-            { path: "all-sellers", element: <ProtectedRoute role="ADMIN"> <AllSellers /> </ProtectedRoute> },
-            { path: "all-buyers", element: <ProtectedRoute role="ADMIN"> <AllBuyers /> </ProtectedRoute> },
-            { path: "payment/:orderId", element: <ProtectedRoute role="BUYER"> <Payment /> </ProtectedRoute> },
+            { path: "add-product", element: <ProtectedRoute roles={["SELLER"]}> <AddProduct /> </ProtectedRoute> },
+            { path: "my-products", element: <ProtectedRoute roles={["SELLER"]}> <SellerProducts /> </ProtectedRoute> },
+            { path: "my-buyers", element: <ProtectedRoute roles={["SELLER"]}> <SellerBuyers /> </ProtectedRoute> },
+            { path: "my-orders", element: <ProtectedRoute roles={["BUYER"]}> <MyOrders /></ProtectedRoute> },
+            { path: "my-wishlist", element: <ProtectedRoute roles={["BUYER"]} > <Wishlist /> </ProtectedRoute> },
+            { path: "all-sellers", element: <ProtectedRoute roles={["ADMIN"]}> <AllSellers /> </ProtectedRoute> },
+            { path: "all-buyers", element: <ProtectedRoute roles={["ADMIN"]}> <AllBuyers /> </ProtectedRoute> },
+            { path: "payment/:orderId", element: <ProtectedRoute roles={["BUYER"]}> <Payment /> </ProtectedRoute> },
         ],
     },
 ]);

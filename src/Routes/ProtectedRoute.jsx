@@ -1,30 +1,36 @@
-import React, {useEffect} from 'react';
+import React from "react";
 import useStore from "hooks/useStore";
 import Loader from "components/Loader/Loader";
-import {Navigate} from "react-router-dom";
+import { Navigate } from "react-router-dom";
+
+import useCookieTokenValidate from "hooks/useCookieTokenValidate";
 
 const ProtectedRoute = (props) => {
-    const {role} = props
-    let allRoles = ["SELLER", "BUYER", "ADMIN"]
+    const { roles } = props;
 
-    const [{state: { auth, isAuthLoaded }}] = useStore()
+    const [
+        {
+            state: { auth, isAuthLoaded },
+        },
+    ] = useStore();
 
-    if(!isAuthLoaded){
-        return <Loader title="Please wait your role checking. Soon redirect" size={40} className="fixed top-1/4 left-1/2 transform -translate-x-1/2" />
+    let [tokenData, isServerLoading] = useCookieTokenValidate(auth);
+
+    if (!isAuthLoaded || isServerLoading) {
+        return (
+            <Loader
+                title="Please wait your role checking. Soon redirect"
+                size={40}
+                className="fixed top-1/4 left-1/2 transform -translate-x-1/2"
+            />
+        );
     }
 
-    if(auth && !role && allRoles.includes(auth.role)){
-        // all authenticate user can access route
-        return props.children
-
-    } else if (auth && role === auth.role) {
-        // specific role can access these route
-        return props.children
-
+    if (auth && tokenData && roles.includes(tokenData.role)) {
+        return props.children;
     } else {
         return <Navigate to="/login" state={location.pathname} />;
     }
 };
-
 
 export default ProtectedRoute;

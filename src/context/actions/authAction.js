@@ -11,7 +11,7 @@ import axios from "../../axios";
 import firebaseErrorCatch from "../../utils/firebaseErrorCatch";
 
 // user login action
-export function loginAction(auth, userData, dispatch) {
+export function loginAction(auth, userData) {
     return new Promise(async (resolve, reject) => {
         try {
             let userCredential = await signInWithEmailAndPassword(auth, userData.email, userData.password);
@@ -32,7 +32,7 @@ export function loginAction(auth, userData, dispatch) {
 }
 
 // user registration process
-export function registrationAction(auth, userData, dispatch) {
+export function registrationAction(auth, userData) {
     return new Promise(async (resolve, reject) => {
         const { firstName, lastName, avatarUrl, role, phone, email, password, address, location } = userData;
 
@@ -52,7 +52,7 @@ export function registrationAction(auth, userData, dispatch) {
                 address,
                 location,
                 googleId: "",
-                isEntry: true, // for true it not generate token. just put user data in users collection
+                isEntry: true, // for true, it not generates token. just put user data in users collection
             });
 
             if (!currentUser) {
@@ -71,6 +71,8 @@ export function registrationAction(auth, userData, dispatch) {
             })
                 .then(() => {})
                 .catch((ex) => {});
+
+            currentUser.googleId = userCredential.user.uid
 
             resolve(currentUser);
         } catch (ex) {

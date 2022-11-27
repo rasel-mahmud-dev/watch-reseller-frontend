@@ -93,6 +93,9 @@ const Navigation = () => {
                 navigate("/search");
             }
         } catch (ex) {}
+        finally {
+            setOpenMobileSearchbar(false)
+        }
     }
 
     return (
@@ -145,6 +148,13 @@ const Navigation = () => {
                             )
                         )}
                     </div>
+
+
+                    <a className="block md:hidden cursor-pointer pl-4" onClick={handleOpenMobileSearchbar}>
+                        <BiSearch className="text-2xl" />
+                    </a>
+
+
                     <div className="flex-none">
                         {auth && (
                             <div
@@ -153,8 +163,8 @@ const Navigation = () => {
                                 onMouseLeave={closeAuthDropdown}
                                 onClick={() => setOpenAuthMenu(!openAuthMenu)}
                             >
-                                <div className="w-14 h-10 flex justify-center items-center">
-                                    <Avatar src={auth.avatar} username={auth.username} className="ml-4" />
+                                <div className=" flex justify-center items-center">
+                                    <Avatar imgClass="w-9 h-9" src={auth.avatar} username={auth.username} className="ml-2" />
                                 </div>
 
                                 <Dropdown isOpen={openAuthMenu}>
@@ -188,9 +198,6 @@ const Navigation = () => {
                         )}
                     </div>
                     <div className="flex items-center">
-                        <a className="block md:hidden cursor-pointer" onClick={handleOpenMobileSearchbar}>
-                            <BiSearch className="text-xl" />
-                        </a>
                         {!auth && (
                             <div>
                                 <Button theme="primary" className="ml-4 login-btn">
@@ -204,8 +211,8 @@ const Navigation = () => {
                                 </a>
                             </div>
                         )}
-                        <div className="pl-8">
-                            <div className="flex items-center block sm:hidden fixed top-6 right-4 z-1000">
+                        <div className="block sm:hidden pl-8">
+                            <div className="flex items-center fixed top-6 right-4 z-1000">
                                 <div className="pl-3">
                                     <img
                                         onClick={toggleNavigation}

@@ -13,6 +13,7 @@ import {
 
 import { onAuthStateChanged } from "firebase/auth";
 import reducer from "./reducer";
+import {useLocation} from "react-router-dom";
 
 export let dispatch;
 
@@ -30,13 +31,15 @@ function AppProvider(props) {
     const [state, dispatchState] = useReducer(reducer, initialState);
     dispatch = dispatchState;
 
+    // const location = useLocation();
+
     const auth = getAuth();
 
     const actions = {
         googleSignInAction: () => googleSignInAction(auth),
         signOutAction: (dispatch) => signOutAction(auth, dispatch),
-        loginAction: (userData) => loginAction(auth, userData, dispatch),
-        registrationAction: (userData) => registrationAction(auth, userData, dispatch),
+        loginAction: (userData) => loginAction(auth, userData),
+        registrationAction: (userData) => registrationAction(auth, userData),
         toggleSidebar: ()=>{
             dispatch({
                 type: "TOGGLE_SIDEBAR"
@@ -70,6 +73,7 @@ function AppProvider(props) {
 
                 if (currentUser) {
                     dispatch({ type: "LOGIN", payload: currentUser });
+                    // console.log(location.state)
                 } else {
                     // backend server error
                     dispatch({ type: "LOGOUT" });

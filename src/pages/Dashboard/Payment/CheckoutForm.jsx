@@ -6,7 +6,7 @@ import Button from "components/Button/Button";
 import toast from "react-hot-toast";
 import Modal from "components/Modal/Modal";
 import Loader from "components/Loader/Loader";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function CheckoutForm({ order }) {
     const stripe = useStripe();
@@ -68,13 +68,12 @@ function CheckoutForm({ order }) {
         }
 
         // check if already pay or not
-        let isPaid = await checkPaymentStatus(order._id)
+        let isPaid = await checkPaymentStatus(order._id);
         if (isPaid) {
             setHttpResponse({ loading: false, message: "Already You Pay for this Product" });
             toast.success("Already You Pay for this Product");
             return;
         }
-
 
         // Use elements.getElement to get a reference to the mounted Element.
         const cardElement = elements.getElement(CardElement);
@@ -137,7 +136,7 @@ function CheckoutForm({ order }) {
 
                 setTimeout(() => {
                     setHttpResponse({ loading: false, message: "" });
-                    navigate("/dashboard/my-orders", { state: {updateId: order._id} })
+                    navigate("/dashboard/my-orders", { state: { updateId: order._id } });
                 }, 800);
 
                 toast.success("Your payment has been completed");

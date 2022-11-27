@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 import catchErrorMessage from "utils/catchErrorMessage";
 import useScrollTop from "hooks/useScrollTop";
 import SEO from "components/SEO/SEO";
+import Loader from "components/Loader/Loader";
 
 const Login = () => {
     const [
@@ -31,11 +32,7 @@ const Login = () => {
 
     const loginSession = useRef(null);
 
-    const [httpResponse, setHttpResponse] = useState({
-        isSuccess: false,
-        message: "",
-        loading: false,
-    });
+    const [requestLoading, setRequestLoading] = useState(false);
 
     const data = {
         email: {
@@ -73,7 +70,7 @@ const Login = () => {
 
     async function handleLogin(e) {
         e.preventDefault();
-        setHttpResponse((p) => ({ ...p, loading: false, message: "" }));
+        setRequestLoading(false);
 
         let isCompleted = true;
         // check validation before submit form
@@ -93,53 +90,33 @@ const Login = () => {
         if (!isCompleted) {
             setErrors(tempErrors);
             toast.error(errorMessage);
-            setHttpResponse((p) => ({ ...p, loading: false, message: "" }));
             return;
         }
 
-        setHttpResponse((p) => ({ ...p, loading: true }));
+        setRequestLoading(true);
         try {
             let result = await loginAction(userInput);
             loginSession.current = true;
-            setHttpResponse((p) => ({ ...p, loading: false }));
         } catch (ex) {
             toast.error(catchErrorMessage(ex));
-            setHttpResponse((p) => ({ ...p, loading: false }));
+        } finally {
+            setRequestLoading(false);
         }
     }
 
-    // after auth change then should be redirect if redirect fail
+    // after auth change then should be redirected
     useEffect(() => {
         if (auth) {
-            console.log(loginSession.current)
-            if (auth._id && loginSession.current) {
-                let redirectPath = location.state || "/";
-
-                if (redirectPath === "/") {
-                    navigate(redirectPath);
-                    loginSession.current = null;
-                } else {
-
-                    redirectPath = "/";
-                    navigate(redirectPath);
-
-                }
-
-                console.log(redirectPath);
+            let redirectPath = location.state || "/";
+            if (loginSession.current) {
+                navigate(redirectPath);
+                loginSession.current = false;
+            } else {
+                // console.log("redirect home")
+                navigate("/");
             }
-
-            // setTimeout(()=>{
-            //     let redirectPath = location.state || "/";
-            // navigate(redirectPath, {replace: true});
-            // redirectPath = "/"
-            // console.log(redirectPath, "---")
-            // }, 2000)
-            // location.state = "/";
         }
-        // return ()=> location.state = "/"
     }, [auth, loginSession.current]);
-
-    console.log(location.state);
 
     function handlePasswordReset(e) {
         e.preventDefault();
@@ -150,7 +127,7 @@ const Login = () => {
         return (
             <Modal title="Reset Password" className="max-w-sm" id="password-reset-modal">
                 <form onSubmit={handlePasswordReset} className="mt-4 text-dark-300">
-                    <HttpResponse state={httpResponse} />
+                    <HttpResponse state={{ loading: requestLoading }} />
 
                     <InputGroup
                         type="text"
@@ -171,16 +148,15 @@ const Login = () => {
 
             <SEO title="Login" />
 
-            <Link to={"/login"} state={"/dashboard/all-buyers"}>
-                Dahsb sdaaaaaaaaaaaaaaaaaaa
-            </Link>
+            <Modal className="max-w-sm !top-1/3" isOpen={requestLoading}>
+                <Loader size={30} title="Login Processing, Please wait." />
+            </Modal>
 
             <div className="mt-12">
                 <div className="max-w-md mx-auto shadow-xxs rounded p-4 bg-white m-3 mt-4 rounded-xl">
                     <form onSubmit={handleLogin}>
                         <h1 className="text-center text-3xl text-dark-900 font-semibold">Login</h1>
 
-                        <HttpResponse state={httpResponse} />
                         {Object.keys(data).map((key, i) => (
                             <InputGroup error={errors[key]} {...data[key]} className="mt-3" />
                         ))}
@@ -203,10 +179,17 @@ const Login = () => {
 
                         <Button className="mt-4 w-full">Login</Button>
                         <div className="divider text-dark-100 text-sm py-2">OR</div>
-                        <SocialLogin />
+
+                        {/**** social login button */}
+                        <SocialLogin onCreateLoginSession={() => (loginSession.current = true)} />
+
                         <p className="text-center  mb-4 mt-6 text-dark-300">
                             Not a member
-                            <Link to="/registration" className="font-medium !text-primary-500 text-link ml-2 ">
+                            <Link
+                                to="/registration"
+                                state={location.state}
+                                className="font-medium !text-primary-500 text-link ml-2 "
+                            >
                                 Sign up now
                             </Link>
                         </p>

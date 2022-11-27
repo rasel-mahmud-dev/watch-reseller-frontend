@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 import catchErrorMessage from "utils/catchErrorMessage";
 import {useLocation, useNavigate} from "react-router-dom";
 
-const SocialLogin = () => {
+const SocialLogin = ({onCreateLoginSession}) => {
     const [{ state, actions }]  = useStore();
 
     const location = useLocation();
@@ -16,10 +16,7 @@ const SocialLogin = () => {
         try {
             let user = await actions.googleSignInAction()
             if(user) {
-
-                let redirectPath = location.state || "/";
-                if (redirectPath === "/login") redirectPath = "/"
-                navigate(redirectPath, {replace: true});
+                onCreateLoginSession && onCreateLoginSession()
             } else {
                 toast.error("Google Login fail");
             }
