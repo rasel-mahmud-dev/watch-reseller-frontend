@@ -21,7 +21,9 @@ const initialState = {
     isAuthLoaded: false,
     name: "",
     isOpenSidebar: false,
-    wishlist: []
+    wishlist: [],
+    searchProducts: [],
+    searchValue: ""
 };
 
 function AppProvider(props) {

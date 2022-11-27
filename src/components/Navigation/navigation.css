@@ -64,3 +64,21 @@
     color: var(--primary-500)!important;
     font-weight: 500;
 }
+
+@media screen and (max-width: 400px) {
+    .login-btn{
+        display: none;
+    }.login-icon{
+         /*display: block;*/
+     }
+
+}
+@media screen and (min-width: 400px) {
+    .login-icon{
+        display: none;
+    }
+}
+
+.login-btn{
+     /*display: none !important;*/
+ }

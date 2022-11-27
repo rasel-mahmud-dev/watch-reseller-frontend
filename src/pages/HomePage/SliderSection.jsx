@@ -58,9 +58,15 @@ const SliderSection = () => {
                                     <h1 className="slider-title leading-tight  max-w-xl font-medium text-5xl text-white">{item.title}</h1>
                                     <p className="slider-para max-w-md mt-5 text-light-200">{item.desc}</p>
                                     <div className="mt-10 flex gap-4">
+                                        <a href="/#advertise-product">
                                         <Button theme="primary" className="slider-button">Shop Now</Button>
+
+                                        </a>
+                                        <a href="/#category-section">
+
                                         <Button theme="primary-outline" className="slider-button ">Discover
                                             More</Button>
+                                        </a>
                                     </div>
 
                                 </div>

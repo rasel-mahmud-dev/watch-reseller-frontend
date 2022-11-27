@@ -11,7 +11,7 @@ const CategorySection = () => {
     let {data: categories, isLoading, isError, error, } = fetchCategories()
 
     return (
-        <section className="section">
+        <section className="section" id="category-section">
 
             <div className="container">
 

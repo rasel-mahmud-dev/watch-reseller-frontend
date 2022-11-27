@@ -22,7 +22,7 @@ const AdvertiseProducts = () => {
     }
 
     return (
-        <section className="section">
+        <section className="section" id="advertise-product">
             <div className="container">
                 <h6 className="section_sub-title">Advertises for you</h6>
                 <h1 className="section_title">Best Advertises products</h1>

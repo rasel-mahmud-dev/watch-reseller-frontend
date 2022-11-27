@@ -1,7 +1,6 @@
 import axios, { backend } from "app/axios";
 import { useQuery } from "@tanstack/react-query";
 
-
 export function fetchProductForCategory(categoryId) {
     return useQuery({
         queryKey: ["products", categoryId],
@@ -98,4 +97,10 @@ export function deleteProductAction(_id) {
             resolve(null);
         }
     });
+}
+
+
+/// search product
+export function searchProductAction(text) {
+    return axios.post("/api/v1/product/search", { title: text })
 }

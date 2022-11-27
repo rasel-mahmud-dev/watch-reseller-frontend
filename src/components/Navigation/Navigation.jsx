@@ -1,13 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
-import {Link, NavLink, useLocation, useNavigate} from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import "./navigation.css";
 import { FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
 import usePageScroll from "hooks/usePageScroll";
 import Button from "../Button/Button";
 import useStore from "hooks/useStore";
 import Avatar from "../Avatar/Avatar";
-import { MdSpaceDashboard } from "react-icons/all";
+import { BiSearch, MdSpaceDashboard } from "react-icons/all";
 import Dropdown from "components/Dropdown/Dropdown";
+import SearchProduct from "components/SearchProduct/SearchProduct";
+import { searchProductAction } from "context/actions/productAction";
 
 const Navigation = () => {
     const [
@@ -15,12 +17,17 @@ const Navigation = () => {
             state: { auth },
             actions: { signOutAction },
         },
+        dispatch,
     ] = useStore();
+
+    const navigate = useNavigate();
 
     const [expandNavigation, setExpandNavigation] = useState(false);
     const windowScroll = usePageScroll();
     const [isHomePage, setHomePage] = useState(true);
     const [openAuthMenu, setOpenAuthMenu] = useState(false);
+
+    const [isOpenMobileSearchbar, setOpenMobileSearchbar] = useState(false);
 
     const header = useRef();
     const location = useLocation();
@@ -56,16 +63,36 @@ const Navigation = () => {
 
     const items = [
         { path: "/", label: "Home" },
-        { path: "/", label: "Courses" },
+        // { path: "/", label: "Courses" },
         {
             path: "/blogs",
             label: "Blogs",
         },
-        { path: "/", label: "FAQs" },
+        { path: "/dashboard", label: "Dashboard", private: true },
     ];
 
-    function closeAuthDropdown(){
-        setOpenAuthMenu(false)
+    function closeAuthDropdown() {
+        setOpenAuthMenu(false);
+    }
+
+    function handleOpenMobileSearchbar() {
+        setOpenMobileSearchbar(!isOpenMobileSearchbar);
+    }
+
+    async function handleSearch(e, value) {
+        try {
+            let { status, data } = await searchProductAction(value);
+            if (status === 200) {
+                dispatch({
+                    type: "SET_SEARCH_RESULT",
+                    payload: {
+                        searchProducts: data,
+                        searchValue: value,
+                    },
+                });
+                navigate("/search");
+            }
+        } catch (ex) {}
     }
 
     return (
@@ -73,26 +100,50 @@ const Navigation = () => {
             <div
                 ref={header}
                 className={`navbar top-0 left-0 fixed shadow-md 
-                ${windowScroll < 500 && isHomePage ? "shadow-none navbar-transparent" : "bg-white/40 backdrop-blur-md"}`}
+                ${
+                    windowScroll < 500 && isHomePage ? "shadow-none navbar-transparent" : "bg-white/40 backdrop-blur-md"
+                }`}
             >
                 <div className="container">
-                    <div className="flex-1">
-                        <Link to="/" className="">
+                    <div className="flex">
+                        <Link to="/" className="w-52">
                             {/*<h1 className="text-primary-900 font-bold text-">Reseller-Product</h1>*/}
                             <img src="/logo.png" className="logo" alt="" />
                         </Link>
                     </div>
+
+                    <div className="flex justify-center w-full">
+                        <SearchProduct
+                            onEnter={handleSearch}
+                            onClose={() => setOpenMobileSearchbar(false)}
+                            isOpenMobileSearchbar={isOpenMobileSearchbar}
+                        />
+                    </div>
+
                     <div className={`flex gap-6 items-center main-nav ${expandNavigation ? "expand" : ""}`}>
-                        {items.map((item) => (
-                            <NavLink
-                                end={true}
-                                onClick={() => setExpandNavigation(false)}
-                                to={item.path}
-                                className="font-medium text-base"
-                            >
-                                {item.label}
-                            </NavLink>
-                        ))}
+                        {items.map((item) =>
+                            item.private ? (
+                                auth && (
+                                    <NavLink
+                                        end={true}
+                                        onClick={() => setExpandNavigation(false)}
+                                        to={item.path}
+                                        className="font-medium text-base"
+                                    >
+                                        {item.label}
+                                    </NavLink>
+                                )
+                            ) : (
+                                <NavLink
+                                    end={true}
+                                    onClick={() => setExpandNavigation(false)}
+                                    to={item.path}
+                                    className="font-medium text-base"
+                                >
+                                    {item.label}
+                                </NavLink>
+                            )
+                        )}
                     </div>
                     <div className="flex-none">
                         {auth && (
@@ -100,7 +151,7 @@ const Navigation = () => {
                                 className="relative "
                                 onMouseOver={() => setOpenAuthMenu(true)}
                                 onMouseLeave={closeAuthDropdown}
-                                onClick={()=>setOpenAuthMenu(!openAuthMenu)}
+                                onClick={() => setOpenAuthMenu(!openAuthMenu)}
                             >
                                 <div className="w-14 h-10 flex justify-center items-center">
                                     <Avatar src={auth.avatar} username={auth.username} className="ml-4" />
@@ -117,34 +168,51 @@ const Navigation = () => {
                                     <div className="mt-2">
                                         <li className="pt-1 flex items-center gap-x-1 hover:text-primary-500">
                                             <MdSpaceDashboard className="text-xl text-dark-400" />
-                                            <Link onClick={closeAuthDropdown} to={`/dashboard`}>Dashboard</Link>
+                                            <Link onClick={closeAuthDropdown} to={`/dashboard`}>
+                                                Dashboard
+                                            </Link>
                                         </li>
                                         <li
                                             className="pt-1 flex items-center gap-x-1 cursor-pointer hover:text-primary-500"
                                             onClick={handleLogout}
                                         >
-                                            <FaSignOutAlt onClick={closeAuthDropdown} className="text-xl text-dark-400" />
+                                            <FaSignOutAlt
+                                                onClick={closeAuthDropdown}
+                                                className="text-xl text-dark-400"
+                                            />
                                             Logout
                                         </li>
                                     </div>
                                 </Dropdown>
-
                             </div>
                         )}
                     </div>
                     <div className="flex items-center">
+                        <a className="block md:hidden cursor-pointer" onClick={handleOpenMobileSearchbar}>
+                            <BiSearch className="text-xl" />
+                        </a>
                         {!auth && (
-                            <Button theme="primary" className="ml-4">
-                                <NavLink to="/login" state={location.pathname} className="flex items-center">
-                                    <FaSignInAlt />
-                                    <span className="ml-1">Login</span>
-                                </NavLink>
-                            </Button>
+                            <div>
+                                <Button theme="primary" className="ml-4 login-btn">
+                                    <Link to="/login" state={location.pathname} className="flex items-center">
+                                        <FaSignInAlt />
+                                        <span className="ml-1">Login</span>
+                                    </Link>
+                                </Button>
+                                <a href="" className="px-1 ml-2 login-icon block">
+                                    <FaSignInAlt className="text-xl" />
+                                </a>
+                            </div>
                         )}
                         <div className="pl-8">
                             <div className="flex items-center block sm:hidden fixed top-6 right-4 z-1000">
                                 <div className="pl-3">
-                                    <img onClick={toggleNavigation} className="bar-icon w-6" src="/Group-3.svg " alt=""/>
+                                    <img
+                                        onClick={toggleNavigation}
+                                        className="bar-icon w-6"
+                                        src="/Group-3.svg "
+                                        alt=""
+                                    />
                                     {/*<HiBars4 className="bar-icon text-dark-700 text-2xl" onClick={toggleNavigation} />*/}
                                 </div>
                             </div>

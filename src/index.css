@@ -68,6 +68,8 @@
     --b3: 180 2% 90%;
     --bc: 215 28% 17%;
 
+    scroll-behavior: smooth;
+
 }
 
 body {

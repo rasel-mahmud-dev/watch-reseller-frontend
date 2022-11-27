@@ -22,6 +22,7 @@ const AllBuyers = lazy(()=>import( "pages/Dashboard/Admin/AllBuyers"));
 const Payment = lazy(()=>import( "pages/Dashboard/Payment/Payment"));
 
 const Blogs = lazy(()=>import( "pages/Blogs/Blogs"));
+const SearchProducts = lazy(()=>import( "pages/SearchProducts/SearchProducts"));
 
 
 
@@ -39,6 +40,7 @@ const router = createBrowserRouter([
                 element: <ProtectedRoute><CategoryProducts /></ProtectedRoute>
             },
             { path: "blogs", element: <Blogs /> },
+            { path: "search", element: <SearchProducts /> },
 
         ],
     },
