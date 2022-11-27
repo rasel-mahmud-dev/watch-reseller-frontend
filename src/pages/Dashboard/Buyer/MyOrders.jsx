@@ -9,7 +9,7 @@ import Table from "components/Table/Table";
 import SidebarButton from "components/SidebarButton/SidebarButton";
 import { deleteOrderAction, fetchOrdersAction } from "context/actions/orderAction";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {Link, useLocation} from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const MyOrders = () => {
     const [
@@ -20,37 +20,37 @@ const MyOrders = () => {
 
     const location = useLocation();
 
+    const navigate = useNavigate();
+
     const { data: orders } = fetchOrdersAction();
     const queryClient = useQueryClient();
-
 
     // Define a mutation cache delete and update order without refetch data
     const mutation = useMutation((payload) => payload, {
         onSuccess: (payload) => {
             queryClient.setQueryData(["orders"], (prev) => {
-                if(payload.type === "delete"){
+                if (payload.type === "delete") {
                     return prev.filter((item) => item._id !== payload.data);
-                } else if(payload.type === "update"){
+                } else if (payload.type === "update") {
                     let itemIndex = prev.findIndex((item) => item._id === payload.data);
-                    if(itemIndex !== -1){
-                        let update = [...prev]
-                        update[itemIndex].isPaid = true
-                        return update
+                    if (itemIndex !== -1) {
+                        let update = [...prev];
+                        update[itemIndex].isPaid = true;
+                        return update;
                     }
                 }
             });
         },
     });
 
-    useEffect(()=>{
-        if(location.state?.updateId){
-                mutation.mutate({
-                    data: location.state?.updateId,
-                    type: "update"
-                });
+    useEffect(() => {
+        if (location.state?.updateId) {
+            mutation.mutate({
+                data: location.state?.updateId,
+                type: "update",
+            });
         }
-    }, [location.state])
-
+    }, [location.state]);
 
     const deleteOrderId = useRef();
     const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
@@ -63,7 +63,7 @@ const MyOrders = () => {
                 toast.success("Order has been deleted.");
                 mutation.mutate({
                     data: deleteOrderId.current,
-                    type: "delete"
+                    type: "delete",
                 });
             } else {
                 toast.error("Order delete fail.");
@@ -99,7 +99,7 @@ const MyOrders = () => {
         {
             title: "Meeting Address",
             dataIndex: "meetingAddress",
-            className: "whitespace-nowrap"
+            className: "whitespace-nowrap",
         },
         {
             title: "Payment",
@@ -119,12 +119,15 @@ const MyOrders = () => {
             dataIndex: "",
             render: (_, order) => (
                 <div className="flex items-center gap-x-2">
-                    <Link to={`/dashboard/payment/${order._id}`}>
-                        <Button className="flex items-center px-2">
-                            <MdOutlineAttachMoney className="text-lg" />
-                            Pay
-                        </Button>
-                    </Link>
+                    <Button
+                        onClick={()=>navigate(`/dashboard/payment/${order._id}`)}
+                        className="flex items-center px-2"
+                        disable={order.isPaid}
+                    >
+                        <MdOutlineAttachMoney className="text-lg" />
+                        Pay
+                    </Button>
+
                     <Button
                         onClick={() => {
                             setOpenConfirmationModal(true);

@@ -138,7 +138,7 @@ function CheckoutForm({ order }) {
                 setTimeout(() => {
                     setHttpResponse({ loading: false, message: "" });
                     navigate("/dashboard/my-orders", { state: {updateId: order._id} })
-                }, 500);
+                }, 800);
 
                 toast.success("Your payment has been completed");
             }

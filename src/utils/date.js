@@ -12,15 +12,15 @@ export function compareDate(oldDateString, currentDateString= new Date() ){
     let now = currentDateString
 
     let out = ""
-    let year = now.getFullYear() - purchaseYear
+    let year = Math.abs(now.getFullYear() - purchaseYear)
     if(year){
         out = year + "y:"
     }
-    let month = now.getMonth() - purchaseMonth
+    let month = Math.abs(now.getMonth() - purchaseMonth)
     if(month){
         out += month +"m:"
     }
-    let day = now.getDay() - purchaseDay
+    let day = Math.abs(now.getDay() - purchaseDay)
     if(day){
         out += day +"d "
     }

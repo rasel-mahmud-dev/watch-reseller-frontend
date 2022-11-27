@@ -5,17 +5,28 @@ import Loader from "components/Loader/Loader";
 import useStore from "hooks/useStore";
 import { fetchProductForCategory } from "context/actions/productAction";
 import BookingModal from "pages/Shared/BookingModal";
+import {addToWishListProductAction, fetchWishlistProductsAction} from "context/actions/wishlistAction";
 
 const CategoryProducts = () => {
     const { id } = useParams();
-
     const [
         {
-            state: { auth },
-        },
+            state: { auth, wishlist },
+        }, dispatch
+
     ] = useStore();
 
     const { isLoading, error, data: products } = fetchProductForCategory(id);
+
+    useEffect(()=>{
+        if(wishlist && wishlist.length > 0) return;
+        fetchWishlistProductsAction().then(items=>{
+            dispatch({
+                type: "FETCH_WISHLIST",
+                payload: items
+            }).catch(ex=>{})
+        })
+    }, [])
 
     const [bookingData, setBookingData] = useState(null);
 
@@ -26,6 +37,19 @@ const CategoryProducts = () => {
     function handleClose(){
         setBookingData(null)
     }
+
+   async function handleAddToWishList(productId){
+        try {
+            let data = await addToWishListProductAction(productId)
+            dispatch({
+                type: "ADD_WISHLIST",
+                payload: data
+            })
+        }   catch (ex){
+
+        }
+    }
+
 
     return (
         <div className="container py-6">
@@ -41,7 +65,7 @@ const CategoryProducts = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-5 mt-6">
                 {products?.map((product) => (
-                    <Product onClick={() => handleBookingClick(product)} product={product} key={product._id} />
+                    <Product wishlist={wishlist} onAddToWishlist={handleAddToWishList} onClick={() => handleBookingClick(product)} product={product} key={product._id} />
                 ))}
             </div>
         </div>

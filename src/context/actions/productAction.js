@@ -51,7 +51,6 @@ export function addProductAction(productDate) {
     });
 }
 
-
 export function fetchAdvertiseProducts() {
     return useQuery({
         queryKey: ["advertises"],
@@ -85,8 +84,6 @@ export function addToAdvertiseProductAction(productId) {
         }
     });
 }
-
-
 
 export function deleteProductAction(_id) {
     return new Promise(async (resolve, _) => {
