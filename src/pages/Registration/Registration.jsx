@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import validator from "utils/validator";
 import { BiGlobe, BiLocationPlus, BiPhone, BsGoogle, FcAddImage, FiLock, FiMail } from "react-icons/all";
 import { HiOutlineUser } from "react-icons/hi";
@@ -20,11 +20,12 @@ const Registration = () => {
 
     const [
         {
-            state,
+            state: { auth },
             actions: { registrationAction },
         },
-        dispatch,
     ] = useStore();
+
+    const loginSession = useRef();
 
     const location = useLocation();
 
@@ -227,19 +228,26 @@ const Registration = () => {
                 password: userInput.password,
                 location: userInput.location,
             });
-
-            let redirectPath = location.state?.from || "/";
             toast.success("Your are registered");
-
-            navigate(redirectPath, { replace: true });
-
-            setHttpResponse({ ...httpResponse, loading: false });
         } catch (ex) {
             toast.error(catchErrorMessage(ex));
         } finally {
             setHttpResponse((p) => ({ ...p, loading: false }));
         }
     }
+
+    // after auth change then should be redirect if redirect fail
+    useEffect(() => {
+        // if (auth) {
+        //     let redirectPath = location.state || "/";
+        //     if (redirectPath === "/login") redirectPath = "/";
+        //     navigate(redirectPath, { replace: true });
+        //     location.state = "/"
+        // }
+
+
+
+    }, [auth]);
 
     return (
         <div className="container">

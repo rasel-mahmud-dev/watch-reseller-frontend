@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import Product from "components/Product/Product";
 import Loader from "components/Loader/Loader";
 import useStore from "hooks/useStore";
-import { fetchProductForCategory, makeOrderAction } from "context/actions/productAction";
+import { fetchProductForCategory } from "context/actions/productAction";
 import BookingModal from "pages/Shared/BookingModal";
 
 const CategoryProducts = () => {

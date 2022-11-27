@@ -17,7 +17,7 @@ const SocialLogin = () => {
             let user = await actions.googleSignInAction()
             if(user) {
 
-                let redirectPath = location.state?.from || "/";
+                let redirectPath = location.state || "/";
                 if (redirectPath === "/login") redirectPath = "/"
                 navigate(redirectPath, {replace: true});
             } else {

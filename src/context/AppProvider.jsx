@@ -44,8 +44,11 @@ function AppProvider(props) {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user) {
+                let name = user?.displayName.split(" ") || []
                 let userData = {
                     username: user.displayName,
+                    firstName: name[0],
+                    lastName: name[1],
                     email: user.email,
                     googleId: user.uid,
                     avatar: user?.photoURL,

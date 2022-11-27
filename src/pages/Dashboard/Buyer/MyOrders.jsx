@@ -1,14 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import Avatar from "components/Avatar/Avatar";
 import Button from "components/Button/Button";
-import { deleteOrderAction, fetchOrdersAction } from "context/actions/productAction";
 import useStore from "hooks/useStore";
-import { AiFillDelete, MdDelete, MdOutlineAttachMoney, RiEditBoxLine } from "react-icons/all";
+import { MdDelete, MdOutlineAttachMoney, RiEditBoxLine } from "react-icons/all";
 import toast from "react-hot-toast";
 import ActionModal from "components/ActionModal/ActionModal";
 import Table from "components/Table/Table";
-import Circle from "components/Circle/Circle";
 import SidebarButton from "components/SidebarButton/SidebarButton";
+import { deleteOrderAction, fetchOrdersAction } from "context/actions/orderAction";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
 
 const MyOrders = () => {
     const [
@@ -17,7 +18,17 @@ const MyOrders = () => {
         },
     ] = useStore();
 
-    const { data: orders, refetch } = fetchOrdersAction();
+    const { data: orders } = fetchOrdersAction();
+    const queryClient = useQueryClient();
+
+    // Define a mutation for delete and update order without refetch data
+    const mutation = useMutation((id) => id, {
+        onSuccess: (id) => {
+            queryClient.setQueryData(["orders"], (prev) => {
+                return prev.filter((item) => item._id !== id);
+            });
+        },
+    });
 
     const deleteOrderId = useRef();
     const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
@@ -26,14 +37,10 @@ const MyOrders = () => {
         if (isYes) {
             let isDeleted = deleteOrderAction(deleteOrderId.current);
             if (isDeleted) {
-                toast.success("Product has been deleted.");
-                refetch()
-                    .then((r) => {})
-                    .catch((ex) => {
-                        console.log(ex);
-                    });
+                toast.success("Order has been deleted.");
+                mutation.mutate(deleteOrderId.current);
             } else {
-                toast.error("Product delete fail.");
+                toast.error("Order delete fail.");
             }
         } else {
             deleteOrderId.current = null;
@@ -85,11 +92,13 @@ const MyOrders = () => {
             title: "actions",
             dataIndex: "",
             render: (_, order) => (
-                <div className="flex items-center gap-x-1">
-                    <Button className="flex items-center px-2">
-                        <MdOutlineAttachMoney className="text-lg" />
-                        Pay Now
-                    </Button>
+                <div className="flex items-center gap-x-2">
+                    <Link to={`/dashboard/payment/${order._id}`}>
+                        <Button className="flex items-center px-2">
+                            <MdOutlineAttachMoney className="text-lg" />
+                            Pay
+                        </Button>
+                    </Link>
                     <Button
                         onClick={() => {
                             setOpenConfirmationModal(true);
@@ -127,7 +136,7 @@ const MyOrders = () => {
             </ActionModal>
 
             <div className="card">
-                <Table fixed={true} scroll={{ x: 600, y: "80vh" }} columns={columns} dataSource={orders} />
+                <Table fixed={true} scroll={{ x: 600, y: "80vh" }} columns={columns} dataSource={orders ?? []} />
             </div>
         </div>
     );

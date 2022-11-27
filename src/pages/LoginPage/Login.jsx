@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./login.css";
 import validator from "utils/validator";
 import { BsGoogle, FiLock, FiMail } from "react-icons/all";
@@ -17,7 +17,7 @@ import useScrollTop from "hooks/useScrollTop";
 const Login = () => {
     const [
         {
-            state,
+            state: { auth },
             actions: { loginAction },
         },
         dispatch,
@@ -27,6 +27,8 @@ const Login = () => {
 
     const location = useLocation();
     const navigate = useNavigate();
+
+    const loginSession = useRef(null);
 
     const [httpResponse, setHttpResponse] = useState({
         isSuccess: false,
@@ -97,15 +99,46 @@ const Login = () => {
         setHttpResponse((p) => ({ ...p, loading: true }));
         try {
             let result = await loginAction(userInput);
+            loginSession.current = true;
             setHttpResponse((p) => ({ ...p, loading: false }));
-            let redirectPath = location.state?.from || "/";
-            if(redirectPath === "/login") redirectPath = "/"
-            navigate(redirectPath, { replace: true });
         } catch (ex) {
             toast.error(catchErrorMessage(ex));
             setHttpResponse((p) => ({ ...p, loading: false }));
         }
     }
+
+    // after auth change then should be redirect if redirect fail
+    useEffect(() => {
+        if (auth) {
+            console.log(loginSession.current)
+            if (auth._id && loginSession.current) {
+                let redirectPath = location.state || "/";
+
+                if (redirectPath === "/") {
+                    navigate(redirectPath);
+                    loginSession.current = null;
+                } else {
+
+                    redirectPath = "/";
+                    navigate(redirectPath);
+
+                }
+
+                console.log(redirectPath);
+            }
+
+            // setTimeout(()=>{
+            //     let redirectPath = location.state || "/";
+            // navigate(redirectPath, {replace: true});
+            // redirectPath = "/"
+            // console.log(redirectPath, "---")
+            // }, 2000)
+            // location.state = "/";
+        }
+        // return ()=> location.state = "/"
+    }, [auth, loginSession.current]);
+
+    console.log(location.state);
 
     function handlePasswordReset(e) {
         e.preventDefault();
@@ -134,6 +167,11 @@ const Login = () => {
     return (
         <div className="container">
             {renderPasswordResetModal()}
+
+            <Link to={"/login"} state={"/dashboard/all-buyers"}>
+                Dahsb
+            </Link>
+
             <div className="mt-12">
                 <div className="max-w-md mx-auto shadow-xxs rounded p-4 bg-white m-3 mt-4 rounded-xl">
                     <form onSubmit={handleLogin}>

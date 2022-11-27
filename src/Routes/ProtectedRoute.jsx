@@ -22,7 +22,7 @@ const ProtectedRoute = (props) => {
         return props.children
 
     } else {
-        return <Navigate to="/login" state={{ from: location.pathname }} />;
+        return <Navigate to="/login" state={location.pathname} />;
     }
 };
 

@@ -10,6 +10,8 @@
     "host": "firebase deploy --only hosting"
   },
   "dependencies": {
+    "@stripe/react-stripe-js": "^1.15.0",
+    "@stripe/stripe-js": "^1.44.1",
     "@tanstack/react-query": "^4.16.1",
     "axios": "^1.2.0",
     "daisyui": "^2.41.0",

@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import {Link, NavLink, useLocation, useNavigate} from "react-router-dom";
 import "./navigation.css";
 import { FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
-import { HiBars4 } from "react-icons/hi2";
 import usePageScroll from "hooks/usePageScroll";
 import Button from "../Button/Button";
 import useStore from "hooks/useStore";
@@ -11,7 +10,6 @@ import { MdSpaceDashboard } from "react-icons/all";
 import Dropdown from "components/Dropdown/Dropdown";
 
 const Navigation = () => {
-    const navigate = useNavigate();
     const [
         {
             state: { auth },
@@ -25,6 +23,7 @@ const Navigation = () => {
     const [openAuthMenu, setOpenAuthMenu] = useState(false);
 
     const header = useRef();
+    const location = useLocation();
 
     function toggleNavigation() {
         setExpandNavigation(!expandNavigation);
@@ -136,7 +135,7 @@ const Navigation = () => {
                     <div className="flex items-center">
                         {!auth && (
                             <Button theme="primary" className="ml-4">
-                                <NavLink to="/login" className="flex items-center">
+                                <NavLink to="/login" state={location.pathname} className="flex items-center">
                                     <FaSignInAlt />
                                     <span className="ml-1">Login</span>
                                 </NavLink>
@@ -145,7 +144,7 @@ const Navigation = () => {
                         <div className="pl-8">
                             <div className="flex items-center block sm:hidden fixed top-6 right-4 z-1000">
                                 <div className="pl-3">
-                                    <img onClick={toggleNavigation} className="bar-icon w-6" src="/Group-3.svg "/>
+                                    <img onClick={toggleNavigation} className="bar-icon w-6" src="/Group-3.svg " alt=""/>
                                     {/*<HiBars4 className="bar-icon text-dark-700 text-2xl" onClick={toggleNavigation} />*/}
                                 </div>
                             </div>

@@ -4,12 +4,10 @@ import HttpResponse from "components/HttpResponse/HttpResponse";
 import InputGroup from "components/InputGroup/InputGroup";
 import Button from "components/Button/Button";
 import toast from "react-hot-toast";
-import { makeOrderAction } from "context/actions/productAction";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
+import {makeOrderAction} from "context/actions/orderAction";
 
 const BookingModal = ({ auth, bookingData, onClose }) => {
-
-
     const [httpResponse, setHttpResponse] = useState({
         isSuccess: false,
         message: "",
@@ -26,7 +24,6 @@ const BookingModal = ({ auth, bookingData, onClose }) => {
     });
 
     useEffect(() => {
-        console.log(bookingData)
         if (bookingData && auth) {
             setUserInput((prevState) => ({
                 ...prevState,
@@ -103,10 +100,10 @@ const BookingModal = ({ auth, bookingData, onClose }) => {
 
             if (result) {
                 toast.success("Your order has been place, Please Pay it.");
-                setBookingData(null);
             } else {
                 toast.success("Your create fail.");
             }
+            onClose();
         } catch (ex) {
             toast.error("Your order place fail");
         } finally {
@@ -116,7 +113,7 @@ const BookingModal = ({ auth, bookingData, onClose }) => {
 
     return (
         <div>
-            <Modal className={`!max-w-md ${!auth ? '!top-1/4' : '' }`} isOpen={bookingData} onClose={onClose}>
+            <Modal className={`!max-w-md ${!auth ? "!top-1/4" : ""}`} isOpen={bookingData} onClose={onClose}>
                 {!auth ? (
                     <div>
                         <h1 className="text-center text-xl text-dark-900 font-semibold pb-2">
@@ -124,6 +121,16 @@ const BookingModal = ({ auth, bookingData, onClose }) => {
                         </h1>
                         <Button className="block mx-auto">
                             <Link to="/login">Login</Link>
+                        </Button>
+                    </div>
+                ) : auth.role !== "BUYER" ? (
+                    <div className="text-center">
+                        <h1 className="text-xl text-dark-900 font-semibold">
+                            Your Are {auth.role}
+                        </h1>
+                        <p className="mb-4">Please Login with Buyer Account</p>
+                        <Button className="block mx-auto">
+                            <Link to="/login">Login Buyer Account</Link>
                         </Button>
                     </div>
                 ) : (
