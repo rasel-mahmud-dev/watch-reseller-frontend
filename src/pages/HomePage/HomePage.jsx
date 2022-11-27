@@ -1,6 +1,7 @@
 import React, {lazy, useEffect} from 'react';
 import "./homePage.css"
 import SliderSection from "./SliderSection";
+import SEO from "components/SEO/SEO";
 
 
 const  CategorySection = lazy(()=>import("./CategorySection"));
@@ -11,6 +12,7 @@ const  AdvertiseProducts = lazy(()=>import("pages/HomePage/AdvertiseProducts"));
 const HomePage = () => {
     return (
         <div>
+            <SEO title="HomePage" />
             <SliderSection />
             <CategorySection />
             <AdvertiseProducts />

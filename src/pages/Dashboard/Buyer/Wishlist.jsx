@@ -10,6 +10,7 @@ import SidebarButton from "components/SidebarButton/SidebarButton";
 import { deleteWishlistAction } from "context/actions/wishlistAction";
 import { fetchWishlistProductsAction } from "context/actions/wishlistAction";
 import BookingModal from "pages/Shared/BookingModal";
+import SEO from "components/SEO/SEO";
 
 const Wishlist = () => {
     const [
@@ -117,10 +118,11 @@ const Wishlist = () => {
         },
     ];
 
-    console.log(bookingData)
+
 
     return (
-        <div>
+        <div className="page">
+            <SEO title="My Wishlist" />
             <SidebarButton>
                 <h1 className="page-section-title !my-0">My Wishlist ({wishlist?.length})</h1>
             </SidebarButton>

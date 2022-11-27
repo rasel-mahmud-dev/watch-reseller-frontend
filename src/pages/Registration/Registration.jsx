@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import validator from "utils/validator";
 import { BiGlobe, BiLocationPlus, BiPhone, BsGoogle, FcAddImage, FiLock, FiMail } from "react-icons/all";
 import { HiOutlineUser } from "react-icons/hi";
@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 import imageUpload from "utils/imageUpload";
 import catchErrorMessage from "utils/catchErrorMessage";
 import useScrollTop from "hooks/useScrollTop";
+import SEO from "components/SEO/SEO";
 
 const Registration = () => {
     useScrollTop();
@@ -252,6 +253,8 @@ const Registration = () => {
     return (
         <div className="container">
             <div className="mt-4">
+
+                <SEO title="Registration" />
                 <div className="max-w-xl mx-auto  rounded p-4 m-3 mt-4 rounded-xl">
                     <form onSubmit={handleLogin}>
                         <h1 className="text-center text-3xl text-dark-900 font-semibold">Registration Form</h1>

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./login.css";
 import validator from "utils/validator";
 import { BsGoogle, FiLock, FiMail } from "react-icons/all";
@@ -13,6 +13,7 @@ import SocialLogin from "components/SocialLogin/SocialLogin";
 import toast from "react-hot-toast";
 import catchErrorMessage from "utils/catchErrorMessage";
 import useScrollTop from "hooks/useScrollTop";
+import SEO from "components/SEO/SEO";
 
 const Login = () => {
     const [
@@ -168,8 +169,10 @@ const Login = () => {
         <div className="container">
             {renderPasswordResetModal()}
 
+            <SEO title="Login" />
+
             <Link to={"/login"} state={"/dashboard/all-buyers"}>
-                Dahsb
+                Dahsb sdaaaaaaaaaaaaaaaaaaa
             </Link>
 
             <div className="mt-12">

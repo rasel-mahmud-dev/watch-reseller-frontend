@@ -6,6 +6,7 @@ import axios from "app/axios";
 import { useNavigate, useParams } from "react-router-dom";
 import SidebarButton from "components/SidebarButton/SidebarButton";
 import Avatar from "components/Avatar/Avatar";
+import SEO from "components/SEO/SEO";
 
 const stripePromise = loadStripe(import.meta.env.VITE_APP_STRIPE_PUBLIC_KEY);
 
@@ -61,6 +62,9 @@ const Payment = () => {
             <SidebarButton>
                 <h1 className="page-section-title !my-0">Payment With Card</h1>
             </SidebarButton>
+
+            <SEO title="Payment" />
+
             <div className="grid grid-cols-1 md:grid-cols-12 flex-wrap gap-4 pb-20">
                 <div className="card col-span-7">
                     <Elements stripe={stripePromise}>

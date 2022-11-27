@@ -5,7 +5,11 @@
 
 .sidebar {
     --sidebar-width: 260px;
-    @apply h-screen;
+    max-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    min-height: 700px;
     position: sticky;
     top: var(--header-height);
     width: var(--sidebar-width);
@@ -53,6 +57,7 @@
         position: fixed;
         left: calc(var(--sidebar-width) * -1) !important;
         top: var(--header-height);
+        height: 110%;
     }
     .dashboard-wrapper .content {
         padding: 0 16px;

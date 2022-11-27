@@ -23,6 +23,7 @@ import catchErrorMessage from "utils/catchErrorMessage";
 import {fetchCategories} from "context/actions/categoryAction";
 import {addProductAction} from "context/actions/productAction";
 import SidebarButton from "components/SidebarButton/SidebarButton";
+import SEO from "components/SEO/SEO";
 
 const AddProduct = () => {
     const [
@@ -273,7 +274,9 @@ const AddProduct = () => {
     }
 
     return (
-        <div className="">
+        <div className="page">
+
+            <SEO title="Add Product" />
 
             <SidebarButton>
                 <h1 className="section_title !my-0">Add Product</h1>

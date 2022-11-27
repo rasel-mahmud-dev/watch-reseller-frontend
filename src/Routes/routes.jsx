@@ -21,6 +21,8 @@ const AllSellers = lazy(()=>import( "pages/Dashboard/Admin/AllSellers"));
 const AllBuyers = lazy(()=>import( "pages/Dashboard/Admin/AllBuyers"));
 const Payment = lazy(()=>import( "pages/Dashboard/Payment/Payment"));
 
+const Blogs = lazy(()=>import( "pages/Blogs/Blogs"));
+
 
 
 const router = createBrowserRouter([
@@ -36,6 +38,7 @@ const router = createBrowserRouter([
                 path: "category/:id",
                 element: <ProtectedRoute><CategoryProducts /></ProtectedRoute>
             },
+            { path: "blogs", element: <Blogs /> },
 
         ],
     },

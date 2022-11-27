@@ -10,6 +10,7 @@ import SidebarButton from "components/SidebarButton/SidebarButton";
 import { deleteOrderAction, fetchOrdersAction } from "context/actions/orderAction";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import SEO from "components/SEO/SEO";
 
 const MyOrders = () => {
     const [
@@ -167,7 +168,10 @@ const MyOrders = () => {
     ];
 
     return (
-        <div>
+        <div className="page">
+
+            <SEO title="My Orders"  />
+
             <SidebarButton>
                 <h1 className="page-section-title !my-0">My Orders ({orders?.length})</h1>
             </SidebarButton>

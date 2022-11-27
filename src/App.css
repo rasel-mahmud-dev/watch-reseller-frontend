@@ -41,3 +41,19 @@ input:-webkit-autofill:focus {
     background: var(--primary-500);
     color: white;
  }
+
+.slot-root{
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+
+}
+.slot{
+    flex-grow: 1;
+}
+.page{
+    @apply pb-14;
+}

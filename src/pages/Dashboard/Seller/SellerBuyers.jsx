@@ -3,6 +3,8 @@ import Avatar from "components/Avatar/Avatar";
 import { fetchSellerBuyers } from "context/actions/userAction";
 import date from "utils/date";
 import Table from "components/Table/Table";
+import SEO from "components/SEO/SEO";
+import SidebarButton from "components/SidebarButton/SidebarButton";
 
 const SellerBuyers = () => {
     const { data: buyers } = fetchSellerBuyers();
@@ -27,8 +29,12 @@ const SellerBuyers = () => {
     ];
 
     return (
-        <div>
-            <h1 className="page-section-title">My Buyers</h1>
+        <div className="page">
+
+            <SEO title="Add Product" />
+            <SidebarButton>
+                <h1 className="page-section-title !my-0">My Buyers</h1>
+            </SidebarButton>
 
             {!buyers || buyers.length === 0 ? (
                 <h2 className="section_title-2">No buyer buy your product yet</h2>

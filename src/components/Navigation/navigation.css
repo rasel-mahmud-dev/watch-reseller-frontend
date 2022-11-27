@@ -58,3 +58,9 @@
 .header-height{
     height: var(--header-height);
 }
+
+
+.active{
+    color: var(--primary-500)!important;
+    font-weight: 500;
+}

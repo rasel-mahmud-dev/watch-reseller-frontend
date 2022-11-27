@@ -43,17 +43,23 @@ const DashboardLayout = () => {
 
 
     return (
-        <>
-            <Navigation />
-            <div className="container dashboard-wrapper flex !px-0 ">
-                <div className={`backdrop ${isOpenSidebar ? "backdrop-open" : ""}`} onClick={toggleSidebar}></div>
-                <Sidebar activeItem={activeItem} sidebarLink={sidebarLinks} className={`sidebar ${isOpenSidebar ? "sidebar-open" : ""}`} />
-                <div className="content">
-                    <Outlet />
+        <div className="slot-root">
+            <div className="slot">
+                <Navigation />
+                <div className="container dashboard-wrapper flex !px-0 ">
+                    <div className={`backdrop ${isOpenSidebar ? "backdrop-open" : ""}`} onClick={toggleSidebar}></div>
+                    <Sidebar
+                        activeItem={activeItem}
+                        sidebarLink={sidebarLinks}
+                        className={`sidebar ${isOpenSidebar ? "sidebar-open" : ""}`}
+                    />
+                    <div className="content">
+                        <Outlet />
+                    </div>
                 </div>
             </div>
-            <Footer />
-        </>
+                <Footer />
+        </div>
     );
 };
 
