@@ -1,11 +1,10 @@
 import React from 'react';
 import useStore from "hooks/useStore";
 import {Link} from "react-router-dom";
-import {CgUser, FaProductHunt} from "react-icons/all";
 import "./sidebar.css"
 import Avatar from "components/Avatar/Avatar";
 
-const Sidebar = ({sidebarLink, ...attr}) => {
+const Sidebar = ({sidebarLink, activeItem=0, ...attr}) => {
 
     const [{state: { auth }}]  = useStore();
 
@@ -19,9 +18,9 @@ const Sidebar = ({sidebarLink, ...attr}) => {
                 </div>
 
                 <div className="flex flex-col mt-2">
-                    {sidebarLink?.map(item=>(
+                    {sidebarLink?.map((item, i)=>(
                         item.roles.includes(auth?.role) && (
-                            <Link to={item.to} className="flex items-center gap-x-1 hover:bg-primary-900/10 text-sm font-semibold py-2 px-2 rounded">
+                            <Link key={i} to={item.to} className={`link-item ${activeItem === i ? "active-item": ""}`}>
                                 {item.icon}
                                 {item.label}
                             </Link>
