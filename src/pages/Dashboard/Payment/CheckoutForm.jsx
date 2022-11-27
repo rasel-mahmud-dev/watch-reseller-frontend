@@ -1,14 +1,19 @@
 import useStore from "hooks/useStore";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { CardElement, Elements, useStripe, useElements } from "@stripe/react-stripe-js";
 import axios from "app/axios";
 import Button from "components/Button/Button";
 import toast from "react-hot-toast";
+import Modal from "components/Modal/Modal";
+import Loader from "components/Loader/Loader";
+import {useNavigate} from "react-router-dom";
 
 function CheckoutForm({ order }) {
     const stripe = useStripe();
     const elements = useElements();
     const [clientSecret, setClientSecret] = useState("");
+
+    const navigate = useNavigate();
 
     const [
         {
@@ -17,37 +22,72 @@ function CheckoutForm({ order }) {
     ] = useStore();
 
     useEffect(() => {
-        if(order) {
+        if (order) {
             axios
                 .post("/api/v1/payment/create-payment-intent", {
                     price: order.price,
                 })
-                .then(({data}) => setClientSecret(data.clientSecret));
+                .then(({ data }) => setClientSecret(data.clientSecret));
         }
     }, [order]);
+
+    const [httpResponse, setHttpResponse] = useState({
+        isSuccess: false,
+        message: "",
+        loading: false,
+    });
+
+    function checkPaymentStatus(orderId) {
+        return new Promise(async (resolve) => {
+            try {
+                let { data } = await axios.get("/api/v1/order/" + orderId);
+                if (data.isPaid) {
+                    resolve(true);
+                } else {
+                    resolve(false);
+                }
+            } catch (ex) {
+                resolve(false);
+            }
+        });
+    }
 
     const handleSubmit = async (event) => {
         // We don't want to let default form submission happen here,
         // which would refresh the page.
         event.preventDefault();
 
+        setHttpResponse({ loading: true, message: "" });
+
         if (!stripe || !elements) {
             // Stripe.js has not yet loaded.
             // Make sure to disable form submission until Stripe.js has loaded.
             // return;
-            return toast.success("Payment create fail. Please reload page and try again to hit pay button")
+            setHttpResponse((p) => ({ loading: false, message: "" }));
+            return toast.error("Payment create fail. Please reload page and try again to hit pay button");
         }
+
+        // check if already pay or not
+        let isPaid = await checkPaymentStatus(order._id)
+        if (isPaid) {
+            setHttpResponse({ loading: false, message: "Already You Pay for this Product" });
+            toast.success("Already You Pay for this Product");
+            return;
+        }
+
 
         // Use elements.getElement to get a reference to the mounted Element.
         const cardElement = elements.getElement(CardElement);
         if (cardElement === null) {
             // alert("missing card Element");
-            return toast.success("Payment create fail. Please reload page and try again to hit pay button")
+            setHttpResponse((p) => ({ loading: false, message: "" }));
+            return toast.error("Payment create fail. Please reload page and try again to hit pay button");
         }
 
         if (!clientSecret) {
             // alert("missing payment intendes client secret  ");
-            return toast.success("Payment create fail. Please reload page and try again to hit pay button")
+            setHttpResponse((p) => ({ loading: false, message: "" }));
+            return toast.error("Payment create fail. Please reload page and try again to hit pay button");
         }
 
         const result = await stripe.createPaymentMethod({
@@ -57,7 +97,8 @@ function CheckoutForm({ order }) {
 
         if (result.error) {
             // console.log(result.error);
-            return toast.success("Payment create fail. Please reload page and try again to hit pay button")
+            setHttpResponse((p) => ({ loading: false, message: "" }));
+            return toast.error("Payment create fail. Please reload page and try again to hit pay button");
         }
 
         let { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
@@ -72,7 +113,8 @@ function CheckoutForm({ order }) {
         });
 
         if (error) {
-            return toast.success("Payment create fail. Please reload page and try again to hit pay button")
+            setHttpResponse((p) => ({ loading: false, message: "" }));
+            return toast.error("Payment create fail. Please reload page and try again to hit pay button");
         }
 
         if (paymentIntent.status === "succeeded") {
@@ -88,35 +130,65 @@ function CheckoutForm({ order }) {
             // send request for creating order and transaction record
             let payResponse = await axios.post("/api/v1/payment/pay", payment);
             if (payResponse.status === 201) {
-                toast.success("Your payment has been completed")
+                setHttpResponse({ loading: false, message: "" });
+                setTimeout(() => {
+                    setHttpResponse({ loading: false, message: "Your payment has been completed" });
+                }, 300);
+
+                setTimeout(() => {
+                    setHttpResponse({ loading: false, message: "" });
+                    navigate("/dashboard/my-orders", { state: {updateId: order._id} })
+                }, 500);
+
+                toast.success("Your payment has been completed");
             }
         }
     };
 
+    function handleCloseBackdrop() {
+        if (order && !httpResponse.loading && httpResponse.message) {
+            setHttpResponse({ loading: false, message: "" });
+        }
+    }
+
     return (
-        <form onSubmit={handleSubmit} className=" w-full mx-auto rounded-lg bg-primary-50/10 px-6 py-3">
-            <CardElement
-                options={{
-                    iconStyle: "solid",
-                    style: {
-                        base: {
-                            iconColor: "#5cbeff",
-                            color: "#3b3b3b",
-                            fontSize: "16px",
+        <div>
+            <Modal
+                className="max-w-sm"
+                isOpen={httpResponse.loading || httpResponse.message}
+                onClose={handleCloseBackdrop}
+            >
+                {httpResponse.message ? (
+                    <p className="py-5 text-primary-600 font-medium text-center">{httpResponse.message}</p>
+                ) : (
+                    <Loader size={30} title="Payment Processing, Please wait." />
+                )}
+            </Modal>
+
+            <form onSubmit={handleSubmit} className=" w-full mx-auto rounded-lg bg-primary-50/10 px-6 py-3">
+                <CardElement
+                    options={{
+                        iconStyle: "solid",
+                        style: {
+                            base: {
+                                iconColor: "#5cbeff",
+                                color: "#3b3b3b",
+                                fontSize: "16px",
+                            },
+                            invalid: {
+                                iconColor: "#ff4e85",
+                                color: "#ff4e85",
+                            },
                         },
-                        invalid: {
-                            iconColor: "#ff4e85",
-                            color: "#ff4e85",
-                        },
-                    },
-                }}
-                className="w-full"
-            />
-            <Button className="mt-10 " type="submit" disable={!(clientSecret && stripe && elements)}>
-                Pay Now
-            </Button>
-        </form>
+                    }}
+                    className="w-full"
+                />
+                <Button className="mt-10 " type="submit" disable={!(clientSecret && stripe && elements)}>
+                    Pay Now
+                </Button>
+            </form>
+        </div>
     );
 }
 
-export default CheckoutForm
+export default CheckoutForm;
