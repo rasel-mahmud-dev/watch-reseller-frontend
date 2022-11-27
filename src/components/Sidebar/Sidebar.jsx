@@ -6,7 +6,13 @@ import Avatar from "components/Avatar/Avatar";
 
 const Sidebar = ({sidebarLink, activeItem=0, ...attr}) => {
 
-    const [{state: { auth }}]  = useStore();
+    const [{state: { auth }}, dispatch]  = useStore();
+
+    function handleCloseSidebar(){
+        dispatch({
+            type: "TOGGLE_SIDEBAR",
+        })
+    }
 
     return (
         <div {...attr}>
@@ -20,7 +26,7 @@ const Sidebar = ({sidebarLink, activeItem=0, ...attr}) => {
                 <div className="flex flex-col mt-2">
                     {sidebarLink?.map((item, i)=>(
                         item.roles.includes(auth?.role) && (
-                            <Link key={i} to={item.to} className={`link-item ${activeItem === i ? "active-item": ""}`}>
+                            <Link onClick={handleCloseSidebar} key={i} to={item.to} className={`link-item ${activeItem === i ? "active-item": ""}`}>
                                 {item.icon}
                                 {item.label}
                             </Link>

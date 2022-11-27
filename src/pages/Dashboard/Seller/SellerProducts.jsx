@@ -138,9 +138,12 @@ const SellerProducts = () => {
                 </div>
             </ActionModal>
 
+            {!products || products.length === 0 ? (
+                <h2 className="section_title-2">No product added you</h2>
+            ) : (
             <div className="card">
                 <Table fixed={true} scroll={{ x: 900, y: "80vh" }} columns={columns} dataSource={products} />
-            </div>
+            </div>)}
 
         </div>
     );

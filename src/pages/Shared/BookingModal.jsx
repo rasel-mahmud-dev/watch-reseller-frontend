@@ -30,7 +30,7 @@ const BookingModal = ({ auth, bookingData, onClose }) => {
                 username: auth.username,
                 email: auth.email,
                 title: bookingData.title,
-                price: bookingData.resalePrice,
+                price: bookingData.resalePrice || bookingData.price,
             }));
         }
     }, [auth, bookingData]);
@@ -43,7 +43,7 @@ const BookingModal = ({ auth, bookingData, onClose }) => {
     const data = {
         username: {
             label: "Seller Name",
-            name: "usename",
+            name: "username",
             disabled: true,
         },
         email: {

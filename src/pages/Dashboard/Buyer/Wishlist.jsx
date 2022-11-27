@@ -8,9 +8,8 @@ import ActionModal from "components/ActionModal/ActionModal";
 import Table from "components/Table/Table";
 import SidebarButton from "components/SidebarButton/SidebarButton";
 import { deleteWishlistAction } from "context/actions/wishlistAction";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Link, useLocation } from "react-router-dom";
 import { fetchWishlistProductsAction } from "context/actions/wishlistAction";
+import BookingModal from "pages/Shared/BookingModal";
 
 const Wishlist = () => {
     const [
@@ -19,6 +18,7 @@ const Wishlist = () => {
         },
         dispatch,
     ] = useStore();
+
 
     useEffect(() => {
         if (wishlist && wishlist.length > 0) return;
@@ -29,6 +29,20 @@ const Wishlist = () => {
             }).catch((ex) => {});
         });
     }, []);
+
+
+    const [bookingData, setBookingData] = useState(null);
+
+    function handleBookingClick(wishItem) {
+        setBookingData({
+            ...wishItem,
+            _id: wishItem.productId,
+        });
+    }
+
+    function handleClose(){
+        setBookingData(null)
+    }
 
     const deleteWishItemId = useRef(null);
     const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
@@ -59,7 +73,7 @@ const Wishlist = () => {
             title: "image",
             dataIndex: "picture",
             className: "",
-            render: (picture) => <Avatar imgClass="!rounded-none" className="w-20" src={picture} username="" />,
+            render: (picture) => <Avatar imgClass="!rounded-none" className="w-14" src={picture} username="" />,
         },
         { title: "title", dataIndex: "title", tdClass: "min-w-[200px]" },
         {
@@ -77,18 +91,21 @@ const Wishlist = () => {
         {
             title: "actions",
             dataIndex: "",
-            render: (_, product) => (
+            render: (_, wishItem) => (
                 <div className="flex items-center gap-x-2">
-                    <Link to={`/dashboard/payment/${product._id}`}>
-                        <Button className="flex items-center" disable={product.isSold}>
-                            Order
-                        </Button>
-                    </Link>
+
+                    <Button
+                        className="flex items-center"
+                        disable={wishItem.isSold}
+                        onClick={()=>handleBookingClick(wishItem)}>
+                        Order
+                    </Button>
+
                     <Button
                         onClick={() => {
-                            setOpenConfirmationModal(true);
-                            deleteWishItemId.current = product._id;
-                        }}
+                            deleteWishItemId.current = wishItem._id;
+                            handleDeleteActionHandler(true)}
+                        }
                         theme="danger"
                         className="flex items-center px-2"
                     >
@@ -100,12 +117,15 @@ const Wishlist = () => {
         },
     ];
 
+    console.log(bookingData)
 
     return (
         <div>
             <SidebarButton>
                 <h1 className="page-section-title !my-0">My Wishlist ({wishlist?.length})</h1>
             </SidebarButton>
+
+            <BookingModal bookingData={bookingData} auth={auth} onClose={handleClose} />
 
             <ActionModal
                 title="Are your sure to delete?"
@@ -121,9 +141,13 @@ const Wishlist = () => {
                 </div>
             </ActionModal>
 
-            <div className="card">
-                <Table fixed={true} scroll={{ x: 600, y: "80vh" }} columns={columns} dataSource={wishlist ?? []} />
-            </div>
+            {!wishlist || wishlist.length === 0 ? (
+                <h2 className="section_title-2">No Product found in Wishlist</h2>
+            ) : (
+                <div className="card">
+                    <Table fixed={true} scroll={{ x: 600, y: "80vh" }} columns={columns} dataSource={wishlist ?? []} />
+                </div>
+            )}
         </div>
     );
 };

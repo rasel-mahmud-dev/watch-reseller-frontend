@@ -42,6 +42,8 @@ export function fetchAllSellers() {
     });
 }
 
+
+// fetch individual seller buyer
 export function fetchSellerBuyers() {
     return useQuery({
         queryKey: ["seller-buyers"],
@@ -61,3 +63,32 @@ export function fetchSellerBuyers() {
     });
 }
 
+
+// for admin toggle seller verify.
+export function makeSellerVerified(sellerId, verifyStatus) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let { data, status } = await axios.patch("/api/v1/auth/seller-verify", { sellerId, verifyStatus });
+            if (status === 201) {
+                resolve(data);
+            }
+        } catch (ex) {
+            reject(ex);
+        }
+    });
+}
+
+
+// for admin seller delete action.
+export function deleteSellerAction(sellerId) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let { data, status } = await axios.delete(`/api/v1/auth/seller-delete/${sellerId}`);
+            if (status === 201) {
+                resolve(data);
+            }
+        } catch (ex) {
+            reject(ex);
+        }
+    });
+}

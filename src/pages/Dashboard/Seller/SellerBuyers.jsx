@@ -30,9 +30,13 @@ const SellerBuyers = () => {
         <div>
             <h1 className="page-section-title">My Buyers</h1>
 
-            <div className="card">
-                <Table fixed={true} scroll={{ x: 900, y: "80vh" }} columns={columns} dataSource={buyers} />
-            </div>
+            {!buyers || buyers.length === 0 ? (
+                <h2 className="section_title-2">No buyer buy your product yet</h2>
+            ) : (
+                <div className="card">
+                    <Table fixed={true} scroll={{ x: 900, y: "80vh" }} columns={columns} dataSource={buyers} />
+                </div>
+            )}
         </div>
     );
 };

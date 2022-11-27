@@ -14,8 +14,9 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 const MyOrders = () => {
     const [
         {
-            state: { auth },
+            state: { auth, wishlist },
         },
+        dispatch,
     ] = useStore();
 
     const location = useLocation();
@@ -44,13 +45,33 @@ const MyOrders = () => {
     });
 
     useEffect(() => {
+
         if (location.state?.updateId) {
+
             mutation.mutate({
                 data: location.state?.updateId,
                 type: "update",
             });
+
+
+            // also update wishlist product sales status from wishlist context state
+            if(wishlist && wishlist.length > 0) {
+                let order = orders.find((order) => order._id === location.state?.updateId);
+                if (order) {
+                    let updateWishlist = [...wishlist]
+                    let wistItemIndex = updateWishlist.findIndex((wish) => wish.productId === order.productId);
+                    if (wistItemIndex !== -1 && updateWishlist[wistItemIndex]) {
+                        updateWishlist[wistItemIndex].isSold = true;
+                        dispatch({
+                            type: "FETCH_WISHLIST",
+                            payload: updateWishlist,
+                        })
+                    }
+                }
+            }
         }
     }, [location.state]);
+
 
     const deleteOrderId = useRef();
     const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
@@ -81,7 +102,7 @@ const MyOrders = () => {
             title: "image",
             dataIndex: "picture",
             className: "",
-            render: (picture) => <Avatar imgClass="!rounded-none" className="w-20" src={picture} username="" />,
+            render: (picture) => <Avatar imgClass="!rounded-none" className="w-14" src={picture} username="" />,
         },
         { title: "title", dataIndex: "title", tdClass: "min-w-[200px]" },
         {
@@ -119,8 +140,9 @@ const MyOrders = () => {
             dataIndex: "",
             render: (_, order) => (
                 <div className="flex items-center gap-x-2">
+                    <button onClick={()=>change(order)}>Change</button>
                     <Button
-                        onClick={()=>navigate(`/dashboard/payment/${order._id}`)}
+                        onClick={() => navigate(`/dashboard/payment/${order._id}`)}
                         className="flex items-center px-2"
                         disable={order.isPaid}
                     >
@@ -164,9 +186,13 @@ const MyOrders = () => {
                 </div>
             </ActionModal>
 
-            <div className="card">
-                <Table fixed={true} scroll={{ x: 600, y: "80vh" }} columns={columns} dataSource={orders ?? []} />
-            </div>
+            {!orders || orders.length === 0 ? (
+                <h2 className="section_title-2">No Order found</h2>
+            ) : (
+                <div className="card">
+                    <Table fixed={true} scroll={{ x: 600, y: "80vh" }} columns={columns} dataSource={orders ?? []} />
+                </div>
+            )}
         </div>
     );
 };
