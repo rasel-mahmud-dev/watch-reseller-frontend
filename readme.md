@@ -5,7 +5,20 @@
 
 ### Github Repo: https://github.com/programming-hero-web-course-4/b612-used-products-resale-clients-side-rasel-mahmud-dev
 
-### Live site: https://watch-reseller.web.app
+### Live site: https://watch-reseller.web.app 
+
+### admin user 
+Email: admin@admin.com \
+password: 123456
+
+### seller user
+Email: raju@sarker.com \
+password: 123456
+
+### buyer user
+Email: test@buyer.com \
+password: 123456
+
 
 
 ## Application Features

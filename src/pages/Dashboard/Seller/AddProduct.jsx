@@ -195,8 +195,8 @@ const AddProduct = () => {
     const [errors, setErrors] = useState({});
 
     useEffect(() => {
-        if (!productId) return;
-        fetchProductDetail(productId).then((product) => {
+        if (productId) {
+            fetchProductDetail(productId).then((product) => {
             if (product) {
                 updateProductData.current = product;
                 setUserInput({
@@ -214,7 +214,7 @@ const AddProduct = () => {
                 });
             }
         });
-
+        }
         if (!categories) {
             fetchCategoriesAction(dispatch)
         }
@@ -290,13 +290,14 @@ const AddProduct = () => {
                 purchaseDate: userInput.purchaseDate,
             };
 
+            if (uploadResult) {
+                productData.picture = uploadResult.data.url;
+            } else if(updateProductData.current.picture) {
+                productData.picture = updateProductData.current.picture;
+            }
+
             if (productId) {
                 productData.productId = productId;
-                if (uploadResult) {
-                    productData.picture = uploadResult.data.url;
-                } else {
-                    productData.picture = updateProductData.current.picture;
-                }
             }
 
             let result = await addProductAction(productData);

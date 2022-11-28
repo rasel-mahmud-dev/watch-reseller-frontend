@@ -24,7 +24,7 @@ const SearchProducts = () => {
                     {searchProducts.map((product) => (
                         <div className="card " key={product._id}>
                             <div className="mx-auto">
-                                <Avatar src={product.picture} className="!w-24" alt={product.title} />
+                                <Avatar imgClass="!rounded-none" src={product.picture} className="product-thumb" alt={product.title} />
                             </div>
                             <h2 className="font-semibold text-sm text-dark-900  mt-4">
                                 {product.title?.length > 50 ? product.title?.substring(0, 50) + "..." : product.title}

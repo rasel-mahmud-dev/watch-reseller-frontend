@@ -1,8 +1,9 @@
 import React from "react";
 import Avatar from "components/Avatar/Avatar";
-import { AiFillHeart, BiCurrentLocation, BiHeart, FaHeart, MdVerified, VscVerified } from "react-icons/all";
+import {  BiCurrentLocation,  FaHeart, MdVerified } from "react-icons/all";
 import Button from "components/Button/Button";
-import { compareDate } from "utils/date";
+import { compareDate } from "utils/date"
+import  "./style.css"
 
 const Product = ({ product, onAddToWishlist, wishlist = [], onClick }) => {
     const {
@@ -27,7 +28,7 @@ const Product = ({ product, onAddToWishlist, wishlist = [], onClick }) => {
     return (
         <div className="card">
             <div className="mx-auto">
-                <Avatar src={picture} className="!w-24" alt={title} />
+                <Avatar imgClass="!rounded-none" src={picture} className="product-thumb" alt={title} />
             </div>
             <h2 className="font-semibold text-sm text-dark-900  mt-4">
                 {title?.length > 50 ? title?.substring(0, 50) + "..." : title}
