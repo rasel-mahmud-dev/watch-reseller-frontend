@@ -24,7 +24,6 @@ const initialState = {
     isOpenSidebar: false,
     wishlist: [],
     searchProducts: [],
-    searchValue: "",
     categories: null
 };
 

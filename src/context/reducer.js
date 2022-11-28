@@ -33,8 +33,7 @@ function reducer(state, action) {
         case "SET_SEARCH_RESULT":
             return {
                 ...state,
-                searchProducts: action.payload.searchProducts,
-                searchValue: action.payload.searchValue,
+                searchProducts: action.payload
             };
 
         case "LOGOUT":

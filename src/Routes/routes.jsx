@@ -42,7 +42,7 @@ const router = createBrowserRouter([
                 element: <ProtectedRoute roles={["SELLER", "ADMIN", "BUYER"]}><CategoryProducts /></ProtectedRoute>
             },
             { path: "blogs", element: <Blogs /> },
-            { path: "search", element: <SearchProducts /> },
+            { path: "search/*", element: <SearchProducts /> },
 
         ],
     },

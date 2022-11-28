@@ -3,7 +3,7 @@ import Avatar from "components/Avatar/Avatar";
 import {  BiCurrentLocation,  FaHeart, MdVerified } from "react-icons/all";
 import Button from "components/Button/Button";
 import { compareDate } from "utils/date"
-import  "./style.css"
+
 
 const Product = ({ product, onAddToWishlist, wishlist = [], onClick }) => {
     const {

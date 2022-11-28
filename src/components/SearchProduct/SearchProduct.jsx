@@ -1,11 +1,13 @@
 import React from "react";
 import { BiSearch } from "react-icons/all";
-import "./style.css";
+import "./style.css"
 
 const SearchProduct = ({ onEnter, isOpenMobileSearchbar, onClose }) => {
     function handleSubmit(e) {
         e.preventDefault();
-        onEnter(e, e.target.search.value);
+        onEnter && onEnter(e, e.target.search.value);
+        e.target.search.value = "";
+        onClose && onClose()
     }
 
     function searchbar() {
@@ -28,8 +30,9 @@ const SearchProduct = ({ onEnter, isOpenMobileSearchbar, onClose }) => {
         <div>
             <div
                 onClick={() => isOpenMobileSearchbar && onClose()}
-                className={`search-backdrop ${isOpenMobileSearchbar ? "search-backdrop_open" : ""}`}
-            ></div>
+                className={`search-backdrop ${isOpenMobileSearchbar ? "search-backdrop_open" : ""}`}>
+
+            </div>
 
             <div className={` ${isOpenMobileSearchbar ? "mobile-searchbar--open" : ""} mobile-searchbar`}>
                 {searchbar()}

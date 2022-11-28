@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import {Link, NavLink, useLocation, useNavigate, useSearchParams} from "react-router-dom";
 import "./navigation.css";
 import { FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
 import usePageScroll from "hooks/usePageScroll";
@@ -21,7 +21,6 @@ const Navigation = () => {
     ] = useStore();
 
     const navigate = useNavigate();
-
     const [expandNavigation, setExpandNavigation] = useState(false);
     const windowScroll = usePageScroll();
     const [isHomePage, setHomePage] = useState(true);
@@ -79,20 +78,19 @@ const Navigation = () => {
         setOpenMobileSearchbar(!isOpenMobileSearchbar);
     }
 
-    async function handleSearch(e, value) {
+    async function handleSearch(_, value) {
         try {
             let { status, data } = await searchProductAction(value);
             if (status === 200) {
                 dispatch({
                     type: "SET_SEARCH_RESULT",
-                    payload: {
-                        searchProducts: data,
-                        searchValue: value,
-                    },
+                    payload: data,
                 });
-                navigate("/search");
+                navigate(`/search?text=${value}`)
             }
-        } catch (ex) {}
+        } catch (ex) {
+
+        }
         finally {
             setOpenMobileSearchbar(false)
         }

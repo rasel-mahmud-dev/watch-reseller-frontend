@@ -33,7 +33,8 @@ password: 123456
   if they are not permitted then simply them push home or login route
  <br/> 
  <br/>
-- And also render dashboard sidebar navigation based on role.
+- And also render dashboard sidebar link based on role.
+- Also user can quickly find product by search 
 
 
 

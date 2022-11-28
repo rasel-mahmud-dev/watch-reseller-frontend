@@ -1,9 +1,11 @@
-import React from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useParams, useSearchParams } from "react-router-dom";
 import useStore from "hooks/useStore";
 import Avatar from "components/Avatar/Avatar";
 import { compareDate } from "utils/date";
-import { BiCurrentLocation } from "react-icons/all";
+import { BiCurrentLocation, FaTimes, TiTimes } from "react-icons/all";
+import { searchProductAction } from "context/actions/productAction";
+import Circle from "components/Circle/Circle";
 
 const SearchProducts = () => {
     const { id } = useParams();
@@ -11,12 +13,57 @@ const SearchProducts = () => {
         {
             state: { searchProducts, searchValue },
         },
+        dispatch,
     ] = useStore();
+
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    let value = searchParams.get("text");
+
+    useEffect(() => {
+        (async function () {
+            let val = "";
+            try {
+                if (value == null || value == "") {
+                    val = "";
+                } else {
+                    val = value;
+                }
+                let { status, data } = await searchProductAction(val);
+                if (status === 200) {
+                    dispatch({
+                        type: "SET_SEARCH_RESULT",
+                        payload: data,
+                    });
+                }
+            } catch (ex) {
+            } finally {
+                setSearchParams({ text: val });
+            }
+        })();
+    }, []);
+
+    function handleClearSearch() {
+        setSearchParams({ text: "" });
+        searchProductAction("").then(({ status, data }) => {
+            if (status === 200) {
+                dispatch({
+                    type: "SET_SEARCH_RESULT",
+                    payload: data,
+                });
+            }
+        });
+    }
 
     return (
         <div className="container py-6">
-            <h1 className=" flex !text-start">
-                Search Result for <div className="font-semibold ml-2">{searchValue === "" ? "ALL" : searchValue}</div>
+            <h1 className=" flex !text-start justify-between gap-x-2">
+                <div className="flex !text-start">
+                    Search Result for <div className="font-semibold ml-2">{searchValue === "" ? "ALL" : value}</div>
+                </div>
+                <Circle className="w-auto px-2  cursor-pointer" onClick={handleClearSearch}>
+                    <FaTimes className="text-sm" /> <span className="ml-1 text-sm font-medium">Clear Search</span>{" "}
+                </Circle>
             </h1>
 
             {searchProducts && searchProducts.length > 0 && (
@@ -24,7 +71,12 @@ const SearchProducts = () => {
                     {searchProducts.map((product) => (
                         <div className="card " key={product._id}>
                             <div className="mx-auto">
-                                <Avatar imgClass="!rounded-none" src={product.picture} className="product-thumb" alt={product.title} />
+                                <Avatar
+                                    imgClass="!rounded-none"
+                                    src={product.picture}
+                                    className="product-thumb"
+                                    alt={product.title}
+                                />
                             </div>
                             <h2 className="font-semibold text-sm text-dark-900  mt-4">
                                 {product.title?.length > 50 ? product.title?.substring(0, 50) + "..." : product.title}
