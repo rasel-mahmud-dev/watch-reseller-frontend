@@ -4,6 +4,7 @@ import { createBrowserRouter } from "react-router-dom";
 
 import Main from "../Layout/Main";
 import ProtectedRoute from "app/Routes/ProtectedRoute";
+import MyTransactions from "pages/Dashboard/Buyer/MyTransactions";
 
 const HomePage = lazy(()=>import( "../pages/HomePage/HomePage"));
 const LoginPage = lazy(()=>import("../pages/LoginPage/Login"))
@@ -20,6 +21,7 @@ const Wishlist = lazy(()=>import( "pages/Dashboard/Buyer/Wishlist"));
 const AllSellers = lazy(()=>import( "pages/Dashboard/Admin/AllSellers"));
 const AllBuyers = lazy(()=>import( "pages/Dashboard/Admin/AllBuyers"));
 const Payment = lazy(()=>import( "pages/Dashboard/Payment/Payment"));
+const AllTransactions = lazy(()=>import( "pages/Dashboard/Admin/AllTransactions"));
 
 const Blogs = lazy(()=>import( "pages/Blogs/Blogs"));
 const SearchProducts = lazy(()=>import( "pages/SearchProducts/SearchProducts"));
@@ -50,7 +52,9 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />,
         children: [
             { path: "", element: <DashboardHome /> },
+            { path: "update-product/:productId", element: <ProtectedRoute roles={["SELLER"]}> <AddProduct /> </ProtectedRoute> },
             { path: "add-product", element: <ProtectedRoute roles={["SELLER"]}> <AddProduct /> </ProtectedRoute> },
+            { path: "my-transactions", element: <ProtectedRoute roles={["BUYER"]}> <MyTransactions /> </ProtectedRoute> },
             { path: "my-products", element: <ProtectedRoute roles={["SELLER"]}> <SellerProducts /> </ProtectedRoute> },
             { path: "my-buyers", element: <ProtectedRoute roles={["SELLER"]}> <SellerBuyers /> </ProtectedRoute> },
             { path: "my-orders", element: <ProtectedRoute roles={["BUYER"]}> <MyOrders /></ProtectedRoute> },
@@ -58,6 +62,7 @@ const router = createBrowserRouter([
             { path: "all-sellers", element: <ProtectedRoute roles={["ADMIN"]}> <AllSellers /> </ProtectedRoute> },
             { path: "all-buyers", element: <ProtectedRoute roles={["ADMIN"]}> <AllBuyers /> </ProtectedRoute> },
             { path: "payment/:orderId", element: <ProtectedRoute roles={["BUYER"]}> <Payment /> </ProtectedRoute> },
+            { path: "all-transactions", element: <ProtectedRoute roles={["ADMIN"]}> <AllTransactions /> </ProtectedRoute> },
         ],
     },
 ]);

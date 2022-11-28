@@ -7,13 +7,13 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import Avatar from "components/Avatar/Avatar";
 import Rating from "components/Rating/Rating";
 import Loader from "components/Loader/Loader";
-import axios from "app/axios";
+import axiosInstance from "app/axios";
 
 const Testimonials = () => {
     const [testimonials, setTestimonials] = useState(null);
 
     useEffect(() => {
-        axios
+        axiosInstance()
             .get("/api/v1/testimonials")
             .then(({ data, status }) => {
                 if (status === 200) {

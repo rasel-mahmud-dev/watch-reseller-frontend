@@ -29,8 +29,10 @@ const DashboardLayout = () => {
         { label: "My Buyers", roles: ["SELLER"], to: "/dashboard/my-buyers", icon: <Avatar className="w-5" src="/icons/seller.svg" />},
         { label: "My Orders", roles: ["BUYER"], to: "/dashboard/my-orders", icon:  <Avatar className="w-5" src="/icons/cart.svg" />},
         { label: "My Wishlist", roles: ["BUYER"], to: "/dashboard/my-wishlist", icon:  <Avatar className="w-5" src="/icons/wishlist.svg" />},
+        { label: "My Transactions", roles: ["BUYER"], to: "/dashboard/my-transactions", icon: <Avatar className="w-5" src="/icons/transaction.svg" /> },
         { label: "All Sellers", roles: ["ADMIN"], to: "/dashboard/all-sellers", icon: <Avatar className="w-5" src="/icons/seller.svg" />  },
         { label: "All Buyers", roles: ["ADMIN"], to: "/dashboard/all-buyers", icon: <Avatar className="w-5" src="/icons/user.svg" /> },
+        { label: "All Transactions", roles: ["ADMIN"], to: "/dashboard/all-transactions", icon: <Avatar className="w-5" src="/icons/transaction.svg" /> },
     ]
 
 

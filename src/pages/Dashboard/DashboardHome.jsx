@@ -10,7 +10,6 @@ const DashboardHome = () => {
         },
     ] = useStore();
 
-    console.log(auth)
 
     return (
         <div>

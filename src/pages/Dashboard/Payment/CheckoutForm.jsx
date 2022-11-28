@@ -1,12 +1,12 @@
 import useStore from "hooks/useStore";
 import React, { useState, useEffect } from "react";
-import { CardElement, Elements, useStripe, useElements } from "@stripe/react-stripe-js";
-import axios from "app/axios";
+import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import Button from "components/Button/Button";
 import toast from "react-hot-toast";
 import Modal from "components/Modal/Modal";
 import Loader from "components/Loader/Loader";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "app/axios";
 
 function CheckoutForm({ order }) {
     const stripe = useStripe();
@@ -23,9 +23,9 @@ function CheckoutForm({ order }) {
 
     useEffect(() => {
         if (order) {
-            axios
+            axiosInstance()
                 .post("/api/v1/payment/create-payment-intent", {
-                    price: order.price,
+                    price: (order.price * 200), // for stripe
                 })
                 .then(({ data }) => setClientSecret(data.clientSecret));
         }
@@ -40,7 +40,7 @@ function CheckoutForm({ order }) {
     function checkPaymentStatus(orderId) {
         return new Promise(async (resolve) => {
             try {
-                let { data } = await axios.get("/api/v1/order/" + orderId);
+                let { data } = await axiosInstance().get("/api/v1/order/" + orderId);
                 if (data.isPaid) {
                     resolve(true);
                 } else {
@@ -124,10 +124,12 @@ function CheckoutForm({ order }) {
                 productId: order.productId,
                 orderId: order._id,
                 price: order.price,
+                title: order.title,
+                picture: order.picture,
             };
 
             // send request for creating order and transaction record
-            let payResponse = await axios.post("/api/v1/payment/pay", payment);
+            let payResponse = await axiosInstance().post("/api/v1/payment/pay", payment);
             if (payResponse.status === 201) {
                 setHttpResponse({ loading: false, message: "" });
                 setTimeout(() => {

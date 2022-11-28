@@ -28,8 +28,8 @@ function validator(validate, value){
 
     if ("maxFileSize" in validate) {
         // validate for blob file
-        if ("size" in value) {
-            if (value && value.size > (validate?.maxFileSize?.value * 1024)) {
+        if ("maxFileSize" in validate) {
+            if (typeof value === "object" && value && value.size > (validate?.maxFileSize?.value * 1024)) {
                 return validate["maxFileSize"].message + " " + `. This file is ${Math.ceil(Number(value.size) / 1024)}Kb`;
             }
         }

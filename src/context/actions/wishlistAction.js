@@ -1,9 +1,10 @@
-import axios from "app/axios";
+import axiosInstance from "app/axios";
+
 
 export function fetchWishlistProductsAction() {
     return new Promise(async (resolve, reject) => {
         try {
-            let { data, status } = await axios.get("/api/v1/wishlist")
+            let { data, status } = await axiosInstance().get("/api/v1/wishlist")
             if (status === 200) {
                 resolve(data);
             }
@@ -16,7 +17,7 @@ export function fetchWishlistProductsAction() {
 export function addToWishListProductAction(productId) {
     return new Promise(async (resolve, reject) => {
         try {
-            let { data, status } = await axios.post("/api/v1/wishlist", { productId });
+            let { data, status } = await axiosInstance().post("/api/v1/wishlist", { productId });
             if (status === 201) {
                 resolve(data);
             }
@@ -29,7 +30,7 @@ export function addToWishListProductAction(productId) {
 export function deleteWishlistAction(wishId) {
     return new Promise(async (resolve, reject) => {
         try {
-            let { status, data } = await axios.delete("/api/v1/wishlist/" + wishId);
+            let { status, data } = await axiosInstance().delete("/api/v1/wishlist/" + wishId);
             if (status === 201) {
                 resolve(data);
             } else {

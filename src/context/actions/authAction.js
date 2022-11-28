@@ -4,16 +4,18 @@ import {
     signInWithEmailAndPassword,
     GoogleAuthProvider,
     updateProfile,
+    sendPasswordResetEmail,
     signOut,
 } from "firebase/auth";
 
-import axios from "../../axios";
 import firebaseErrorCatch from "../../utils/firebaseErrorCatch";
+import axiosInstance from "app/axios";
 
 // user login action
 export function loginAction(auth, userData) {
     return new Promise(async (resolve, reject) => {
         try {
+            localStorage.removeItem("token")
             let userCredential = await signInWithEmailAndPassword(auth, userData.email, userData.password);
             if (userCredential.user) {
                 resolve(true);
@@ -37,8 +39,8 @@ export function registrationAction(auth, userData) {
         const { firstName, lastName, avatarUrl, role, phone, email, password, address, location } = userData;
 
         try {
-            // first remove token from cookie
-            await removeTokenFromCookie();
+            // first remove token from localstorage
+            localStorage.removeItem("token")
 
             let displayName = firstName + (lastName ? " " + lastName : "");
             let currentUser = await generateAccessTokenAction({
@@ -107,7 +109,7 @@ export function googleSignInAction(auth) {
 export function validateToken() {
     return new Promise(async (resolve) => {
         try {
-            let { status, data } = await axios.get("/api/v1/auth/validate-token");
+            let { status, data } = await axiosInstance().get("/api/v1/auth/validate-token");
             if (status === 200) {
                 resolve(true);
             } else {
@@ -122,9 +124,14 @@ export function validateToken() {
 export function generateAccessTokenAction(payload) {
     return new Promise(async (resolve, reject) => {
         try {
-            let { status, data } = await axios.post("/api/v1/auth/generate-token", payload);
+            let { status, data } = await axiosInstance().post("/api/v1/auth/generate-token", payload);
             if (status === 201) {
-                resolve(data);
+                if(data.token){
+                    localStorage.setItem("token", data.token)
+                    resolve(data.user);
+                } else{
+                    resolve(null);
+                }
             } else {
                 resolve(null);
             }
@@ -137,7 +144,7 @@ export function generateAccessTokenAction(payload) {
 export function getCurrentUserData() {
     return new Promise(async (resolve, _) => {
         try {
-            let { status, data } = await axios.get("/api/v1/auth/get-current-user");
+            let { status, data } = await axiosInstance().get("/api/v1/auth/get-current-user");
             if (status === 200) {
                 resolve(data);
             } else {
@@ -149,15 +156,13 @@ export function getCurrentUserData() {
     });
 }
 
-export function removeTokenFromCookie() {
+
+
+export function passwordResetEmailAction(auth, email) {
     return new Promise(async (resolve, reject) => {
         try {
-            let { status, data } = await axios.get("/api/v1/auth/logout");
-            if (status === 200) {
-                resolve();
-            } else {
-                reject("Logout fail");
-            }
+            let doc = await sendPasswordResetEmail(auth, email);
+            resolve(doc);
         } catch (ex) {
             reject(ex);
         }
@@ -167,11 +172,12 @@ export function removeTokenFromCookie() {
 export function signOutAction(auth, dispatch) {
     return new Promise(async (resolve, _) => {
         try {
-            await removeTokenFromCookie();
-            await signOut(auth).then(() => {
-                dispatch({ type: "LOGOUT" });
-            });
-        } catch (ex) {}
+            localStorage.removeItem("token")
+            dispatch({ type: "LOGOUT" });
+            await signOut(auth)
+        } catch (ex) {
+
+        }
     });
 }
 

@@ -15,7 +15,12 @@
     font-size: 16px;
 }
 
-
+.custom-input-group-disabled textarea,
+.custom-input-group-disabled select,
+.custom-input-group-disabled input{
+    color: #ababab !important;
+    border-color: rgba(192, 192, 192, 0.16) !important;
+}
 
 .custom-input textarea,
 .custom-input select,
@@ -26,7 +31,7 @@
     padding: 7px 10px;
     width: 100%;
     border-radius: 7px;
-    color: #424242 !important;
+    color: #424242;
     font-weight: 400;
     outline: none !important;
 }

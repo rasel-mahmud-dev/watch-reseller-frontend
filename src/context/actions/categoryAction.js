@@ -1,22 +1,28 @@
-import { useQuery } from "@tanstack/react-query";
-import axios from "app/axios";
+import axiosInstance from "app/axios";
 
-export function fetchCategories() {
-    return useQuery({
-        queryKey: ["categories"],
-        queryFn: () => {
-            return axios
-                .get("/api/v1/category")
-                .then(({ data, status }) => {
-                    if (status === 200) {
-                        return data;
-                    }
-                })
-                .catch((ex) => {
-                    throw ex;
+export function fetchCategoriesAction(dispatch) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let { data, status } = await axiosInstance().get("/api/v1/category");
+            if (status === 200) {
+                dispatch({
+                    type: "FETCH_CATEGORIES",
+                    payload: data,
                 });
-        },
-        retry: 2,
+                resolve(data);
+            } else {
+                dispatch({
+                    type: "FETCH_CATEGORIES",
+                    payload: [],
+                });
+                resolve([]);
+            }
+        } catch (ex) {
+            dispatch({
+                type: "FETCH_CATEGORIES",
+                payload: [],
+            });
+            resolve([]);
+        }
     });
 }
-

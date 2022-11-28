@@ -1,4 +1,4 @@
-import axios from "app/axios";
+import axiosInstance from "app/axios";
 import { useQuery } from "@tanstack/react-query";
 
 
@@ -7,7 +7,7 @@ export function fetchAllBuyers() {
     return useQuery({
         queryKey: ["all-buyers"],
         queryFn: () => {
-            return axios
+            return axiosInstance()
                 .get(`/api/v1/auth/buyers`)
                 .then(({ data, status }) => {
                     if (status === 200) {
@@ -27,7 +27,7 @@ export function fetchAllSellers() {
     return useQuery({
         queryKey: ["sellers"],
         queryFn: () => {
-            return axios
+            return axiosInstance()
                 .get(`/api/v1/auth/sellers`)
                 .then(({ data, status }) => {
                     if (status === 200) {
@@ -48,7 +48,7 @@ export function fetchSellerBuyers() {
     return useQuery({
         queryKey: ["seller-buyers"],
         queryFn: () => {
-            return axios
+            return axiosInstance()
                 .get(`/api/v1/auth/seller-buyers`)
                 .then(({ data, status }) => {
                     if (status === 200) {
@@ -68,7 +68,7 @@ export function fetchSellerBuyers() {
 export function makeSellerVerified(sellerId, verifyStatus) {
     return new Promise(async (resolve, reject) => {
         try {
-            let { data, status } = await axios.patch("/api/v1/auth/seller-verify", { sellerId, verifyStatus });
+            let { data, status } = await axiosInstance().patch("/api/v1/auth/seller-verify", { sellerId, verifyStatus });
             if (status === 201) {
                 resolve(data);
             }
@@ -83,7 +83,7 @@ export function makeSellerVerified(sellerId, verifyStatus) {
 export function deleteSellerAction(sellerId) {
     return new Promise(async (resolve, reject) => {
         try {
-            let { data, status } = await axios.delete(`/api/v1/auth/seller-delete/${sellerId}`);
+            let { data, status } = await axiosInstance().delete(`/api/v1/auth/seller-delete/${sellerId}`);
             if (status === 201) {
                 resolve(data);
             }
@@ -97,7 +97,7 @@ export function deleteSellerAction(sellerId) {
 export function deleteBuyerAction(buyerId) {
     return new Promise(async (resolve, reject) => {
         try {
-            let { data, status } = await axios.delete(`/api/v1/auth/buyer-delete/${buyerId}`);
+            let { data, status } = await axiosInstance().delete(`/api/v1/auth/buyer-delete/${buyerId}`);
             if (status === 201) {
                 resolve(data);
             }

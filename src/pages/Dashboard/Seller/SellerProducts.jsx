@@ -5,15 +5,19 @@ import { AiFillDelete, FaBars, RiEditBoxLine } from "react-icons/all";
 import Circle from "components/Circle/Circle";
 import ActionModal from "components/ActionModal/ActionModal";
 import { addToAdvertiseProductAction, deleteProductAction, fetchSellerProducts } from "context/actions/productAction";
-import { useLocation } from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import toast from "react-hot-toast";
 import SidebarButton from "components/SidebarButton/SidebarButton";
 import Table from "components/Table/Table";
+import Loader from "components/Loader/Loader";
+import {useMutation, useQueryClient} from "@tanstack/react-query";
+import SEO from "components/SEO/SEO";
 
 const SellerProducts = () => {
-    const { data: products, refetch } = fetchSellerProducts();
+    const { data: products, refetch,  isLoading } = fetchSellerProducts();
 
     const location = useLocation();
+    const queryClient = useQueryClient();
 
     const deleteProductId = useRef();
     const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
@@ -28,17 +32,30 @@ const SellerProducts = () => {
         }
     }, [location.state]);
 
+
+    // Define a mutation
+    const mutation = useMutation((payload) => payload, {
+        onSuccess: (payload) => {
+            queryClient.setQueryData(["sellerProducts"], (prev) => {
+                if (payload.type === "delete") {
+                    return prev.filter((item) => item._id !== payload.id);
+                }
+            });
+        },
+    });
+
+
     function handleDeleteActionHandler(isYes) {
         if (isYes) {
+            console.log(deleteProductId.current)
             let isDeleted = deleteProductAction(deleteProductId.current);
             if (isDeleted) {
-                toast.success("Product has been deleted.");
+                mutation.mutate({
+                    type: "delete",
+                    id: deleteProductId.current,
+                });
+                toast.success("Product delete Successfully")
 
-                refetch()
-                    .then((r) => {})
-                    .catch((ex) => {
-                        console.log(ex);
-                    });
             } else {
                 toast.error("Product delete fail.");
             }
@@ -99,9 +116,11 @@ const SellerProducts = () => {
             dataIndex: "",
             render: (_, product) => (
                 <div className="flex items-center gap-x-2">
-                    <Circle className="">
-                        <RiEditBoxLine className="text-white" />
-                    </Circle>
+                    <Link to={`/dashboard/update-product/${product._id}`}>
+                        <Circle className="">
+                            <RiEditBoxLine className="text-white" />
+                        </Circle>
+                    </Link>
                     <label htmlFor="deleteConfirmationModal">
                         <Circle
                             className="!bg-red-300 "
@@ -120,6 +139,7 @@ const SellerProducts = () => {
 
     return (
         <div>
+            <SEO title="My Products"></SEO>
             <SidebarButton>
                 <h1 className="page-section-title !my-0">My Products ({products?.length})</h1>
             </SidebarButton>
@@ -138,7 +158,9 @@ const SellerProducts = () => {
                 </div>
             </ActionModal>
 
-            {!products || products.length === 0 ? (
+            {isLoading && <Loader size={30} title="My Product are loading..." className="mt-28" /> }
+
+            {!products || products.length === 0 && !isLoading ? (
                 <h2 className="section_title-2">No product added you</h2>
             ) : (
             <div className="card">

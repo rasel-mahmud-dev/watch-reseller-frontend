@@ -27,8 +27,8 @@ const Wishlist = () => {
             dispatch({
                 type: "FETCH_WISHLIST",
                 payload: items,
-            }).catch((ex) => {});
-        });
+            })
+        }).catch((ex) => {});
     }, []);
 
 

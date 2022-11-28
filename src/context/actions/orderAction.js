@@ -1,11 +1,12 @@
 import {useQuery} from "@tanstack/react-query";
-import axios from "app/axios";
+import axiosInstance from "app/axios";
+
 
 export function fetchOrdersAction() {
     return useQuery({
         queryKey: ["orders"],
         queryFn: () => {
-            return axios
+            return axiosInstance()
                 .get("/api/v1/order")
                 .then(({ data, status }) => {
                     if (status === 200) {
@@ -24,7 +25,7 @@ export function fetchOrdersAction() {
 export function makeOrderAction(orderData) {
     return new Promise(async (resolve, reject) => {
         try {
-            let { status, data } = await axios.post("/api/v1/order", orderData);
+            let { status, data } = await axiosInstance().post("/api/v1/order", orderData);
             if (status === 201) {
                 resolve(data);
             } else {
@@ -40,7 +41,7 @@ export function makeOrderAction(orderData) {
 export function deleteOrderAction(orderId) {
     return new Promise(async (resolve, reject) => {
         try {
-            let { status, data } = await axios.delete("/api/v1/order/"+orderId);
+            let { status, data } = await axiosInstance().delete("/api/v1/order/"+orderId);
             if (status === 201) {
                 resolve(data);
             } else {

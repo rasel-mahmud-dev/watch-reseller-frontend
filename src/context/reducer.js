@@ -13,6 +13,12 @@ function reducer(state, action) {
                 isOpenSidebar: !state.isOpenSidebar,
             };
 
+        case "FETCH_CATEGORIES":
+            return {
+                ...state,
+                categories: action.payload,
+            };
+
         case "FETCH_WISHLIST":
             return {
                 ...state,

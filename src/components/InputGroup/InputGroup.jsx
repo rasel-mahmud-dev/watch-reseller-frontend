@@ -21,10 +21,11 @@ const InputGroup = (props) => {
         onChange,
         placeholder,
         name,
-        inputClass,
+        inputClass="",
         validate,
         type = "text",
         className,
+        value,
         disabled = false,
         defaultValue,
         error,
@@ -38,12 +39,12 @@ const InputGroup = (props) => {
         const target = e.target;
         // console.log(validate, target.value)
         let result = validator(validate, target.value);
-        onChange(e, result);
+        onChange && onChange(e, result);
     }
 
     return useMemo(() => {
         return (
-            <div className="custom-input-group">
+            <div className={`custom-input-group ${disabled ? "custom-input-group-disabled": ""}  `}>
                 {label && (
                     <label htmlFor={name} className="flex items-center  gap-x-1">
                         {labelIcon}
@@ -56,6 +57,7 @@ const InputGroup = (props) => {
                             onChange={handleChange}
                             name={name}
                             id={name}
+                            value={value}
                             className={`${inputClass} `}
                             placeholder={placeholder}
                         >
@@ -69,6 +71,7 @@ const InputGroup = (props) => {
                             onChange={handleChange}
                             name={name}
                             id={name}
+                            value={value}
                             className={`${inputClass} `}
                             placeholder={placeholder}
                         />
@@ -76,8 +79,8 @@ const InputGroup = (props) => {
                         <input
                             onChange={handleChange}
                             type={type}
-                            defaultValue={defaultValue}
                             name={name}
+                            value={value}
                             id={name}
                             disabled={disabled}
                             className={`${inputClass} `}
@@ -88,7 +91,7 @@ const InputGroup = (props) => {
                 <span className="text-red-500 font-medium text-xs">{error ? error : ""}</span>
             </div>
         );
-    }, [error, defaultValue, options]);
+    }, [error, defaultValue, options, value]);
 };
 
 export default InputGroup;

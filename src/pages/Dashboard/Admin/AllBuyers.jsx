@@ -7,9 +7,10 @@ import Button from "components/Button/Button";
 import { MdDelete } from "react-icons/all";
 import toast from "react-hot-toast";
 import {useMutation, useQueryClient} from "@tanstack/react-query";
+import Loader from "components/Loader/Loader";
 
 const AllBuyers = () => {
-    const { data: buyers } = fetchAllBuyers();
+    const { data: buyers, isLoading} = fetchAllBuyers();
 
     const queryClient = useQueryClient();
 
@@ -73,7 +74,10 @@ const AllBuyers = () => {
                 <h1 className="page-section-title !my-0">All Buyers</h1>
             </SidebarButton>
 
-            {!buyers || buyers.length === 0 ? (
+
+            {isLoading && <Loader size={30} title="Buyer are loading..." className="mt-28" /> }
+
+            {!buyers || buyers.length === 0 && !isLoading ? (
                 <h2 className="section_title-2">No Buyer Registered Yet</h2>
             ) : (
                 <div className="card">

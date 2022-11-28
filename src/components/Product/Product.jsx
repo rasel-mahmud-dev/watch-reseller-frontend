@@ -37,11 +37,9 @@ const Product = ({ product, onAddToWishlist, wishlist = [], onClick }) => {
                 <Avatar imgClass="!w-5" src={seller?.avatar} username={seller?.username} />
                 <div className="flex items-center gap-x-2 ml-1">
                     <h4 className="text-sm font-semibold">{seller?.username}</h4>
-                    {seller?.isVerified ? (
+                    {seller?.isVerified && (
                         <MdVerified className="text-green-600" />
-                    ) : (
-                        <MdVerified className="text-red-500" />
-                    )}
+                    ) }
                 </div>
             </div>
 
@@ -86,7 +84,7 @@ const Product = ({ product, onAddToWishlist, wishlist = [], onClick }) => {
 
                 {onAddToWishlist && (
                     <Button
-                        onClick={() => onAddToWishlist(_id)}
+                        onClick={() => onAddToWishlist(product)}
                         className="!bg-opacity-20 !text-dark-300 hover:!text-pink-600"
                     >
                         <FaHeart

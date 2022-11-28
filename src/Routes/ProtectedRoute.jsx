@@ -11,10 +11,11 @@ const ProtectedRoute = (props) => {
     const [
         {
             state: { auth, isAuthLoaded },
+            actions: { signOutAction }
         },
     ] = useStore();
 
-    let [tokenData, isServerLoading] = useCookieTokenValidate(auth);
+    let [tokenData, isServerLoading] = useCookieTokenValidate(auth, signOutAction);
 
     if (!isAuthLoaded || isServerLoading) {
         return (

@@ -1,17 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import validator from "utils/validator";
 import {
     AiOutlinePhone,
     BiCategoryAlt,
-    BsCalendarDate, CiLocationOn,
+    BsCalendarDate,
+    CiLocationOn,
     FcAddImage,
-    GrStatusGood, IoLocationOutline,
+    GrStatusGood,
+    IoLocationOutline,
     IoPricetagOutline,
     IoPricetagsOutline,
     MdTitle,
     TbFileDescription,
 } from "react-icons/all";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import HttpResponse from "components/HttpResponse/HttpResponse";
 import InputGroup from "components/InputGroup/InputGroup";
 import Button from "components/Button/Button";
@@ -20,8 +22,8 @@ import ImageChooser from "components/ImageChooser/ImageChooser";
 import toast from "react-hot-toast";
 import imageUpload from "utils/imageUpload";
 import catchErrorMessage from "utils/catchErrorMessage";
-import {fetchCategories} from "context/actions/categoryAction";
-import {addProductAction} from "context/actions/productAction";
+import { fetchCategories } from "context/actions/categoryAction";
+import { addProductAction, fetchProductDetail } from "context/actions/productAction";
 import SidebarButton from "components/SidebarButton/SidebarButton";
 import SEO from "components/SEO/SEO";
 
@@ -33,6 +35,10 @@ const AddProduct = () => {
         },
         dispatch,
     ] = useStore();
+
+    const { productId } = useParams();
+
+    const updateProductData = useRef(null);
 
     const location = useLocation();
 
@@ -177,8 +183,8 @@ const AddProduct = () => {
     const [userInput, setUserInput] = useState({
         title: "",
         categoryId: "",
-        resalePrice: null,
-        originalPrice: "BUYER",
+        resalePrice: 0,
+        originalPrice: 0,
         picture: "",
         phone: "",
         location: "",
@@ -190,6 +196,28 @@ const AddProduct = () => {
 
     const [errors, setErrors] = useState({});
 
+    useEffect(() => {
+        if (!productId) return;
+        fetchProductDetail(productId).then((product) => {
+            if (product) {
+                updateProductData.current = product;
+                setUserInput({
+                    title: product.title,
+                    categoryId: product.categoryId,
+                    resalePrice: product.resalePrice,
+                    originalPrice: product.originalPrice,
+                    picture: product.picture,
+                    phone: product.phone,
+                    location: product.location,
+                    conditionType: product.conditionType,
+                    mobileNumber: product.mobileNumber,
+                    description: product.description,
+                    purchaseDate: product.purchaseDate,
+                });
+            }
+        });
+    }, [productId]);
+
     function handleChange(e, error) {
         const { name, value } = e.target;
         setUserInput((prevState) => ({
@@ -199,7 +227,7 @@ const AddProduct = () => {
         setErrors((prev) => ({ ...prev, [name]: error }));
     }
 
-    async function handleLogin(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
         setHttpResponse((p) => ({ ...p, loading: false, message: "" }));
 
@@ -230,25 +258,27 @@ const AddProduct = () => {
         }
 
         try {
-
             if (!userInput?.picture || typeof userInput?.picture !== "object") {
-                toast.error("Please select a valid picture file")
+                if (!productId) {
+                    toast.error("Please select a valid picture file");
+                }
             }
 
-            let uploadResult = await imageUpload(userInput.picture)
-            if (!uploadResult || !uploadResult.data) {
-                toast.error("Picture upload fail please try again")
-                return;
+            let uploadResult;
+            if (typeof userInput?.picture === "object") {
+                uploadResult = await imageUpload(userInput.picture);
+                if (!uploadResult || !uploadResult.data) {
+                    toast.error("Picture upload fail please try again");
+                    return;
+                }
             }
-
 
             setHttpResponse({ ...httpResponse, loading: true });
 
-            let result = await addProductAction({
+            let productData = {
                 title: userInput.title,
                 resalePrice: userInput.resalePrice,
                 originalPrice: userInput.originalPrice,
-                picture: uploadResult.data.url,
                 categoryId: userInput.categoryId,
                 conditionType: userInput.conditionType,
                 mobileNumber: userInput.mobileNumber,
@@ -256,16 +286,27 @@ const AddProduct = () => {
                 location: userInput.location,
                 description: userInput.description,
                 purchaseDate: userInput.purchaseDate,
-            })
+            };
 
-            if(!result){
+            if (productId) {
+                productData.productId = productId;
+                if (uploadResult) {
+                    productData.picture = uploadResult.data.url;
+                } else {
+                    productData.picture = updateProductData.current.picture;
+                }
+            }
+
+            let result = await addProductAction(productData);
+
+            if (!result) {
                 return toast.error("Product Upload fail, Please try again");
             }
             toast.success("Product Successfully added");
-            setTimeout(()=>{
-                navigate("/dashboard/my-products", { state: {isAddedProduct: true} })
-            },500)
-
+            setTimeout(() => {
+                navigate("/dashboard/my-products", { state: { isAddedProduct: true } });
+                updateProductData.current = null;
+            }, 500);
         } catch (ex) {
             toast.error(catchErrorMessage(ex));
         } finally {
@@ -275,42 +316,42 @@ const AddProduct = () => {
 
     return (
         <div className="page">
-
-            <SEO title="Add Product" />
+            <SEO title={productId ? "Update Product" : "Add Product"} />
 
             <SidebarButton>
-                <h1 className="section_title !my-0">Add Product</h1>
+                <h1 className="section_title !my-0">{productId ? "Update Product" : "Add Product"} </h1>
             </SidebarButton>
 
-
             <div className="card my-6">
+                <form onSubmit={handleSubmit}>
+                    <HttpResponse state={httpResponse} title="Please wait your product is added soon" />
 
+                    <div className="mt-6">
+                        <h3 className="text-md font-semibold text-dark-400">Product Info</h3>
 
-            <form onSubmit={handleLogin}>
-
-                <HttpResponse state={httpResponse} title="Please wait your product is added soon" />
-
-                <div className="mt-6">
-                    <h3 className="text-md font-semibold text-dark-400">Product Info</h3>
-
-                    <div className="grid grid-cols-1 gap-4 mt-2">
-                        {Object.keys(basicInfo).map((key, i) =>
-                            basicInfo[key].type === "avatar" ? (
-                                <ImageChooser error={errors[key]} {...basicInfo[key]} />
-                            ) : (
-                                <InputGroup
-                                    error={errors[key]}
-                                    {...basicInfo[key]}
-                                    className={`${key !== "purchaseDate" ? "mt-3" : ""}`}
-                                />
-                            )
-                        )}
+                        <div className="grid grid-cols-1 gap-4 mt-2">
+                            {Object.keys(basicInfo).map((key, i) =>
+                                basicInfo[key].type === "avatar" ? (
+                                    <ImageChooser
+                                        defaultValue={userInput[key]}
+                                        error={errors[key]}
+                                        {...basicInfo[key]}
+                                    />
+                                ) : (
+                                    <InputGroup
+                                        value={userInput[key]}
+                                        error={errors[key]}
+                                        {...basicInfo[key]}
+                                        className={`${key !== "purchaseDate" ? "mt-3" : ""}`}
+                                    />
+                                )
+                            )}
+                        </div>
                     </div>
-                </div>
 
-                <Button className="mt-4">Add Product</Button>
-            </form>
-        </div>
+                    <Button className="mt-4">{productId ? "Update Product" : "Add Product"}</Button>
+                </form>
+            </div>
         </div>
     );
 };

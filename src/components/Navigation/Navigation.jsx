@@ -57,9 +57,10 @@ const Navigation = () => {
         handleResize();
     }, [location.pathname]);
 
-    function handleLogout(e) {
+    function handleLogout() {
         signOutAction();
     }
+
 
     const items = [
         { path: "/", label: "Home" },
@@ -162,14 +163,14 @@ const Navigation = () => {
                                 onMouseLeave={closeAuthDropdown}
                                 onClick={() => setOpenAuthMenu(!openAuthMenu)}
                             >
-                                <div className=" flex justify-center items-center">
+                                <div className=" flex justify-center items-center pl-3">
                                     <Avatar imgClass="w-9 h-9" src={auth.avatar} username={auth.username} className="ml-2" />
                                 </div>
 
                                 <Dropdown isOpen={openAuthMenu}>
-                                    <a className="pt-1 flex items-center">
-                                        <Avatar className="w-8 mr-1" src={auth.avatar} username={auth.username} />
-                                        <div className="flex flex-col">
+                                    <a className="pt-1 flex items-center border-b-2 border-primary-200/20 pb-2">
+                                        <Avatar className="w-8" src={auth.avatar} username={auth.username} />
+                                        <div className="flex flex-col ml-3">
                                             <span className="text-sm font-semibold text-dark-400">{auth.username}</span>
                                             <span className="text-light-100 text-xs font-medium">{auth.role}</span>
                                         </div>
@@ -205,9 +206,9 @@ const Navigation = () => {
                                         <span className="ml-1">Login</span>
                                     </Link>
                                 </Button>
-                                <a href="" className="px-1 ml-2 login-icon block">
+                                <Link to="/login" state={location.pathname} className="px-1 ml-2 login-icon block">
                                     <FaSignInAlt className="text-xl" />
-                                </a>
+                                </Link>
                             </div>
                         )}
                         <div className="block sm:hidden pl-8">

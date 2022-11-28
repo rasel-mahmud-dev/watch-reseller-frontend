@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import CheckoutForm from "pages/Dashboard/Payment/CheckoutForm";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import axios from "app/axios";
 import { useNavigate, useParams } from "react-router-dom";
 import SidebarButton from "components/SidebarButton/SidebarButton";
 import Avatar from "components/Avatar/Avatar";
 import SEO from "components/SEO/SEO";
+import axiosInstance from "app/axios";
 
 const stripePromise = loadStripe(import.meta.env.VITE_APP_STRIPE_PUBLIC_KEY);
 
@@ -18,7 +18,7 @@ const Payment = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios
+        axiosInstance()
             .get("/api/v1/order/" + orderId)
             .then(({ status, data }) => {
                 if (status === 200) {

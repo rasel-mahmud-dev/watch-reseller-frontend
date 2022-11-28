@@ -7,9 +7,10 @@ import Button from "components/Button/Button";
 import { MdDelete } from "react-icons/all";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
+import Loader from "components/Loader/Loader";
 
 const AllSellers = () => {
-    const { data: sellers } = fetchAllSellers();
+    const { data: sellers, isLoading } = fetchAllSellers();
 
     const queryClient = useQueryClient();
 
@@ -109,7 +110,9 @@ const AllSellers = () => {
                 <h1 className="page-section-title !my-0">All Sellers</h1>
             </SidebarButton>
 
-            { !sellers || sellers.length === 0 ? (
+            {isLoading && <Loader size={30} title="Sellers are loading..." className="mt-28" /> }
+
+            { !sellers || sellers.length === 0 && !isLoading ? (
                <h2 className="section_title-2">No Seller Registered Yet</h2>
             )  : (
 

@@ -8,12 +8,12 @@ import {
     signOutAction,
     validateToken,
     loginAction,
-    registrationAction,
+    registrationAction, passwordResetEmailAction,
 } from "./actions/authAction";
 
 import { onAuthStateChanged } from "firebase/auth";
 import reducer from "./reducer";
-import {useLocation} from "react-router-dom";
+
 
 export let dispatch;
 
@@ -24,7 +24,8 @@ const initialState = {
     isOpenSidebar: false,
     wishlist: [],
     searchProducts: [],
-    searchValue: ""
+    searchValue: "",
+    categories: null
 };
 
 function AppProvider(props) {
@@ -37,8 +38,9 @@ function AppProvider(props) {
 
     const actions = {
         googleSignInAction: () => googleSignInAction(auth),
-        signOutAction: (dispatch) => signOutAction(auth, dispatch),
+        signOutAction: () => signOutAction(auth, dispatch),
         loginAction: (userData) => loginAction(auth, userData),
+        passwordResetEmail: (email) => passwordResetEmailAction(auth, email),
         registrationAction: (userData) => registrationAction(auth, userData),
         toggleSidebar: ()=>{
             dispatch({
@@ -73,7 +75,6 @@ function AppProvider(props) {
 
                 if (currentUser) {
                     dispatch({ type: "LOGIN", payload: currentUser });
-                    // console.log(location.state)
                 } else {
                     // backend server error
                     dispatch({ type: "LOGOUT" });

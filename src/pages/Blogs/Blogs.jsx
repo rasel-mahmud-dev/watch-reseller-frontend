@@ -1,8 +1,7 @@
 import Loader from "components/Loader/Loader";
 import React, { useEffect, useState } from "react";
-
 import SEO from "../../components/SEO/SEO";
-import axios from "app/axios";
+import axiosInstance from "app/axios";
 
 const Blogs = () => {
 	const [blogData, setBlogData] = useState([]);
@@ -11,7 +10,7 @@ const Blogs = () => {
 
 	useEffect(() => {
 		setLoading(true);
-		axios
+		axiosInstance()
 			.get("/api/v1/blogs")
 			.then(({ data, status }) => {
 				if (status === 200) {

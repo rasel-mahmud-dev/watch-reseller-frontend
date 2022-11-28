@@ -8,7 +8,7 @@ import BookingModal from "pages/Shared/BookingModal";
 import useStore from "hooks/useStore";
 
 const AdvertiseProducts = () => {
-    let { data: advertises, isLoading, isError, error } = fetchAdvertiseProducts();
+    let { data: advertises, isFetching, isLoading, isError, error } = fetchAdvertiseProducts();
     const [
         {
             state: { auth },
@@ -21,7 +21,8 @@ const AdvertiseProducts = () => {
         setBookingData(product);
     }
 
-    return (
+
+    return !isLoading && !(advertises && advertises.length === 0) && (
         <section className="section" id="advertise-product">
             <div className="container">
                 <h6 className="section_sub-title">Advertises for you</h6>
@@ -29,10 +30,10 @@ const AdvertiseProducts = () => {
 
                 <BookingModal bookingData={bookingData} auth={auth} onClose={() => setBookingData(null)} />
 
-                {isLoading && <Loader size={30} title="Category are loading..." className="mt-28" />}
-                {isError && (
-                    <h1 className="text-center mt-24 text-red-500">Category load fail {catchErrorMessage(error)}</h1>
-                )}
+                {/*{isLoading && <Loader size={30} title="Category are loading..." className="mt-28" />}*/}
+                {/*{isError && (*/}
+                {/*    <h1 className="text-center mt-24 text-red-500">Category load fail {catchErrorMessage(error)}</h1>*/}
+                {/*)}*/}
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-8">
                     {advertises?.map((advertise) => (

@@ -15,12 +15,13 @@ import catchErrorMessage from "utils/catchErrorMessage";
 import useScrollTop from "hooks/useScrollTop";
 import SEO from "components/SEO/SEO";
 import Loader from "components/Loader/Loader";
+import firebaseErrorCatch from "utils/firebaseErrorCatch";
 
 const Login = () => {
     const [
         {
             state: { auth },
-            actions: { loginAction },
+            actions: { loginAction, passwordResetEmail },
         },
         dispatch,
     ] = useStore();
@@ -33,11 +34,13 @@ const Login = () => {
     const loginSession = useRef(null);
 
     const [requestLoading, setRequestLoading] = useState(false);
+    const [openPasswordResetModal, setOpenPasswordResetModal] = useState(false);
 
     const data = {
         email: {
             label: "Email",
             name: "email",
+            type: "email",
             placeholder: "Enter email",
             onChange: handleChange,
             validate: {
@@ -48,12 +51,13 @@ const Login = () => {
 
         password: {
             label: "Password",
+            type: "password",
             name: "password",
             placeholder: "Enter password",
             onChange: handleChange,
             validate: {
                 required: "Password required",
-                minLength: { value: 5, message: "Password should be min 5 character" },
+                minLength: { value: 6, message: "Password should be min 6 character" },
             },
             labelIcon: <FiLock className="text-dark-400 text-lg" />,
         },
@@ -95,12 +99,16 @@ const Login = () => {
 
         setRequestLoading(true);
         try {
-            let result = await loginAction(userInput);
+            let result = await loginAction({
+                email: userInput.email.trim(),
+                password: userInput.password.trim(),
+            });
             loginSession.current = true;
         } catch (ex) {
             toast.error(catchErrorMessage(ex));
-        } finally {
             setRequestLoading(false);
+        } finally {
+            // setRequestLoading(false);
         }
     }
 
@@ -109,6 +117,7 @@ const Login = () => {
         if (auth) {
             let redirectPath = location.state || "/";
             if (loginSession.current) {
+                setRequestLoading(false);
                 navigate(redirectPath);
                 loginSession.current = false;
             } else {
@@ -118,24 +127,47 @@ const Login = () => {
         }
     }, [auth, loginSession.current]);
 
+
+    const [passResetState, setPassResetState] = useState({
+        message: "",
+        loading: false,
+        isSuccess: false,
+    });
+
     function handlePasswordReset(e) {
         e.preventDefault();
+        setPassResetState({ message: "", loading: true, isSuccess: true });
+        let email = e.target.email.value;
+        if (!email) {
+            setPassResetState({ message: "Please provide email", loading: false, isSuccess: false });
+            return
+        }
+        passwordResetEmail(email)
+            .then(() => {
+                setPassResetState({
+                    loading: false,
+                    message: "Password Reset Mail has been send. Please check your inbox or spam folder",
+                    isSuccess: true,
+                });
+            })
+            .catch((ex) => {
+                let message = firebaseErrorCatch(ex.code);
+                setPassResetState({ loading: false, message: message, isSuccess: false });
+            });
     }
 
     // password reset mail send form
     function renderPasswordResetModal() {
         return (
-            <Modal title="Reset Password" className="max-w-sm" id="password-reset-modal">
+            <Modal
+                title="Reset Password"
+                className="!w-11/12 max-w-lg"
+                isOpen={openPasswordResetModal}
+                onClose={() => setOpenPasswordResetModal(false)}
+            >
                 <form onSubmit={handlePasswordReset} className="mt-4 text-dark-300">
-                    <HttpResponse state={{ loading: requestLoading }} />
-
-                    <InputGroup
-                        type="text"
-                        name="email"
-                        placeholder="Your Email"
-                        defaultValue={userInput.email}
-                        className="w-full"
-                    />
+                    <HttpResponse state={passResetState} />
+                    <InputGroup type="email" name="email" placeholder="Your Email" className="w-full" />
                     <Button className="mt-4">Reset Request</Button>
                 </form>
             </Modal>
@@ -171,7 +203,10 @@ const Login = () => {
                         <div className="text-dark-100 text-sm font-normal mt-5">
                             <h6>
                                 Forgot Password ?
-                                <label htmlFor="password-reset-modal" className="link ml-2 text-blue-500 ">
+                                <label
+                                    onClick={() => setOpenPasswordResetModal(true)}
+                                    className="link ml-2 text-blue-500 "
+                                >
                                     Click to reset
                                 </label>
                             </h6>

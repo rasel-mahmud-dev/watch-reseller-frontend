@@ -11,6 +11,7 @@ import { deleteOrderAction, fetchOrdersAction } from "context/actions/orderActio
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import SEO from "components/SEO/SEO";
+import Loader from "components/Loader/Loader";
 
 const MyOrders = () => {
     const [
@@ -24,7 +25,7 @@ const MyOrders = () => {
 
     const navigate = useNavigate();
 
-    const { data: orders } = fetchOrdersAction();
+    const { data: orders, isLoading } = fetchOrdersAction();
     const queryClient = useQueryClient();
 
     // Define a mutation cache delete and update order without refetch data
@@ -141,7 +142,7 @@ const MyOrders = () => {
             dataIndex: "",
             render: (_, order) => (
                 <div className="flex items-center gap-x-2">
-                    <button onClick={()=>change(order)}>Change</button>
+
                     <Button
                         onClick={() => navigate(`/dashboard/payment/${order._id}`)}
                         className="flex items-center px-2"
@@ -190,7 +191,9 @@ const MyOrders = () => {
                 </div>
             </ActionModal>
 
-            {!orders || orders.length === 0 ? (
+            {isLoading && <Loader size={30} title="Orders are loading..." className="mt-28" /> }
+
+            {!orders || orders.length === 0  && !isLoading ? (
                 <h2 className="section_title-2">No Order found</h2>
             ) : (
                 <div className="card">

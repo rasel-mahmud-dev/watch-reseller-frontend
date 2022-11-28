@@ -6,6 +6,8 @@ import Button from "components/Button/Button";
 import toast from "react-hot-toast";
 import {Link, useLocation} from "react-router-dom";
 import {makeOrderAction} from "context/actions/orderAction";
+import {FaTimes} from "react-icons/all";
+import Circle from "components/Circle/Circle";
 
 const BookingModal = ({ auth, bookingData, onClose }) => {
 
@@ -79,7 +81,7 @@ const BookingModal = ({ auth, bookingData, onClose }) => {
         },
     };
 
-    async function handleLogin(e) {
+    async function handleBooking(e) {
         e.preventDefault();
         setHttpResponse((p) => ({ ...p, loading: false }));
 
@@ -115,8 +117,13 @@ const BookingModal = ({ auth, bookingData, onClose }) => {
     }
 
     return (
-        <div>
-            <Modal className={`!max-w-md ${!auth ? "!top-1/3" : ""}`} isOpen={bookingData} onClose={onClose}>
+        <div className="">
+            <Modal className={`!w-11/12 md:w-full !max-w-md ${!auth ? "!top-1/3" : ""}`} isOpen={bookingData} onClose={onClose}>
+                <div className="absolute right-4 top-3" onClick={onClose}>
+                    <Circle className="bg-red-400">
+                    <FaTimes />
+                    </Circle>
+                </div>
                 {!auth ? (
                     <div>
                         <h1 className="text-center text-xl text-dark-900 font-semibold pb-2">
@@ -137,13 +144,13 @@ const BookingModal = ({ auth, bookingData, onClose }) => {
                         </Button>
                     </div>
                 ) : (
-                    <form onSubmit={handleLogin}>
+                    <form onSubmit={handleBooking}>
                         <h1 className=" text-center text-3xl text-dark-900 font-semibold pb-2">Order form</h1>
 
                         <HttpResponse state={httpResponse} />
 
                         {Object.keys(data).map((key) => (
-                            <InputGroup {...data[key]} defaultValue={userInput[key]} key={key} className="mt-3" />
+                            <InputGroup value={userInput[key]} {...data[key]} defaultValue={userInput[key]} key={key} className="mt-3" />
                         ))}
 
                         <Button className="mt-4 w-full">Submit Order</Button>

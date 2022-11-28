@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "site": "watch-reseller-r-4000",
+    "site": "watch-reseller",
     "public": "dist",
     "ignore": [
       "firebase.json",

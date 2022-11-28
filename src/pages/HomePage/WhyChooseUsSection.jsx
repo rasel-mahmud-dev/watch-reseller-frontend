@@ -10,7 +10,7 @@ const WhyChooseUsSection = () => {
         { id: 1, label: "Fast Delivery", para: "Elit. Nullana integer sagittis, eleifend consectetur adipiscing", icon: "/fast-time.png" },
         { id: 2, label: "Safe", para: "We provide safe money payment system. customer easily buy products", icon: "/shield.png" },
         { id: 3, label: "Low Pricing", para: "We provide money back grantee if. our watch are bug", icon: "/lowest-price.png" },
-        { id: 4, label: "Good Condition", para: "We promise money back granety", icon: "/check.png" },
+        { id: 4, label: "Good Condition", para: "We promise money back grantey", icon: "/check.png" },
     ]
 
 
