@@ -64,7 +64,7 @@ const DashboardHome = () => {
                             <h1 className="min-w-[120px]">Role: </h1>
                             <h1>{auth.role}</h1>
                         </div>
-                        {auth.role !== "ADMIN" && <div className="flex justify-start gap-x-4 border-b border-primary-100/10 py-2">
+                        {auth.role === "SELLER" && <div className="flex justify-start gap-x-4 border-b border-primary-100/10 py-2">
                             <h1 className="min-w-[120px]">Admin Approve: </h1>
                             <h1>{auth.isVerified ? "YES" : "NO"}</h1>
                         </div>}

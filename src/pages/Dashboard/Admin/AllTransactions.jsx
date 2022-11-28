@@ -38,7 +38,7 @@ const AllTransactions = () => {
         { title: "Product Title", dataIndex: "title" },
         { title: "Transaction ID", dataIndex: "transactionId" },
         { title: "Price", dataIndex: "price", render: (price) =>  price + "TK" },
-        { title: "Created At", dataIndex: "createdAt", render: (createdAt) => new Date(createdAt).toDateString() },
+        { title: "Created At", tdClass: "whitespace-nowrap", dataIndex: "createdAt", render: (createdAt) => new Date(createdAt).toDateString() },
 
     ];
 
@@ -54,7 +54,7 @@ const AllTransactions = () => {
                 <h2 className="section_title-2">No Transactions found</h2>
             ) : (
                 <div className="card">
-                    <Table fixed={true} scroll={{ x: 900, y: "80vh" }} columns={columns} dataSource={transactions} />
+                    <Table fixed={true} scroll={{ x: 700, y: "80vh" }} columns={columns} dataSource={transactions} />
                 </div>
             )}
         </div>

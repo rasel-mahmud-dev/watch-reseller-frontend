@@ -20,13 +20,7 @@ const SellerBuyers = () => {
         },
         { title: "Name", dataIndex: "username" },
         { title: "email", dataIndex: "email" },
-        { title: "Join on", dataIndex: "createdAt", render: (createdAt) => date(createdAt) },
-        {
-            title: "status",
-            dataIndex: "isVerified",
-            className: "w2",
-            render: (isVerified) => (isVerified ? "YES" : "NO"),
-        },
+        { title: "Join on", tdClass: "whitespace-nowrap", dataIndex: "createdAt", render: (createdAt) => new Date(createdAt).toDateString() },
     ];
 
     return (
@@ -43,7 +37,7 @@ const SellerBuyers = () => {
                 <h2 className="section_title-2">No buyer buy your product yet</h2>
             ) : (
                 <div className="card">
-                    <Table fixed={true} scroll={{ x: 900, y: "80vh" }} columns={columns} dataSource={buyers} />
+                    <Table fixed={true} scroll={{ x: 500, y: "80vh" }} columns={columns} dataSource={buyers} />
                 </div>
             )}
         </div>

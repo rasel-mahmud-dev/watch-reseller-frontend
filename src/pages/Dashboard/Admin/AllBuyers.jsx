@@ -47,13 +47,7 @@ const AllBuyers = () => {
         },
         { title: "Name", dataIndex: "username" },
         { title: "email", dataIndex: "email" },
-        { title: "Join on", dataIndex: "createdAt", render: (createdAt) => new Date(createdAt).toDateString() },
-        {
-            title: "status",
-            dataIndex: "isVerified",
-            className: "w2",
-            render: (isVerified) => (isVerified ? "YES" : "NO"),
-        },
+        { title: "Join on", tdClass: "whitespace-nowrap", dataIndex: "createdAt", render: (createdAt) => new Date(createdAt).toDateString() },
         {
             title: "actions",
             dataIndex: "",
@@ -81,7 +75,7 @@ const AllBuyers = () => {
                 <h2 className="section_title-2">No Buyer Registered Yet</h2>
             ) : (
                 <div className="card">
-                    <Table fixed={true} scroll={{ x: 900, y: "80vh" }} columns={columns} dataSource={buyers} />
+                    <Table fixed={true} scroll={{ x: 800, y: "80vh" }} columns={columns} dataSource={buyers} />
                 </div>
             )}
         </div>

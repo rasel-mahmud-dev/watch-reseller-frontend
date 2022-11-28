@@ -68,11 +68,15 @@ const Product = ({ product, onAddToWishlist, wishlist = [], onClick }) => {
                     <span className="min-w-[100px] block">Used</span>:
                     <span className="ml-2 font-medium">{compareDate(purchaseDate)}</span>
                 </h3>
-
-                <h3 className="flex items-center gap-x-1 mt-1">
-                    <BiCurrentLocation className="" />
-                    <span className=" font-medium">{location}</span>
+                <h3 className="flex items-start">
+                    <span className="min-w-[100px] block">Location</span>:
+                    <span className="ml-2 font-medium">{location}</span>
                 </h3>
+
+                {/*<h3 className="flex items-center gap-x-1 mt-1">*/}
+                {/*    <BiCurrentLocation className="" />*/}
+                {/*    <span className=" font-medium">{location}</span>*/}
+                {/*</h3>*/}
             </div>
 
             <div className="flex items-stretch  gap-4 justify-between mt-4">

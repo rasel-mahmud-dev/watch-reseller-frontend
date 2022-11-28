@@ -36,6 +36,7 @@
 
 .table-fixed thead tr  {
     position: sticky !important;
+
     top: 0;
     z-index: 1;
     background: rgb(56 177 237);
@@ -46,6 +47,7 @@
 .table-fixed tbody tr  {
     /*background: red;*/
     @apply hover:bg-primary-500/10;
+    font-size: 14px;
     transition: background-color .3s ease;
 }
 
