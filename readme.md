@@ -11,8 +11,8 @@
 ## Application Features
 - Multiple roles base. such as Buyer. Seller, Admin.
 - For internation payment system. I use stripe. so buyer can pay with credit card.
-- Implement user friendly all form validator (custom my own).
-- buyer can login via google or email & password. they can recover password if forgot.
+- Implement user-friendly all form validator (custom my own).
+- buyer can log in via google or email & password. they can recover password if forgot.
 - buyer can order, add wishlist, and see their past all transaction.
 - Other Side a seller can add/update, delete product. they can manage their product.
 - And admin can do anything like she can delete any seller and buyer.

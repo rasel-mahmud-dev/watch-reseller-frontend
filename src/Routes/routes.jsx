@@ -1,6 +1,9 @@
 import React, {lazy} from "react";
 import { createBrowserRouter } from "react-router-dom";
 
+import ErrorPage from "../pages/Shared/ErrorPage";
+import DashboardLayout from "../Layout/DashboardLayout";
+import DashboardHome from "../pages/Dashboard/DashboardHome"
 
 import Main from "../Layout/Main";
 import ProtectedRoute from "app/Routes/ProtectedRoute";
@@ -9,9 +12,6 @@ import MyTransactions from "pages/Dashboard/Buyer/MyTransactions";
 const HomePage = lazy(()=>import( "../pages/HomePage/HomePage"));
 const LoginPage = lazy(()=>import("../pages/LoginPage/Login"))
 const Registration = lazy(()=>import( "../pages/Registration/Registration"));
-const DashboardLayout = lazy(()=>import( "../Layout/DashboardLayout"));
-const DashboardHome = lazy(()=>import( "../pages/Dashboard/DashboardHome"));
-const ErrorPage = lazy(()=>import( "../pages/Shared/ErrorPage"));
 const CategoryProducts = lazy(()=>import( "pages/CategoryProducts/CategoryProducts"));
 const AddProduct = lazy(()=>import( "pages/Dashboard/Seller/AddProduct"));
 const SellerProducts = lazy(()=>import( "pages/Dashboard/Seller/SellerProducts"));

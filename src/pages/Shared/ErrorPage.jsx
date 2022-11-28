@@ -18,7 +18,7 @@ const ErrorPage = () => {
                         <h1 className="text-dark-800 font-bold text-6xl">Oops!</h1>
                         <p className="my-6 font-medium text-dark-700">Sorry, an unexpected error has occurred.</p>
                         <p className="text-dark-500 italic font-semibold text-3xl">
-                            <i>{error.statusText || error.message}</i>
+                            <i>{error?.statusText || error?.message}</i>
                         </p>
                         <div className="mt-6">
                             <Button className="mx-auto" onClick={() => navigate(-1)}>Go to back</Button>

@@ -22,7 +22,7 @@ import ImageChooser from "components/ImageChooser/ImageChooser";
 import toast from "react-hot-toast";
 import imageUpload from "utils/imageUpload";
 import catchErrorMessage from "utils/catchErrorMessage";
-import { fetchCategories } from "context/actions/categoryAction";
+import { fetchCategoriesAction} from "context/actions/categoryAction";
 import { addProductAction, fetchProductDetail } from "context/actions/productAction";
 import SidebarButton from "components/SidebarButton/SidebarButton";
 import SEO from "components/SEO/SEO";
@@ -30,7 +30,7 @@ import SEO from "components/SEO/SEO";
 const AddProduct = () => {
     const [
         {
-            state,
+            state: { categories },
             actions: { registrationAction },
         },
         dispatch,
@@ -51,8 +51,6 @@ const AddProduct = () => {
     });
 
     let conditionType = ["excellent", "good", "fair"].map((item) => ({ name: item, _id: item }));
-
-    let { data: categories } = fetchCategories();
 
     const basicInfo = {
         title: {
@@ -216,6 +214,10 @@ const AddProduct = () => {
                 });
             }
         });
+
+        if (!categories) {
+            fetchCategoriesAction(dispatch)
+        }
     }, [productId]);
 
     function handleChange(e, error) {
