@@ -17,7 +17,7 @@ const SliderSection = () => {
             image: "/brandon-romanchuk-4RmyqApaLjw-unsplash2.jpg",
             title: "Modern Fresh condition Smart Watch",
             desc: "Today's smartwatches offer more advanced features, such as detailed 24/7 health and wellness tracking, voice assistants, call and text message support, and a variety of apps and services that extend the power of your smartphone to your wrist.",
-        },
+        }, 
         {
             image: "/paul-cuoco-CO2vOhPqlrM-unsplash3.jpg",
             title: "The Rolex Air King took on new look",
@@ -27,6 +27,15 @@ const SliderSection = () => {
             image: "/regis-hari-bouchard-JCp35SbaEFs-unsplash.jpg",
             title: "The best luxury watch brands of 2022",
             desc: "Luxury watches are destined to never go out of fashion. No phone can beat the exceptional elegance and rich history of a beautifully crafted timepiece. f",
+        },
+		{
+            image: "/klim-musalimov-OxX-19IPS9A-unsplash-copy.jpg",
+            title: "Black Modern Fresh condition Watch",
+            desc: "Black modern watches offer more looking better, such as detailed 24/7 health and wellness tracking, voice assistants, call and text message support, and a variety of apps and services that extend the power of your smartphone to your wrist.",
+        },{
+            image: "/aditya-rathod-GvEAMv_CMkc-unsplash-copy.webp",
+            title: "Black High quality modern digital Smartwatch",
+            desc: "Black modern watches offer more looking better, such as detailed 24/7 health and wellness tracking, voice assistants, call and text message support, and a variety of apps and services that extend the power of your smartphone to your wrist.",
         },
     ];
 
