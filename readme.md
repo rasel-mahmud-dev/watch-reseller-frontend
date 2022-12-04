@@ -1,9 +1,10 @@
 # Watch.Reseller (Client)
-## A secondhand product online market
+## A secondhand watch shop online market
 
 #### Assignment 12
 
-### Github Repo: https://github.com/programming-hero-web-course-4/b612-used-products-resale-clients-side-rasel-mahmud-dev
+### Github Repo Client : https://github.com/rasel-mahmud-dev/watch-reseller-frontend
+### Github Repo Backend: https://github.com/rasel-mahmud-dev/watch-reseller-backend
 
 ### Live site: https://watch-reseller.web.app 
 
@@ -74,4 +75,10 @@ password: 123456
 - axios
 
 ## Preview of HomePage
-![](public/preview.webp)
+![](public/home-page-copy.webp)
+
+## Preview of Add Product
+![](public/add-product-copy.webp)
+
+## Preview of Admin dashboard all buyers
+![](public/all-buyers-copy.webp)
